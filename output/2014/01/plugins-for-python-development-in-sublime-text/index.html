@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>Plugins for Python development in Sublime Text | Nipun Batra | </title>
+    <meta name="description" content="Nipun Batra, ">
+    <meta name="author" content="Nipun Batra">
+
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Feeds
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="alternate" href="http://nipunbatra.github.io/feeds/all.atom.xml" type="application/atom+xml" title="Nipun Batra Atom Feed" />
+
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata">
+
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/custom.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/pygments.css">
+
+    <!-- Scripts
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fitvids/1.1.0/jquery.fitvids.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".container").fitVids();
+        });
+    </script>
+
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="http://nipunbatra.github.io/theme/assets/favicon.png">
+
+
+<!-- Using MathJax, with the delimiters $ -->
+<!-- Conflict with pygments for the .mo and .mi -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  "HTML-CSS": {
+  styles: {
+  ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
+  },
+  tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']],processEscapes: true}
+  });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+</head>
+<body>
+
+    <!-- Primary Page Layout
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <div class="container">
+        <section class="header">
+            <img src="http://nipunbatra.github.io/theme/assets/stewie.jpg" class="logo">
+        </section>
+    </div>
+    <div class="container">
+        <nav class="navbar">
+            <div class="container">
+                <ul class="navbar-list">
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io//archives.html" class="navbar-link">Blog archives</a></li>
+                    <li class="navbar-icon">
+                        <a href="http://twitter.com/nipun_batra">
+                            <i class="fa fa-twitter fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://github.com/nipunreddevil">
+                            <i class="fa fa-github fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://www.linkedin.com/profile/view?id=43966733">
+                            <i class="fa fa-linkedin fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <section class="post">
+            <header class="post-header">
+                <h3>Plugins for Python development in Sublime Text</h3>
+                <p class="post-meta">
+                    Thu 30 January 2014 &middot; tagged 
+                        <a class="post-category" href="http://nipunbatra.github.io/tag/python.html">Python</a>
+                </p>
+            </header>
+        </section>
+        <section class="post-content">
+            <p>Recently, I was having a conversation with <a href="http://correa.in/">Denzil</a>, comparing
+<a href="http://www.rstudio.com/">RStudio</a> with IDEs supporting Python. We both felt that Python IDEs
+are not that complete. Both of us and many other people developing
+Python code run <a href="http://www.sublimetext.com/">Sublime Text</a>. Sublime Text comes with a rich suite
+of user written plugins. In this post, I highlight some of the plugins
+which I have currently installed and have been helpful in Python
+development.</p>
+<ul>
+<li><a href="https://github.com/wistful/SublimeAutoPEP8">AutoPep8</a>: "Code is read more often than it is written". Sticking
+    to PEP8 does help. This plugin helps you to automatically convert
+    your code to PEP8. I have modified the default behavior and AutoPEP8
+    is triggered every time I save a file.</li>
+<li>
+<p><a href="http://sublimecodeintel.github.io/SublimeCodeIntel/">SublimeCodeIntel</a>: Intellisense + Lot more. Also shows up the
+    docstrings for a function</p>
+</li>
+<li>
+<p><a href="https://github.com/wuub/SublimeREPL">SublimeREPL</a>: A full REPL inside Sublime Text. The biggest win is
+    IPython! You can evaluate parts of code, selection, blocks, etc.
+     just with a few keystrokes. The figure below shows an IPython
+    session making a Matplotlib plot based on the code in the other
+    panel. Before using this plugin, I would copy paste stuff into an
+    IPython shell when I wanted to run bits of the code.</p>
+</li>
+</ul>
+<p><img alt="auto complete" src="http://nipunbatra.files.wordpress.com/2014/01/auto_complete.png" /></p>
+<p><img alt="plot" src="http://nipunbatra.files.wordpress.com/2014/01/plot.png" /></p>
+        </section>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'nipunbatra';
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript><footer class="footer">
+    &copy; Nipun Batra &ndash;
+        Proudly published with <a href="http://blog.getpelican.com/">Pelican</a>
+</footer>    </div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50180272-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    <!-- End Document
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

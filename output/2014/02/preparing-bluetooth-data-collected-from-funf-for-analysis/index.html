@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>Preparing Bluetooth data collected from FunF for analysis | Nipun Batra | </title>
+    <meta name="description" content="Nipun Batra, ">
+    <meta name="author" content="Nipun Batra">
+
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Feeds
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="alternate" href="http://nipunbatra.github.io/feeds/all.atom.xml" type="application/atom+xml" title="Nipun Batra Atom Feed" />
+
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata">
+
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/custom.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/pygments.css">
+
+    <!-- Scripts
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fitvids/1.1.0/jquery.fitvids.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".container").fitVids();
+        });
+    </script>
+
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="http://nipunbatra.github.io/theme/assets/favicon.png">
+
+
+<!-- Using MathJax, with the delimiters $ -->
+<!-- Conflict with pygments for the .mo and .mi -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  "HTML-CSS": {
+  styles: {
+  ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
+  },
+  tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']],processEscapes: true}
+  });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+</head>
+<body>
+
+    <!-- Primary Page Layout
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <div class="container">
+        <section class="header">
+            <img src="http://nipunbatra.github.io/theme/assets/stewie.jpg" class="logo">
+        </section>
+    </div>
+    <div class="container">
+        <nav class="navbar">
+            <div class="container">
+                <ul class="navbar-list">
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io//archives.html" class="navbar-link">Blog archives</a></li>
+                    <li class="navbar-icon">
+                        <a href="http://twitter.com/nipun_batra">
+                            <i class="fa fa-twitter fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://github.com/nipunreddevil">
+                            <i class="fa fa-github fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://www.linkedin.com/profile/view?id=43966733">
+                            <i class="fa fa-linkedin fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <section class="post">
+            <header class="post-header">
+                <h3>Preparing Bluetooth data collected from FunF for analysis</h3>
+                <p class="post-meta">
+                    Wed 26 February 2014 &middot; tagged 
+                        <a class="post-category" href="http://nipunbatra.github.io/tag/dataset.html">dataset</a>
+                </p>
+            </header>
+        </section>
+        <section class="post-content">
+            <p>During the last summer, I undertook a deployment in a 3 person family
+home in New Delhi. This led to the release of the Indian data for
+ambient water and energy (iAWE). More details may be found on the [dataset page][] or on the <a href="https://dl.dropboxusercontent.com/u/75845627/buildsys_paper.pdf">publication</a>.</p>
+<p>As a part of the deployment, we also used 5 Android phones for
+collecting data such as light, Bluetooth, cell towers etc. <a href="http://www.funf.org/journal.html">FunF</a>
+stores data in encrypted sqlite db files. The steps involved in
+preparing the data for analysis are outlined here. First, we need to
+decrypt the contents (need to enter the password configured while
+starting FunF). This is done via decrypt utility provided in <a href="https://code.google.com/p/funf-open-sensing-framework/source/browse/?repo=samples&amp;name=v0.4.x">FunF analyze</a>. Next, we merge these decrypted db files to a single
+database. The following gist contains the code for doing the same.</p>
+<script src="https://gist.github.com/nipunreddevil/9224681.js"></script>
+
+<p>Next, we leverage Pandas to read this merged sqlite db file and perform
+the following operations.</p>
+<ol>
+<li>Make a connection to SQLite DB</li>
+<li>Select timestamp, probe and value from the DB</li>
+<li>Filter data by bluetooth probe</li>
+<li>Make timestamp as index</li>
+<li>Convert the values from JSON to Python dict</li>
+<li>Extract RSSI, MAC and Name of Device from the above and store in the
+    data frame</li>
+<li>Delete all other columns</li>
+<li>Save file to CSV</li>
+</ol>
+<script src="https://gist.github.com/nipunreddevil/9224575.js"></script>
+
+<p>The following is the list of names seen by this Android phone.</p>
+<script src="https://gist.github.com/nipunreddevil/9224722.js"></script>
+
+<p>Out of the following 4 belong to residents, whereas the remaining are of
+visitors or of people from nearby homes. I will post these CSVs to the
+data set page soon and will also post some initial analysis on this
+data. The original merged DB file was 1.8 GB and this CSV is a mere 370
+KB as a lot of redundant information has been removed.</p>
+        </section>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'nipunbatra';
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript><footer class="footer">
+    &copy; Nipun Batra &ndash;
+        Proudly published with <a href="http://blog.getpelican.com/">Pelican</a>
+</footer>    </div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50180272-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    <!-- End Document
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

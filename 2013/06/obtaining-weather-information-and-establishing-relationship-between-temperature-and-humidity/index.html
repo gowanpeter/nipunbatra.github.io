@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>Obtaining weather information and establishing relationship between temperature and humidity | Nipun Batra | </title>
+    <meta name="description" content="Nipun Batra, ">
+    <meta name="author" content="Nipun Batra">
+
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Feeds
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="alternate" href="http://nipunbatra.github.io/feeds/all.atom.xml" type="application/atom+xml" title="Nipun Batra Atom Feed" />
+
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata">
+
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/custom.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/pygments.css">
+
+    <!-- Scripts
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fitvids/1.1.0/jquery.fitvids.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".container").fitVids();
+        });
+    </script>
+
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="http://nipunbatra.github.io/theme/assets/favicon.png">
+
+
+<!-- Using MathJax, with the delimiters $ -->
+<!-- Conflict with pygments for the .mo and .mi -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  "HTML-CSS": {
+  styles: {
+  ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
+  },
+  tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']],processEscapes: true}
+  });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+</head>
+<body>
+
+    <!-- Primary Page Layout
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    
+    <div class="container">
+        <section class="header">
+            <img src="http://nipunbatra.github.io/lk.jpg" class="logo">
+        </section>
+    </div>
+
+    <div class="container">
+        <nav class="navbar">
+            <div class="container">
+                <ul class="navbar-list">
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/" class="navbar-link">Blog home</a></li>
+                    <li class="navbar-item"><a href="https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                <!--
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/http://nipunbatra.github.io/" class="navbar-link">Blog home</a></li>
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                -->
+                    <li class="navbar-icon">
+                        <a href="http://twitter.com/nipun_batra">
+                            <i class="fa fa-twitter fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://github.com/nipunreddevil">
+                            <i class="fa fa-github fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://www.linkedin.com/profile/view?id=43966733">
+                            <i class="fa fa-linkedin fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <section class="post">
+            <header class="post-header">
+                <h3>Obtaining weather information and establishing relationship between temperature and humidity</h3>
+                <p class="post-meta">
+                    Fri 14 June 2013 &middot; tagged 
+                        <a class="post-category" href="http://nipunbatra.github.io/tag/python.html">Python</a>
+                </p>
+            </header>
+        </section>
+        <section class="post-content">
+            <p><a href="http://openweathermap.org/">OpenWeatherMap</a> provides an excellent API to get near realtime
+weather information, such as temperature, humidity etc. In this post i
+shall get some historical information regarding temperature, humidity
+and pressure using this API and do a Pearson correlation test between
+temperature and pressure. From the geography books we remember that
+higher the temperature lower the pressure and vice versa. Thus, the
+correlation amongst these two should be tending towards -1.<br />
+The following are the three things plotted on the same x-axis.  </p>
+<p><img alt="sample" src="http://nipunbatra.files.wordpress.com/2013/06/sample.png?w=660" /> </p>
+<p>Here is the code used.</p>
+<div class="highlight"><pre><span class="c">#Plotting historical weather data from OPEN Weather API</span>
+
+<span class="c">#Importing the APP ID</span>
+<span class="kn">from</span> <span class="nn">weather_password</span> <span class="kn">import</span> <span class="n">APPID</span>
+
+<span class="c">#City ID for Delhi</span>
+<span class="n">CITY_ID</span><span class="o">=</span><span class="mi">1273294</span>
+<span class="c">#How much history (Currently could get only 78 records)</span>
+<span class="n">COUNT_RECORDS</span><span class="o">=</span><span class="mi">100</span>
+<span class="c">#Base URL</span>
+<span class="n">BASE_URL</span><span class="o">=</span><span class="s">&quot;http://openweathermap.org/data/2.1/history/city/&quot;</span>
+<span class="c">#Custom HTTP request URL</span>
+<span class="n">REQUEST_URL</span><span class="o">=</span><span class="n">BASE_URL</span><span class="o">+</span><span class="s">&quot;?id=</span><span class="si">%d</span><span class="s">&amp;cnt=</span><span class="si">%d</span><span class="s">&amp;APPID=</span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">CITY_ID</span><span class="p">,</span><span class="n">COUNT_RECORDS</span><span class="p">,</span><span class="n">APPID</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.dates</span> <span class="kn">as</span> <span class="nn">mdates</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span> <span class="kn">as</span> <span class="nn">st</span>
+
+<span class="c">#Getting historical data</span>
+<span class="n">json_data</span><span class="o">=</span><span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">REQUEST_URL</span><span class="p">)</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
+<span class="n">num_records</span><span class="o">=</span><span class="n">json_data</span><span class="p">[</span><span class="s">&quot;cnt&quot;</span><span class="p">]</span>
+<span class="k">print</span> <span class="s">&quot;Response received from server containing </span><span class="si">%d</span><span class="s"> records&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">num_records</span><span class="p">)</span>
+
+<span class="n">list_of_records</span><span class="o">=</span><span class="n">json_data</span><span class="p">[</span><span class="s">&quot;list&quot;</span><span class="p">]</span>
+
+<span class="c">#Pushing humidity, pressure, temperature and timestamp</span>
+<span class="n">humidity</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span><span class="p">]</span><span class="o">*</span><span class="n">num_records</span>
+<span class="n">pressure</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span><span class="p">]</span><span class="o">*</span><span class="n">num_records</span>
+<span class="n">temperature</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span><span class="p">]</span><span class="o">*</span><span class="n">num_records</span>
+<span class="n">timestamp</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span><span class="p">]</span><span class="o">*</span><span class="n">num_records</span>
+<span class="n">dates</span><span class="o">=</span><span class="p">[</span><span class="bp">None</span><span class="p">]</span><span class="o">*</span><span class="n">num_records</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_records</span><span class="p">):</span>
+    <span class="n">humidity</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">list_of_records</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&quot;main&quot;</span><span class="p">][</span><span class="s">&quot;humidity&quot;</span><span class="p">]</span>
+    <span class="n">pressure</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">list_of_records</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&quot;main&quot;</span><span class="p">][</span><span class="s">&quot;pressure&quot;</span><span class="p">]</span>
+    <span class="n">temperature</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">list_of_records</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&quot;main&quot;</span><span class="p">][</span><span class="s">&quot;temp&quot;</span><span class="p">]</span><span class="o">-</span><span class="mf">273.15</span>
+    <span class="n">timestamp</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">list_of_records</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s">&quot;dt&quot;</span><span class="p">]</span>
+    <span class="n">dates</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+<span class="c">#Pearson correlation between temperature and pressure</span>
+<span class="n">r_correlation</span><span class="o">=</span><span class="n">st</span><span class="o">.</span><span class="n">pearsonr</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span><span class="n">temperature</span><span class="p">)</span>
+<span class="k">print</span> <span class="s">&quot;Correlation b/w temperature and pressure is &quot;</span><span class="p">,</span><span class="n">r_correlation</span>
+
+<span class="c">#Plotting on 3 subplots and sharing the same x axis to ensure we can equally zoom into all</span>
+<span class="n">fig</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">311</span><span class="p">)</span>
+<span class="n">ax2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">312</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="n">ax1</span><span class="p">)</span>
+<span class="n">ax3</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">313</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="n">ax1</span><span class="p">)</span>
+
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span><span class="n">humidity</span><span class="p">,</span><span class="s">&quot;g+-&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">mdates</span><span class="o">.</span><span class="n">DateFormatter</span><span class="p">(</span><span class="s">&quot;%H hrs </span><span class="se">\n</span><span class="si">%d</span><span class="s">-%m&quot;</span><span class="p">))</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&quot;Humidity (%)&quot;</span><span class="p">)</span>
+
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span><span class="n">pressure</span><span class="p">,</span><span class="s">&quot;ro-&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">mdates</span><span class="o">.</span><span class="n">DateFormatter</span><span class="p">(</span><span class="s">&quot;%H hrs </span><span class="se">\n</span><span class="si">%d</span><span class="s">-%m&quot;</span><span class="p">))</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&quot;Pressure (hPa)&quot;</span><span class="p">)</span>
+
+<span class="n">ax3</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span><span class="n">temperature</span><span class="p">,</span><span class="s">&quot;b*-&quot;</span><span class="p">)</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">mdates</span><span class="o">.</span><span class="n">DateFormatter</span><span class="p">(</span><span class="s">&quot;%H hrs </span><span class="se">\n</span><span class="si">%d</span><span class="s">-%m&quot;</span><span class="p">))</span>
+<span class="n">ax3</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&quot;Temperature (Cel)&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+
+<p>The correlation results obtained are as follows:</p>
+<div class="highlight"><pre> ----------------------------- -----------------
+Correlation variables (X,Y)   Correlation (r)
+Pressure, Temperature         -0.75
+Humidity, Temperature         -0.85
+----------------------------- -----------------
+</pre></div>
+
+
+<p>Thus, from the table we can see that temperature and humidity and
+temperature and pressure are inversely correlated to a high degree.</p>
+<p>Caveats:</p>
+<ul>
+<li>It is my first test with Pearson correlation and i am may be wrong
+    in my understanding</li>
+<li>Scipy.Stats states that for a good test, the variables must be
+    normally distributed and sample size should be 500 plus, which is
+    not a case in our analysis.</li>
+</ul>
+        </section>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'nipunbatra';
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript><footer class="footer">
+    &copy; Nipun Batra &ndash;
+        Proudly published with <a href="http://blog.getpelican.com/">Pelican</a>
+</footer>    </div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50180272-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    <!-- End Document
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

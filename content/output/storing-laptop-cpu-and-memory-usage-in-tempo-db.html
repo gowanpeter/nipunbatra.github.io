@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Storing Laptop CPU and Memory Usage in Tempo-DB</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="A Pelican Blog Atom Feed" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">A Pelican Blog </a></h1>
+                <nav><ul>
+                    <li><a href="/pages/about.html">About</a></li>
+                    <li><a href="/pages/education.html">Education</a></li>
+                    <li><a href="/pages/projects.html">Projects</a></li>
+                    <li><a href="/pages/publications.html">Publications</a></li>
+                    <li><a href="/pages/subscribe.html">Subscribe</a></li>
+                    <li><a href="/pages/tutorials.html">Tutorials</a></li>
+                    <li class="active"><a href="/category/blog.html">Blog</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/storing-laptop-cpu-and-memory-usage-in-tempo-db.html" rel="bookmark"
+           title="Permalink to Storing Laptop CPU and Memory Usage in Tempo-DB">Storing Laptop CPU and Memory Usage in Tempo-DB</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-05-17T19:49:00+00:00">
+                Published: Fri 17 May 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/nipunbatra.html">nipunbatra</a>
+        </address>
+<p>In <a href="/category/blog.html">Blog</a>. </p>
+<p>tags: <a href="/tag/python.html">Python</a> </p>
+</footer><!-- /.post-info -->      <p>Very often i deal with timeseries data and end up storing collected data
+in MySQL. I have also used MongoDB a lot. This time decided to give
+<a href="https://tempo-db.com/">Tempo-DB</a> which is a timeseries database a try. The API is fairly
+simple to use and within a couple of minutes one can publish data and
+also visualize it with some basic statistics. The caveat is that the DB
+is hosted on the cloud and available as a service over the internet. So
+if you want to push some timeseries data real quick and visualize it,
+Tempo-DB looks promising. In this post, i shall be pushing my CPU
+percentage usage and free RAM (MB) to the DB i created. The code
+follows:</p>
+<div class="highlight"><pre><span class="n">import</span> <span class="n">datetime</span><span class="p">,</span><span class="n">psutil</span><span class="p">,</span><span class="n">time</span><span class="p">,</span><span class="n">pytz</span>
+<span class="n">from</span> <span class="n">tempodb</span> <span class="n">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">DataPoint</span>
+
+<span class="cp"># Modify these with your credentials found at: http:</span><span class="c1">//tempo-db.com/manage/</span>
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="err">&#39;</span><span class="o">*************************</span><span class="err">&#39;</span>
+<span class="n">API_SECRET</span> <span class="o">=</span> <span class="err">&#39;</span><span class="o">**************************</span><span class="err">&#39;</span>
+<span class="n">TEMP_DATA</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">CPU</span> <span class="n">Temperature</span><span class="err">&#39;</span>
+<span class="n">RAM_DATA</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">Available</span> <span class="n">RAM</span><span class="err">&#39;</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">API_KEY</span><span class="p">,</span> <span class="n">API_SECRET</span><span class="p">)</span>
+<span class="k">while</span> <span class="n">True</span><span class="o">:</span>
+    <span class="n">timestamp</span><span class="o">=</span><span class="n">datetime</span><span class="p">.</span><span class="n">datetime</span><span class="p">.</span><span class="n">now</span><span class="p">(</span><span class="n">pytz</span><span class="p">.</span><span class="n">timezone</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Asia</span><span class="o">/</span><span class="n">Kolkata</span><span class="err">&#39;</span><span class="p">))</span>
+    <span class="n">client</span><span class="p">.</span><span class="n">write_key</span><span class="p">(</span><span class="n">TEMP_DATA</span><span class="p">,[</span><span class="n">DataPoint</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span><span class="n">psutil</span><span class="p">.</span><span class="n">cpu_percent</span><span class="p">())])</span>
+    <span class="n">client</span><span class="p">.</span><span class="n">write_key</span><span class="p">(</span><span class="n">RAM_DATA</span><span class="p">,[</span><span class="n">DataPoint</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span><span class="n">psutil</span><span class="p">.</span><span class="n">avail_phymem</span><span class="p">()</span><span class="o">/</span><span class="mi">1000000</span><span class="p">)])</span>
+    <span class="n">time</span><span class="p">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+
+<p>So within few LOC you can be up and running. The following screenshot
+shows visualization for free RAM on my system.</p>
+<p><img alt="tempo" src="http://nipunbatra.files.wordpress.com/2013/05/tempo.png?w=660" /></p>
+<p>While i have not given querying a try, on initial looks Tempo-DB looks
+promising. The <a href="https://tempo-db.com/features/">Features</a> page on their site also mentions that query
+time is independent of DB size and only dependent on the query size!</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

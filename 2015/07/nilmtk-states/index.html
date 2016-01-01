@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>New features in nilmtk disaggregation methods | Nipun Batra | </title>
+    <meta name="description" content="Nipun Batra, ">
+    <meta name="author" content="Nipun Batra">
+
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Feeds
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="alternate" href="http://nipunbatra.github.io/feeds/all.atom.xml" type="application/atom+xml" title="Nipun Batra Atom Feed" />
+
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata">
+
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/custom.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/pygments.css">
+
+    <!-- Scripts
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fitvids/1.1.0/jquery.fitvids.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".container").fitVids();
+        });
+    </script>
+
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="http://nipunbatra.github.io/theme/assets/favicon.png">
+
+
+<!-- Using MathJax, with the delimiters $ -->
+<!-- Conflict with pygments for the .mo and .mi -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  "HTML-CSS": {
+  styles: {
+  ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
+  },
+  tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']],processEscapes: true}
+  });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+</head>
+<body>
+
+    <!-- Primary Page Layout
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    
+    <div class="container">
+        <section class="header">
+            <img src="http://nipunbatra.github.io/lk.jpg" class="logo">
+        </section>
+    </div>
+
+    <div class="container">
+        <nav class="navbar">
+            <div class="container">
+                <ul class="navbar-list">
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/" class="navbar-link">Blog home</a></li>
+                    <li class="navbar-item"><a href="https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                <!--
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/http://nipunbatra.github.io/" class="navbar-link">Blog home</a></li>
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                -->
+                    <li class="navbar-icon">
+                        <a href="http://twitter.com/nipun_batra">
+                            <i class="fa fa-twitter fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://github.com/nipunreddevil">
+                            <i class="fa fa-github fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://www.linkedin.com/profile/view?id=43966733">
+                            <i class="fa fa-linkedin fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <section class="post">
+            <header class="post-header">
+                <h3>New features in nilmtk disaggregation methods</h3>
+                <p class="post-meta">
+                    Sat 04 July 2015 &middot; tagged 
+                        <a class="post-category" href="http://nipunbatra.github.io/tag/nilmtk.html">nilmtk</a>
+                </p>
+            </header>
+        </section>
+        <section class="post-content">
+            <p>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This blog post introduces some of the added features in nilmtk. In short, two new features have been added:</p>
+<ul>
+<li>The ability to specify the number of states to use for modeling each appliance (both Combinatorial Optmisation (CO) and FHMM implement this now)</li>
+<li>The ability to choose the optimal number of states for FHMM. Previously, we were using a hard coded value of 2. CO already has this features. So, it was only a matter of using this function within FHMM.</li>
+</ul>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="kn">from</span> <span class="nn">nilmtk</span> <span class="kn">import</span> <span class="n">DataSet</span><span class="p">,</span> <span class="n">MeterGroup</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s">&quot;ignore&quot;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Vendor:  Continuum Analytics, Inc.
+Package: mkl
+Message: trial mode expires in 29 days
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">ds</span> <span class="o">=</span> <span class="n">DataSet</span><span class="p">(</span><span class="s">&quot;/Users/nipunbatra/Downloads/wikienergy-2.h5&quot;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="kn">from</span> <span class="nn">nilmtk.disaggregate</span> <span class="kn">import</span> <span class="n">CombinatorialOptimisation</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">building_num</span> <span class="o">=</span> <span class="mi">11</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">elec</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">buildings</span><span class="p">[</span><span class="n">building_num</span><span class="p">]</span><span class="o">.</span><span class="n">elec</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Reducing time window</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">ds</span><span class="o">.</span><span class="n">set_window</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="s">&#39;2014-04-01 00:00:00&#39;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">&#39;2014-05-01 00:00:00&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">co</span> <span class="o">=</span> <span class="n">CombinatorialOptimisation</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">elec</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[8]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>MeterGroup(meters=
+  ElecMeter(instance=1, building=11, dataset=&apos;WikiEnergy&apos;, site_meter, appliances=[])
+  ElecMeter(instance=2, building=11, dataset=&apos;WikiEnergy&apos;, appliances=[Appliance(type=&apos;air conditioner&apos;, instance=1)])
+  ElecMeter(instance=3, building=11, dataset=&apos;WikiEnergy&apos;, appliances=[Appliance(type=&apos;sockets&apos;, instance=1)])
+  ElecMeter(instance=4, building=11, dataset=&apos;WikiEnergy&apos;, appliances=[Appliance(type=&apos;sockets&apos;, instance=2)])
+  ElecMeter(instance=5, building=11, dataset=&apos;WikiEnergy&apos;, appliances=[Appliance(type=&apos;dish washer&apos;, instance=1)])
+  ElecMeter(instance=6, building=11, dataset=&apos;WikiEnergy&apos;, appliances=[Appliance(type=&apos;spin dryer&apos;, instance=1)])
+  ElecMeter(instance=7, building=11, dataset=&apos;WikiEnergy&apos;, appliances=[Appliance(type=&apos;electric furnace&apos;, instance=1)])
+  ElecMeter(instance=8, building=11, dataset=&apos;WikiEnergy&apos;, appliances=[Appliance(type=&apos;sockets&apos;, instance=3)])
+  ElecMeter(instance=9, building=11, dataset=&apos;WikiEnergy&apos;, appliances=[Appliance(type=&apos;sockets&apos;, instance=4)])
+  ElecMeter(instance=10, building=11, dataset=&apos;WikiEnergy&apos;, appliances=[Appliance(type=&apos;fridge&apos;, instance=1)])
+  ElecMeter(instance=11, building=11, dataset=&apos;WikiEnergy&apos;, appliances=[Appliance(type=&apos;electric water heating appliance&apos;, instance=1)])
+)</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Choosing the fridge elecmeter on which we will be running our experiments.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">fridge_elecmeter</span> <span class="o">=</span> <span class="n">elec</span><span class="p">[</span><span class="s">&#39;fridge&#39;</span><span class="p">]</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">fridge_elecmeter</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[10]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>ElecMeter(instance=10, building=11, dataset=&apos;WikiEnergy&apos;, appliances=[Appliance(type=&apos;fridge&apos;, instance=1)])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Training methods in nilmtk accept a <code>MeterGroup</code></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">fridge_mg</span> <span class="o">=</span> <span class="n">MeterGroup</span><span class="p">([</span><span class="n">fridge_elecmeter</span><span class="p">])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">co</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">fridge_mg</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Training model for submeter &apos;ElecMeter(instance=10, building=11, dataset=&apos;WikiEnergy&apos;, appliances=[Appliance(type=&apos;fridge&apos;, instance=1)])&apos;
+Done training!
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">co</span><span class="o">.</span><span class="n">model</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[13]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[{&apos;states&apos;: array([  0, 139, 431], dtype=int32),
+  &apos;training_metadata&apos;: ElecMeter(instance=10, building=11, dataset=&apos;WikiEnergy&apos;, appliances=[Appliance(type=&apos;fridge&apos;, instance=1)])}]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So, fridge is learnt as a 3 state appliance. What if we wanted to specify it to use 2 states? The latest version of nilmtk allows us to specify the number of states for an appliance.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">num_states_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">fridge_elecmeter</span><span class="p">:</span><span class="mi">2</span><span class="p">}</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">co</span> <span class="o">=</span> <span class="n">CombinatorialOptimisation</span><span class="p">()</span>
+<span class="n">co</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">fridge_mg</span><span class="p">,</span> <span class="n">num_states_dict</span><span class="o">=</span><span class="n">num_states_dict</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Training model for submeter &apos;ElecMeter(instance=10, building=11, dataset=&apos;WikiEnergy&apos;, appliances=[Appliance(type=&apos;fridge&apos;, instance=1)])&apos;
+Done training!
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">co</span><span class="o">.</span><span class="n">model</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[16]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[{&apos;states&apos;: array([  0, 143], dtype=int32),
+  &apos;training_metadata&apos;: ElecMeter(instance=10, building=11, dataset=&apos;WikiEnergy&apos;, appliances=[Appliance(type=&apos;fridge&apos;, instance=1)])}]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now, fridge is learnt as a 2 state appliance.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let us try the same thing with FHMM now</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="kn">from</span> <span class="nn">nilmtk.disaggregate</span> <span class="kn">import</span> <span class="n">FHMM</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">f</span> <span class="o">=</span> <span class="n">FHMM</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">f</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">fridge_mg</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Training model for submeter &apos;ElecMeter(instance=10, building=11, dataset=&apos;WikiEnergy&apos;, appliances=[Appliance(type=&apos;fridge&apos;, instance=1)])&apos;
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">f</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">means_</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[20]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([[   3.02034344],
+       [ 146.2202185 ],
+       [ 176.49027576]])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">f</span> <span class="o">=</span> <span class="n">FHMM</span><span class="p">()</span>
+<span class="n">f</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">fridge_mg</span><span class="p">,</span> <span class="n">num_states_dict</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Training model for submeter &apos;ElecMeter(instance=10, building=11, dataset=&apos;WikiEnergy&apos;, appliances=[Appliance(type=&apos;fridge&apos;, instance=1)])&apos;
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">f</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">means_</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[22]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>array([[   0.        ],
+       [ 144.87951888]])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So, now we have a 2 state learnt model for the Fridge.</p>
+
+</div>
+</div>
+</div></p>
+        </section>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'nipunbatra';
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript><footer class="footer">
+    &copy; Nipun Batra &ndash;
+        Proudly published with <a href="http://blog.getpelican.com/">Pelican</a>
+</footer>    </div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50180272-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    <!-- End Document
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

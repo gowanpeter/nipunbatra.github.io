@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Analysis with R part 3</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="A Pelican Blog Atom Feed" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">A Pelican Blog </a></h1>
+                <nav><ul>
+                    <li><a href="/pages/about.html">About</a></li>
+                    <li><a href="/pages/education.html">Education</a></li>
+                    <li><a href="/pages/projects.html">Projects</a></li>
+                    <li><a href="/pages/publications.html">Publications</a></li>
+                    <li><a href="/pages/subscribe.html">Subscribe</a></li>
+                    <li><a href="/pages/tutorials.html">Tutorials</a></li>
+                    <li class="active"><a href="/category/blog.html">Blog</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/analysis-with-r-part-3.html" rel="bookmark"
+           title="Permalink to Analysis with R part 3">Analysis with R part 3</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2010-01-01T20:04:00+00:00">
+                Published: Fri 01 January 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/nipunbatra.html">nipunbatra</a>
+        </address>
+<p>In <a href="/category/blog.html">Blog</a>. </p>
+<p>tags: <a href="/tag/r.html">R</a> </p>
+</footer><!-- /.post-info -->      <p>Now it gets interesting.Comparing two subjects' marks in one plot will
+be a much better analysis than simply studying them separately. 
+So again with simple R stuff I was able to make a plot containing the
+Maths and PEE marks of my batch and they are compared firstly on a
+frequency polygon graph as shown in this image.</p>
+<p>{% img http://nipunbatra.files.wordpress.com/2010/01/screenshot-8.png [7] %}</p>
+<p>However this freq.plot reveals little(atleast to me).Thus a much better
+comparison could be done using cumulative plots as shown in this
+screenshot.</p>
+<p>{% img http://nipunbatra.files.wordpress.com/2010/01/screenshot-9.png [7] %}</p>
+<p>Now if you watch a lot of cricket this graph may provide you a false
+lead.No,PEE wasn't more scoring than Maths. How? 
+This plot was based on CDF,thus the Maths performance is better since
+it lies lower(or rightwards)in the plot. 
+Still confusing. Only a scatter plot can help now and here it
+is.</p>
+<p>{% img http://nipunbatra.files.wordpress.com/2010/01/screenshot-10.png [7] %}</p>
+<p>Now it clearly shows that more people scored well in Maths than they
+did in PEE(those above line y=x).
+Those who scored better in PEE wrt their Maths scores lie below the y=x
+line.
+Conclusion:Maths in second sem was more scoring wrt PEE for our batch. 
+Now it would be interesting to cut short all work using boxplot.Thus in
+a simple command,boxplot depicting the performance of people in my batch
+in all subjects is shown in the next figure. Quite clearly POM was a
+disaster.One noticeable thing is that in Prog. There was little
+difference in marks obtained by people getting 75 percentile wrt people
+getting 25 percentile,when compared to other subjects.This plot also
+depicts an outlier in Prog.Someone barely got 40.</p>
+<p>{% img http://nipunbatra.files.wordpress.com/2010/01/screenshot-11.png [7] %}</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

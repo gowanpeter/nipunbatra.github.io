@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>Are good mathematicians good programmers or vice versa | Nipun Batra | </title>
+    <meta name="description" content="Nipun Batra, ">
+    <meta name="author" content="Nipun Batra">
+
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Feeds
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="alternate" href="http://nipunbatra.github.io/feeds/all.atom.xml" type="application/atom+xml" title="Nipun Batra Atom Feed" />
+
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata">
+
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/custom.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/pygments.css">
+
+    <!-- Scripts
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fitvids/1.1.0/jquery.fitvids.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".container").fitVids();
+        });
+    </script>
+
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="http://nipunbatra.github.io/theme/assets/favicon.png">
+
+
+<!-- Using MathJax, with the delimiters $ -->
+<!-- Conflict with pygments for the .mo and .mi -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  "HTML-CSS": {
+  styles: {
+  ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
+  },
+  tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']],processEscapes: true}
+  });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+</head>
+<body>
+
+    <!-- Primary Page Layout
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <div class="container">
+        <section class="header">
+            <img src="http://nipunbatra.github.io/theme/assets/stewie.jpg" class="logo">
+        </section>
+    </div>
+    <div class="container">
+        <nav class="navbar">
+            <div class="container">
+                <ul class="navbar-list">
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io//archives.html" class="navbar-link">Blog archives</a></li>
+                    <li class="navbar-icon">
+                        <a href="http://twitter.com/nipun_batra">
+                            <i class="fa fa-twitter fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://github.com/nipunreddevil">
+                            <i class="fa fa-github fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://www.linkedin.com/profile/view?id=43966733">
+                            <i class="fa fa-linkedin fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <section class="post">
+            <header class="post-header">
+                <h3>Are good mathematicians good programmers or vice versa</h3>
+                <p class="post-meta">
+                    Sun 03 January 2010 &middot; tagged 
+                        <a class="post-category" href="http://nipunbatra.github.io/tag/r.html">R</a>
+                </p>
+            </header>
+        </section>
+        <section class="post-content">
+            <p>This is a basic attempt for making some association results,again based
+on 2nd sem marks of my batch.<br />
+Test 1<br />
+Good in Maths implies Good in Programming<br />
+Now for this test i used values above mean of the class as good for
+both the exams.Open Office Spreadsheet was used for the tests.<br />
+Observation 1:Total sample size =35<br />
+Observation 2:Good in Maths =28<br />
+Observation 3:Good in Prog. =25<br />
+Thus support(good in maths)=28/35 and support (good in prog)=25/35<br />
+Observation 4:Good in Prog. and Maths=23<br />
+Support(good in maths and prog)=23/35<br />
+Now the confidence of the association(good in maths->good in prog)
+is:support(good in maths and prog)/support(good in maths)=23/28 which is
+appx. :0.821428571</p>
+<p>Test 2<br />
+Finding confidence of the inverse relation(good in prog->good in
+maths)<br />
+For this we have ,required confidence=support(good in maths and
+prog)/support(good in prog)=23/25=0.92</p>
+<p><strong>Thus this random test reveals that the association rule that good
+programmers are good mathematicians is much better than it's inverse.</strong></p>
+<p>N.B.:This test does not reveal the larger picture for which more test
+data is required.Also <strong>Simpson's paradox</strong> has not been taken into
+consideration.<br />
+Programmers Rock!<br />
+More association rules coming soon.</p>
+        </section>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'nipunbatra';
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript><footer class="footer">
+    &copy; Nipun Batra &ndash;
+        Proudly published with <a href="http://blog.getpelican.com/">Pelican</a>
+</footer>    </div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50180272-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    <!-- End Document
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

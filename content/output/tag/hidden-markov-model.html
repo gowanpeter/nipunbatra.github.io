@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>A Pelican Blog - Hidden Markov Model</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="A Pelican Blog Atom Feed" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">A Pelican Blog </a></h1>
+                <nav><ul>
+                    <li><a href="/pages/about.html">About</a></li>
+                    <li><a href="/pages/education.html">Education</a></li>
+                    <li><a href="/pages/projects.html">Projects</a></li>
+                    <li><a href="/pages/publications.html">Publications</a></li>
+                    <li><a href="/pages/subscribe.html">Subscribe</a></li>
+                    <li><a href="/pages/tutorials.html">Tutorials</a></li>
+                    <li><a href="/category/blog.html">Blog</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/simulating-a-discrete-hidden-markov-model.html">Simulating a Discrete Hidden Markov Model</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2013-05-11T10:05:00+00:00">
+                Published: Sat 11 May 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/nipunbatra.html">nipunbatra</a>
+        </address>
+<p>In <a href="/category/blog.html">Blog</a>. </p>
+<p>tags: <a href="/tag/hidden-markov-model.html">Hidden Markov Model</a> <a href="/tag/python.html">Python</a> </p>
+</footer><!-- /.post-info --><p>In this post we shall create a Hidden Markov Model [1] for the Unfair
+Casino problem [2]. In short the problem is as follows: In a casino
+there may be two die- one fair and the other biased. The biased die is
+much more likely to produce a 6 than the other numbers. With the fair
+die all the outcomes (1 through 6) are equally likely. For the biased
+die, probability of observing a 6 is 0.5 and observing 1,2,3,4,5 is 0.1
+each. Also, there are probabilies associated with the choice of a die to
+be thrown. The observer is only able to observe the values of die being
+thrown, without having a knowldge whether a fair or biased die were
+used.</p>
+<p>In all it matches the description of a discrete Hidden Markov Model. The
+different components of the Discrete HMM are as follows:</p>
+<ul>
+<li><strong>Observed States</strong> : 1 through 6 on the die faces</li>
+<li><strong>Hidden States</strong> : Fair or Biased Die</li>
+<li><strong>Prior (pi)</strong> : Probability that the first throw is made from a
+    fair or a biased die, which is : Pr (first throw is fair) and Pr
+    (first throw is biased), which is represented as a 1 X 2 row matrix</li>
+<li><strong>Transition Matrix (A)</strong>: Matrix encoding the probability of the 4
+    possible transition between fair and biased die, which are: Fair->
+    Fair, Fair-> Biased, Biased-> Fair and Biased->Biased, which is
+    represented as a 2 X 2 matrix</li>
+<li><strong>Emission Matrix (B)</strong> : Matrix encoding the probability of an
+    observation given the hidden state. It is a 2 X 6 Matrix</li>
+</ul>
+<p>Next, we import the basic set of libraries used for matrix manipulation
+and for plotting.</p>
+<div class="highlight"><pre><span class="n">import</span> <span class="n">numpy</span> <span class="n">as</span> <span class="n">np</span>
+<span class="n">import</span> <span class="n">matplotlib</span><span class="p">.</span><span class="n">pyplot</span> <span class="n">as</span> <span class="n">plt</span>
+<span class="n">import</span> <span class="n">matplotlib</span>
+<span class="cp">#Setting Font Size as 20</span>
+<span class="n">matplotlib</span><span class="p">.</span><span class="n">rcParams</span><span class="p">.</span><span class="n">update</span><span class="p">({</span><span class="err">&#39;</span><span class="n">font</span><span class="p">.</span><span class="n">size</span><span class="err">&#39;</span><span class="o">:</span> <span class="mi">20</span><span class="p">})</span>
+</pre></div>
+
+
+<p>Next, we define the different components of HMM which were described
+above.</p>
+<div class="highlight"><pre><span class="err">&#39;&#39;&#39;</span>
+<span class="n">Pi</span> <span class="o">:</span> <span class="n">Fair</span> <span class="n">die</span> <span class="n">is</span> <span class="n">twice</span> <span class="n">as</span> <span class="n">likely</span> <span class="n">as</span> <span class="n">biased</span> <span class="n">die</span>
+
+<span class="n">A</span>  <span class="o">:</span> <span class="n">The</span> <span class="n">die</span> <span class="n">thrower</span> <span class="n">likes</span> <span class="n">to</span> <span class="n">keep</span> <span class="n">in</span> <span class="n">one</span> <span class="n">state</span> <span class="p">(</span><span class="n">fair</span><span class="o">/</span><span class="n">biased</span><span class="p">),</span> <span class="n">and</span> <span class="n">the</span> <span class="n">tranisition</span> <span class="n">from</span> 
+<span class="mf">1.</span> <span class="n">Fair</span><span class="o">-&gt;</span> <span class="n">Fair</span> <span class="o">:</span> <span class="mf">.95</span>
+<span class="mf">2.</span> <span class="n">Fair</span><span class="o">-&gt;</span><span class="n">Biased</span><span class="o">:</span> <span class="mi">1</span><span class="o">-</span><span class="mf">.95</span><span class="o">=</span><span class="mf">.05</span>
+<span class="mf">3.</span> <span class="n">Biased</span><span class="o">-&gt;</span><span class="n">Biased</span><span class="o">:</span> <span class="mf">.90</span>
+<span class="mf">4.</span> <span class="n">Biased</span><span class="o">-&gt;</span><span class="n">Biased</span><span class="o">=</span><span class="mi">1</span><span class="o">-</span><span class="mf">.90</span><span class="o">=</span><span class="mf">.10</span>
+
+<span class="n">B</span>  <span class="o">:</span> <span class="n">The</span> <span class="n">fair</span> <span class="n">die</span> <span class="n">is</span> <span class="n">equally</span> <span class="n">likely</span> <span class="n">to</span> <span class="n">produce</span> <span class="n">observations</span> <span class="mi">1</span> <span class="n">through</span> <span class="mi">6</span><span class="p">,</span> <span class="k">for</span> <span class="n">the</span> <span class="n">biased</span> <span class="n">die</span>
+<span class="n">Pr</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="o">=</span><span class="mf">0.5</span> <span class="n">and</span> <span class="n">Pr</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">=</span><span class="n">Pr</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">=</span><span class="n">Pr</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">=</span><span class="n">Pr</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">=</span><span class="n">Pr</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">=</span><span class="mf">0.1</span>
+<span class="err">&#39;&#39;&#39;</span>
+<span class="n">pi</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.0</span><span class="o">/</span><span class="mi">3</span><span class="p">,</span><span class="mf">1.0</span><span class="o">/</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">A</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">.95</span><span class="p">,</span><span class="mf">.05</span><span class="p">],[</span><span class="mf">.1</span><span class="p">,</span><span class="mf">.9</span><span class="p">]])</span>
+<span class="n">B</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.0</span><span class="o">/</span><span class="mi">6</span> <span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">6</span><span class="p">)],[</span><span class="mf">.1</span><span class="p">,</span><span class="mf">.1</span><span class="p">,</span><span class="mf">.1</span><span class="p">,</span><span class="mf">.1</span><span class="p">,</span><span class="mf">.1</span><span class="p">,</span><span class="mf">.5</span><span class="p">]])</span>
+</pre></div>
+
+
+<p>Now based on these probability sequences we need to produce a sequence
+of <strong>observed</strong> and <strong>hidden</strong> states. We use the notion of weighted
+sampling, which basically means that terms/states with higher
+probabilies assigned to them are more likely to be selected/sampled. For
+example,let us consider the starting state. For this we need to use the
+<strong>pi</strong> matrix, since that encodes the likiliness of starting in a
+particular state. We observe that for starting in <strong>Fair</strong> state the
+probability is .667 and twice that of starting in <strong>Biased</strong> state.
+Thus, it is much more likely that we start in Fair state. We use
+<strong>Fitness Proportionate Selection</strong> [3] to sample states based on
+weights (probability). For selection of starting state we would proceed
+as follows:</p>
+<ul>
+<li>We choose a random value between 0 and 1</li>
+<li>
+<p>We iterate over the list of values (prior) and iteratively subtract
+    the value at current position from the number which we chose at
+    random and as soon as it becomes negative, we return the index. Let
+    us demonstrate this with a function.</p>
+<p>'''
+Returns next state according to weigted probability array. Code based on Weighted random generation in Python [4]
+'''
+def next_state(weights):
+    choice = random.random() * sum(weights)
+    for i, w in enumerate(weights):
+        choice -= w
+        if choice &lt; 0:
+            return i</p>
+</li>
+</ul>
+<p>We test the above function by making a call to it 1000 times and then we
+try to see how many times do we get a 0 (Fair) wrt 1 (Biased), given the <strong>pi</strong> vector.</p>
+<div class="highlight"><pre><span class="n">count</span><span class="o">=</span><span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">count</span><span class="o">+=</span><span class="n">next_state</span><span class="p">(</span><span class="n">pi</span><span class="p">)</span>
+<span class="n">print</span> <span class="s">&quot;Expected number of Fair states:&quot;</span><span class="p">,</span><span class="mi">1000</span><span class="o">-</span><span class="n">count</span>
+<span class="n">print</span> <span class="s">&quot;Expected number of Biased states:&quot;</span><span class="p">,</span><span class="n">count</span>
+
+<span class="n">Expected</span> <span class="n">number</span> <span class="n">of</span> <span class="n">Fair</span> <span class="n">states</span><span class="o">:</span> <span class="mi">649</span>
+<span class="n">Expected</span> <span class="n">number</span> <span class="n">of</span> <span class="n">Biased</span> <span class="n">states</span><span class="o">:</span> <span class="mi">351</span>
+</pre></div>
+
+
+<p>Next, we write the following functions:</p>
+<ul>
+<li>create_hidden_sequence (pi,A,length): which creates a hidden
+    sequence (Markov Chain) of desired length based on <strong>Pi</strong> and <strong>A</strong>.
+    The algorithm followed is as follows: We choose the first state as
+    described above. Next on the basis of current state, we see it's
+    transition matrix and assign the next state by weighted sampling (by
+    invoking next_state with argument as A[current_state])</li>
+<li>
+<p>create_observed_sequence (hidden_sequence,B): which create an
+    observed sequence based on hidden states and associated <strong>B</strong>. Based
+    on current hidden state, we use it's emission parameters to sample
+    the observation.</p>
+<p>def create_hidden_sequence(pi,A,length):
+    out=[None]*length
+    out[0]=next_state(pi)
+    for i in range(1,length):
+        out[i]=next_state(A[out[i-1]])
+    return out</p>
+<p>def create_observation_sequence(hidden_sequence,B):
+    length=len(hidden_sequence)
+    out=[None]*length
+    for i in range(length):
+        out[i]=next_state(B[hidden_sequence[i]])
+    return out</p>
+</li>
+</ul>
+<p>Thus, using these functions and the HMM paramters we decided earlier, we
+create length 1000 sequence for hidden and observed states.</p>
+<div class="highlight"><pre><span class="n">hidden</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">create_hidden_sequence</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span><span class="n">A</span><span class="p">,</span><span class="mi">1000</span><span class="p">))</span>
+<span class="n">observed</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">create_observation_sequence</span><span class="p">(</span><span class="n">hidden</span><span class="p">,</span><span class="n">B</span><span class="p">))</span>
+</pre></div>
+
+
+<p>Now, we create helper functions to plot the two sequence in a way we can
+intuitively understand the HMM.</p>
+<div class="highlight"><pre><span class="err">&#39;&#39;&#39;</span><span class="n">Group</span> <span class="n">all</span> <span class="n">contiguous</span> <span class="n">values</span> <span class="n">in</span> <span class="n">tuple</span><span class="p">.</span> <span class="n">Recipe</span> <span class="n">picked</span> <span class="n">from</span> <span class="n">Stack</span> <span class="n">Overflow</span> <span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="err">&#39;&#39;&#39;</span>
+<span class="n">def</span> <span class="n">group</span><span class="p">(</span><span class="n">L</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">first</span> <span class="o">=</span> <span class="n">last</span> <span class="o">=</span> <span class="n">L</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="n">in</span> <span class="n">L</span><span class="p">[</span><span class="mi">1</span><span class="o">:</span><span class="p">]</span><span class="o">:</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">last</span><span class="o">:</span> <span class="err">#</span> <span class="n">Part</span> <span class="n">of</span> <span class="n">the</span> <span class="n">group</span><span class="p">,</span> <span class="n">bump</span> <span class="n">the</span> <span class="n">end</span>
+            <span class="n">last</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="nl">else:</span> <span class="err">#</span> <span class="n">Not</span> <span class="n">part</span> <span class="n">of</span> <span class="n">the</span> <span class="n">group</span><span class="p">,</span> <span class="n">yield</span> <span class="n">current</span> <span class="n">group</span> <span class="n">and</span> <span class="n">start</span> <span class="n">a</span> <span class="n">new</span>
+            <span class="n">yield</span> <span class="n">first</span><span class="p">,</span> <span class="n">last</span>
+            <span class="n">first</span> <span class="o">=</span> <span class="n">last</span> <span class="o">=</span> <span class="n">n</span>
+    <span class="n">yield</span> <span class="n">first</span><span class="p">,</span> <span class="n">last</span> <span class="err">#</span> <span class="n">Yield</span> <span class="n">the</span> <span class="n">last</span> <span class="n">group</span>
+
+<span class="err">&#39;&#39;&#39;</span><span class="n">Create</span> <span class="n">tuples</span> <span class="n">of</span> <span class="n">the</span> <span class="n">form</span> <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">number_of_continuous</span> <span class="n">values</span><span class="err">&#39;&#39;&#39;</span>
+<span class="n">def</span> <span class="n">create_tuple</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">:</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="o">-</span><span class="n">a</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">)</span> <span class="n">in</span> <span class="n">x</span><span class="p">]</span>
+</pre></div>
+
+
+<p>Now the main code</p>
+<div class="highlight"><pre><span class="cp">#Tuples of form index value, number of continuous values corresponding to Fair State</span>
+<span class="n">indices_hidden_fair</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">where</span><span class="p">(</span><span class="n">hidden</span><span class="o">==</span><span class="mi">0</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">tuples_contiguous_values_fair</span><span class="o">=</span><span class="n">list</span><span class="p">(</span><span class="n">group</span><span class="p">(</span><span class="n">indices_hidden_fair</span><span class="p">))</span>
+<span class="n">tuples_start_break_fair</span><span class="o">=</span><span class="n">create_tuple</span><span class="p">(</span><span class="n">tuples_contiguous_values_fair</span><span class="p">)</span>
+
+<span class="cp">#Tuples of form index value, number of continuous values corresponding to Biased State</span>
+<span class="n">indices_hidden_biased</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">where</span><span class="p">(</span><span class="n">hidden</span><span class="o">==</span><span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">tuples_contiguous_values_biased</span><span class="o">=</span><span class="n">list</span><span class="p">(</span><span class="n">group</span><span class="p">(</span><span class="n">indices_hidden_biased</span><span class="p">))</span>
+<span class="n">tuples_start_break_biased</span><span class="o">=</span><span class="n">create_tuple</span><span class="p">(</span><span class="n">tuples_contiguous_values_biased</span><span class="p">)</span>
+
+<span class="cp">#Tuples for observations</span>
+<span class="n">observation_tuples</span><span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="n">range</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">observation_tuples</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">create_tuple</span><span class="p">(</span><span class="n">group</span><span class="p">(</span><span class="n">list</span><span class="p">(</span><span class="n">np</span><span class="p">.</span><span class="n">where</span><span class="p">(</span><span class="n">observed</span><span class="o">==</span><span class="n">i</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))))</span>
+</pre></div>
+
+
+<p>Now we plot the hidden and observation sequences</p>
+<div class="highlight"><pre><span class="n">plt</span><span class="p">.</span><span class="n">figsize</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlim</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">1000</span><span class="p">));</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Observations</span><span class="err">&#39;</span><span class="p">);</span>
+<span class="k">for</span> <span class="n">i</span> <span class="n">in</span> <span class="nf">range</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="o">:</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">broken_barh</span><span class="p">(</span><span class="n">observation_tuples</span><span class="p">[</span><span class="n">i</span><span class="p">],(</span><span class="n">i</span><span class="o">+</span><span class="mf">0.5</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">facecolor</span><span class="o">=</span><span class="sc">&#39;k&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">xlim</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">1000</span><span class="p">));</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Hidden</span> <span class="n">States</span> <span class="n">Green</span><span class="o">:</span><span class="n">Fair</span><span class="p">,</span> <span class="n">Red</span><span class="o">:</span> <span class="n">Biased</span><span class="err">&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">broken_barh</span><span class="p">(</span><span class="n">tuples_start_break_fair</span><span class="p">,(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">facecolor</span><span class="o">=</span><span class="sc">&#39;g&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">broken_barh</span><span class="p">(</span><span class="n">tuples_start_break_biased</span><span class="p">,(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">facecolor</span><span class="o">=</span><span class="sc">&#39;r&#39;</span><span class="p">);</span>
+</pre></div>
+
+
+<p>Following is the produced output. Red indicates biased die and green
+indicates fair die. We can confirm our HMM simulation by seeing a very
+high number of 6 when biased die is used and a similar observation for
+other states. </p>
+<p>{% img http://nipunbatra.files.wordpress.com/2013/05/index.png [before] %}</p>
+<p>This code is part of a HMM package that i am building, which can be
+found here on <a href="https://github.com/nipunreddevil/PyHMM">Github</a>. Contributions welcome!  The IPython notebook
+for this example can be found <a href="http://nbviewer.ipython.org/5558903">here</a>. Similar IPython based tutorials
+can be found in the <a href="http://nipunbatra.github.io/tutorials">tutorials</a> section.</p>
+<p>Watch out for the next post on this topic describing Simulating
+Continuous HMM's.</p>
+<p>References</p>
+<ol>
+<li>http://en.wikipedia.org/wiki/Hidden_Markov_model</li>
+<li>http://www.stanford.edu/class/stats366/hmmR2.html</li>
+<li>http://en.wikipedia.org/wiki/Fitness_proportionate_selection</li>
+<li>http://eli.thegreenplace.net/2010/01/22/weighted-random-generation-in-python/</li>
+<li>http://stackoverflow.com/questions/2154249/identify-groups-of-continuous-numbers-in-a-list</li>
+</ol>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

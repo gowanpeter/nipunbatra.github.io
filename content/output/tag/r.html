@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>A Pelican Blog - R</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="A Pelican Blog Atom Feed" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">A Pelican Blog </a></h1>
+                <nav><ul>
+                    <li><a href="/pages/about.html">About</a></li>
+                    <li><a href="/pages/education.html">Education</a></li>
+                    <li><a href="/pages/projects.html">Projects</a></li>
+                    <li><a href="/pages/publications.html">Publications</a></li>
+                    <li><a href="/pages/subscribe.html">Subscribe</a></li>
+                    <li><a href="/pages/tutorials.html">Tutorials</a></li>
+                    <li><a href="/category/blog.html">Blog</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/different-in-standard-deviation-formulae-used-in-r-and-python.html">Different standard deviation formulae used in R and Python</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2014-03-06T18:11:00+00:00">
+                Published: Thu 06 March 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/nipunbatra.html">nipunbatra</a>
+        </address>
+<p>In <a href="/category/blog.html">Blog</a>. </p>
+<p>tags: <a href="/tag/python.html">Python</a> <a href="/tag/r.html">R</a> </p>
+</footer><!-- /.post-info --><p>Let us create the same arrays in both the languages and calculate their
+standard deviations.</p>
+<p><strong>Python</strong></p>
+<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">78</span><span class="p">]</span><span class="o">:</span> <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="p">.</span><span class="n">array</span><span class="p">(</span><span class="n">range</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">79</span><span class="p">]</span><span class="o">:</span> <span class="n">a</span>  
+<span class="n">Out</span><span class="p">[</span><span class="mi">79</span><span class="p">]</span><span class="o">:</span> <span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">])</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">80</span><span class="p">]</span><span class="o">:</span> <span class="n">np</span><span class="p">.</span><span class="n">std</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>  
+<span class="n">Out</span><span class="p">[</span><span class="mi">80</span><span class="p">]</span><span class="o">:</span> <span class="mf">2.8722813232690143</span>
+</pre></div>
+
+
+<p><strong>R</strong></p>
+<div class="highlight"><pre>\<span class="o">&gt;</span> a\<span class="o">&lt;-</span>c<span class="p">(</span><span class="m">0</span><span class="o">:</span><span class="m">9</span><span class="p">)</span>  
+\<span class="o">&gt;</span> a  
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="m">0</span> <span class="m">1</span> <span class="m">2</span> <span class="m">3</span> <span class="m">4</span> <span class="m">5</span> <span class="m">6</span> <span class="m">7</span> <span class="m">8</span> <span class="m">9</span>  
+\<span class="o">&gt;</span> sd<span class="p">(</span>a<span class="p">)</span>  
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="m">3.02765</span>
+</pre></div>
+
+
+<p>Wondering why the different results? This is due to the difference in
+formulae being used in the different implementation. </p>
+<p>The following <a href="http://www.mathsisfun.com/data/standard-deviation-formulas.html">link</a> <span style="line-height:1.5em;">contains more
+information explaining the differences between the two formulae (which
+differ ever so slightly)</span></p>
+<p>The <strong>Population</strong> Standard Deviation:</p>
+<p>{% img http://www.mi2f.com/m/data/images/standard-deviation-formula.gif [7] %}</p>
+<p>The <strong>Sample</strong> Standard Deviation: </p>
+<p>{% img http://www.mathsisfun.com/data/images/standard-deviation-sample.gif [7] %}</p>
+<p>In R the latter formula is used, whereas in the NumPy implementation,
+the former is used.</p>                </article>
+            </aside><!-- /#featured -->
+                <section id="content" class="body">
+                    <h1>Other articles</h1>
+                    <hr />
+                    <ol id="posts-list" class="hfeed">
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/dynamic-time-warping-using-rpy-and-python.html" rel="bookmark"
+                           title="Permalink to Dynamic Time Warping using rpy and Python">Dynamic Time Warping using rpy and Python</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-06-09T12:44:00+00:00">
+                Published: Sun 09 June 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/nipunbatra.html">nipunbatra</a>
+        </address>
+<p>In <a href="/category/blog.html">Blog</a>. </p>
+<p>tags: <a href="/tag/python.html">Python</a> <a href="/tag/r.html">R</a> </p>
+</footer><!-- /.post-info -->                <p>Dynamic Time Warping is a technique used for measuring similarity
+between sequences. Since i deal mostly with time series data which is
+essentially sequential, i had been told to give DTW a try. There are
+numerous implementations of DTW, but i found the implementation in R to
+be most complete ...</p>
+                <a class="readmore" href="/dynamic-time-warping-using-rpy-and-python.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/decision-tree-based-classification.html" rel="bookmark"
+                           title="Permalink to Decision Tree based classification">Decision Tree based classification</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2010-01-03T17:36:00+00:00">
+                Published: Sun 03 January 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/nipunbatra.html">nipunbatra</a>
+        </address>
+<p>In <a href="/category/blog.html">Blog</a>. </p>
+<p>tags: <a href="/tag/r.html">R</a> </p>
+</footer><!-- /.post-info -->                <p>Now having done the descriptive analysis comes the more important task
+of classification of data. What I did was created a decision tree model
+of 4 subjects marks and using it predicted whether the 5th subject marks
+are lesser or greater than 55 (POM explains the reason for lower
+classification ...</p>
+                <a class="readmore" href="/decision-tree-based-classification.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/are-good-mathematicians-good-programmers-or-vice-versa.html" rel="bookmark"
+                           title="Permalink to Are good mathematicians good programmers or vice versa">Are good mathematicians good programmers or vice versa</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2010-01-03T13:05:00+00:00">
+                Published: Sun 03 January 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/nipunbatra.html">nipunbatra</a>
+        </address>
+<p>In <a href="/category/blog.html">Blog</a>. </p>
+<p>tags: <a href="/tag/r.html">R</a> </p>
+</footer><!-- /.post-info -->                <p>This is a basic attempt for making some association results,again based
+on 2nd sem marks of my batch.<br />
+Test 1<br />
+Good in Maths implies Good in Programming<br />
+Now for this test i used values above mean of the class as good for
+both the exams.Open Office Spreadsheet was ...</p>
+                <a class="readmore" href="/are-good-mathematicians-good-programmers-or-vice-versa.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/analysis-with-r-part-3.html" rel="bookmark"
+                           title="Permalink to Analysis with R part 3">Analysis with R part 3</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2010-01-01T20:04:00+00:00">
+                Published: Fri 01 January 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/nipunbatra.html">nipunbatra</a>
+        </address>
+<p>In <a href="/category/blog.html">Blog</a>. </p>
+<p>tags: <a href="/tag/r.html">R</a> </p>
+</footer><!-- /.post-info -->                <p>Now it gets interesting.Comparing two subjects' marks in one plot will
+be a much better analysis than simply studying them separately. 
+So again with simple R stuff I was able to make a plot containing the
+Maths and PEE marks of my batch and they are compared firstly on ...</p>
+                <a class="readmore" href="/analysis-with-r-part-3.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/data-analysis-in-r-part-2.html" rel="bookmark"
+                           title="Permalink to Data Analysis in R part 2">Data Analysis in R part 2</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2010-01-01T14:06:00+00:00">
+                Published: Fri 01 January 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/nipunbatra.html">nipunbatra</a>
+        </address>
+<p>In <a href="/category/blog.html">Blog</a>. </p>
+<p>tags: <a href="/tag/r.html">R</a> </p>
+</footer><!-- /.post-info -->                <p>Having made a histogram,the next step has to be plotting frequency
+polygon for the same data.Again simple stuff,though this time it
+required fooling the histogram function. 
+This is the analysis with bin width of 5 and following it in the image
+gallery is the one with bin ...</p>
+                <a class="readmore" href="/data-analysis-in-r-part-2.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+
+            <li><article class="hentry">
+                <header>
+                    <h1><a href="/analyzing-data-in-r-part-1.html" rel="bookmark"
+                           title="Permalink to Analyzing Data in R Part 1">Analyzing Data in R Part 1</a></h1>
+                </header>
+
+                <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2010-01-01T12:03:00+00:00">
+                Published: Fri 01 January 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/nipunbatra.html">nipunbatra</a>
+        </address>
+<p>In <a href="/category/blog.html">Blog</a>. </p>
+<p>tags: <a href="/tag/r.html">R</a> </p>
+</footer><!-- /.post-info -->                <p>Just started with a bit of Data Mining.<br />
+Realized the importance of visualization before we do other standard
+statistical analysis.<br />
+Here is what i did.<br />
+The above gallery shows a histogram made for 2nd sem marks of our batch
+in PEE.<br />
+The procedure followed was simple<br />
+1.Importing the data ...</p>
+                <a class="readmore" href="/analyzing-data-in-r-part-1.html">read more</a>
+                </div><!-- /.entry-content -->
+            </article></li>
+                </ol><!-- /#posts-list -->
+                </section><!-- /#content -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

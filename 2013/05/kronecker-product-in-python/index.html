@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>Kronecker Product in Python | Nipun Batra | </title>
+    <meta name="description" content="Nipun Batra, ">
+    <meta name="author" content="Nipun Batra">
+
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Feeds
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="alternate" href="http://nipunbatra.github.io/feeds/all.atom.xml" type="application/atom+xml" title="Nipun Batra Atom Feed" />
+
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata">
+
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/custom.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/pygments.css">
+
+    <!-- Scripts
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fitvids/1.1.0/jquery.fitvids.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".container").fitVids();
+        });
+    </script>
+
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="http://nipunbatra.github.io/theme/assets/favicon.png">
+
+
+<!-- Using MathJax, with the delimiters $ -->
+<!-- Conflict with pygments for the .mo and .mi -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  "HTML-CSS": {
+  styles: {
+  ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
+  },
+  tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']],processEscapes: true}
+  });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+</head>
+<body>
+
+    <!-- Primary Page Layout
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    
+    <div class="container">
+        <section class="header">
+            <img src="http://nipunbatra.github.io/lk.jpg" class="logo">
+        </section>
+    </div>
+
+    <div class="container">
+        <nav class="navbar">
+            <div class="container">
+                <ul class="navbar-list">
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/" class="navbar-link">Blog home</a></li>
+                    <li class="navbar-item"><a href="https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                <!--
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/http://nipunbatra.github.io/" class="navbar-link">Blog home</a></li>
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                -->
+                    <li class="navbar-icon">
+                        <a href="http://twitter.com/nipun_batra">
+                            <i class="fa fa-twitter fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://github.com/nipunreddevil">
+                            <i class="fa fa-github fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://www.linkedin.com/profile/view?id=43966733">
+                            <i class="fa fa-linkedin fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <section class="post">
+            <header class="post-header">
+                <h3>Kronecker Product in Python</h3>
+                <p class="post-meta">
+                    Tue 07 May 2013 &middot; tagged 
+                        <a class="post-category" href="http://nipunbatra.github.io/tag/linear-algebra.html">Linear Algebra</a>
+                        <a class="post-category" href="http://nipunbatra.github.io/tag/python.html">Python</a>
+                </p>
+            </header>
+        </section>
+        <section class="post-content">
+            <p>While developing <a href="https://github.com/nipunreddevil/PyHMM">code</a> for Hidden Markov Models in Python, i had to
+do a particular type of matrix multiplication. Unfortunately i did not
+know what it was called. So here's what you are supposed to do: Given a
+m X m and a n X n matrix you need to element wise multiply to produce a
+mn X mn matrix. Here is an illustration of the same.</p>
+<div class="highlight"><pre>Matrix X
+--------------
+x1 x2 x3
+x1| a b c
+x2| d e f
+x3| g h i
+
+Matrix Y
+--------------
+y1 y2
+y1| j k
+y2| l m
+
+Matrix Z (Output)
+----------------------------------------
+x1y1 x1y2 x2y1 x2y2 x3y1 x3y2
+x1y1| aj ak bj bk cj ck
+x1y2| al am bl bm cl cm
+x2y1| dj dk ej ek fj fk
+
+.
+.
+</pre></div>
+
+
+<p>The code for the same is not that difficult to figure out once the
+problem is worked on paper. The code is as follows:</p>
+<div class="highlight"><pre>def transition_multiply(X,Y):
+    num_rows_X=len(X)
+    num_rows_Y=len(Y)
+    out=[]
+    count=0
+    for i in range(num_rows_X):     
+        for j in range(num_rows_Y):         
+            out.append([])          
+            for x in X[i]:
+                 for y in Y[j]:                 
+                     out[count].append(x*y)             
+            count+=1
+    return out
+</pre></div>
+
+
+<p>But i felt that the code was naive and being non vectorized it was going
+to be very slow. So i asked about the same on <a href="http://stackoverflow.com/questions/16330971/efficiently-computing-element-wise-product-of-transition-matrices-mm-nn">Stack Overflow</a>. The
+answer was short and simple, this multiplication technique is called
+Kronecker product. NumPy routine <strong>kron</strong> would have sufficed. I am sure
+the NumPy routine would be much more stable and quick!</p>
+        </section>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'nipunbatra';
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript><footer class="footer">
+    &copy; Nipun Batra &ndash;
+        Proudly published with <a href="http://blog.getpelican.com/">Pelican</a>
+</footer>    </div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50180272-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    <!-- End Document
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

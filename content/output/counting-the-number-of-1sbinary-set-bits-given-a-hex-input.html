@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Counting the number of 1's (binary set bits given a hex input)</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="A Pelican Blog Atom Feed" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">A Pelican Blog </a></h1>
+                <nav><ul>
+                    <li><a href="/pages/about.html">About</a></li>
+                    <li><a href="/pages/education.html">Education</a></li>
+                    <li><a href="/pages/projects.html">Projects</a></li>
+                    <li><a href="/pages/publications.html">Publications</a></li>
+                    <li><a href="/pages/subscribe.html">Subscribe</a></li>
+                    <li><a href="/pages/tutorials.html">Tutorials</a></li>
+                    <li class="active"><a href="/category/blog.html">Blog</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/counting-the-number-of-1sbinary-set-bits-given-a-hex-input.html" rel="bookmark"
+           title="Permalink to Counting the number of 1's (binary set bits given a hex input)">Counting the number of 1's (binary set bits given a hex input)</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2010-08-21T18:23:00+00:00">
+                Published: Sat 21 August 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/nipunbatra.html">nipunbatra</a>
+        </address>
+<p>In <a href="/category/blog.html">Blog</a>. </p>
+<p>tags: <a href="/tag/algorithms.html">algorithms</a> </p>
+</footer><!-- /.post-info -->      <p>Now this is one of the questions i was asked at one of the
+interviews.For eg i have a string as "AAC8".<br />
+Then it's equivalent binary would be :<br />
+1010 1010 1010 1000<br />
+And the number of 1's would be 7.<br />
+Now a simple solution could be to store number of 1's for each
+character. eg A:2,8:1 and so forth.<br />
+But i was told to use lesser number of switch cases.So i found a
+pattern amongst the number of 1's and the equivalent decimal number as:</p>
+<div class="highlight"><pre><span class="mi">0</span><span class="o">:</span><span class="mi">0</span>
+<span class="mi">1</span><span class="o">:</span><span class="mi">1</span>
+<span class="mi">2</span><span class="o">:</span><span class="mi">1</span>
+<span class="mi">3</span><span class="o">:</span><span class="mi">2</span>
+
+<span class="mi">4</span><span class="o">:</span><span class="mi">1</span>
+<span class="mi">5</span><span class="o">:</span><span class="mi">2</span>
+<span class="mi">6</span><span class="o">:</span><span class="mi">2</span>
+<span class="mi">7</span><span class="o">:</span><span class="mi">3</span>
+
+<span class="mi">8</span><span class="o">:</span><span class="mi">1</span>
+<span class="mi">9</span><span class="o">:</span><span class="mi">2</span>
+<span class="mi">10</span><span class="o">:</span><span class="mi">2</span>
+<span class="mi">11</span><span class="o">:</span><span class="mi">2</span>
+
+<span class="mi">12</span><span class="o">:</span><span class="mi">2</span>
+<span class="mi">13</span><span class="o">:</span><span class="mi">3</span>
+<span class="mi">14</span><span class="o">:</span><span class="mi">3</span>
+<span class="mi">15</span><span class="o">:</span><span class="mi">4</span>
+</pre></div>
+
+
+<p>Now a pattern emerged. Like we need to save only the first member of the
+group in the switch.<br />
+For eg. A i.e.10<br />
+10/4=2<br />
+Corresponding to 2 we store 1<br />
+10%4=2<br />
+Corresponding to 2 we store 1<br />
+Therefore we add these two to get 2 as number of set bits in A.<br />
+The C++ code follows.</p>
+<div class="highlight"><pre><span class="vi">#include</span><span class="o">&lt;</span><span class="nx">iostream</span><span class="o">&gt;</span>
+<span class="nx">using</span> <span class="nx">namespace</span> <span class="nx">std</span><span class="p">;</span>
+
+<span class="nx">int</span> <span class="nx">toDecimal</span><span class="p">(</span><span class="nx">char</span> <span class="nx">c</span><span class="p">)</span>
+    <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">c</span><span class="o">&gt;=</span><span class="s1">&#39;0&#39;</span> <span class="o">&amp;&amp;</span> <span class="nx">c</span><span class="o">&lt;=</span><span class="s1">&#39;9&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="nx">int</span><span class="p">)(</span><span class="nx">c</span><span class="o">-</span><span class="s1">&#39;0&#39;</span><span class="p">);</span>
+
+    <span class="k">else</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="nx">c</span><span class="o">-</span><span class="s1">&#39;A&#39;</span><span class="o">+</span><span class="mi">10</span><span class="p">);</span>
+
+    <span class="p">}</span>
+
+<span class="nx">int</span> <span class="nx">noOfOnesGivenHex</span><span class="p">(</span><span class="nx">char</span> <span class="o">*</span> <span class="nx">hexString</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="nx">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="nx">int</span> <span class="n">ans</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="nx">hexString</span><span class="err">[</span><span class="nx">i</span><span class="cp">]</span>!=&#39;&#39;)
+            {
+                switch(toDecimal(hexString<span class="cp">[</span><span class="nx">i</span><span class="cp">]</span>)/4)
+                    {
+                        case 0:
+                        ans+=0;
+                        break;
+                        case 1:
+                        ans+=1;
+                        break;
+                        case 2:
+                        ans+=1;
+                        break;
+                        case 3:
+                        ans+=2;
+                    }
+                    //cout<span class="err">&lt;</span><span class="nt">&lt;toDecimal</span><span class="err">(</span><span class="na">hexString</span><span class="cp">[</span><span class="nx">i</span><span class="cp">]</span><span class="err">)%</span><span class="na">4</span><span class="err">;</span>
+                <span class="na">switch</span><span class="err">(</span><span class="na">toDecimal</span><span class="err">(</span><span class="na">hexString</span><span class="cp">[</span><span class="nx">i</span><span class="cp">]</span><span class="err">)%</span><span class="na">4</span><span class="err">)</span>
+                    <span class="err">{</span>
+                        <span class="na">case</span> <span class="na">0:</span>
+                        <span class="na">ans</span><span class="err">+=</span><span class="na">0</span><span class="err">;</span>
+                        <span class="na">break</span><span class="err">;</span>
+                        <span class="na">case</span> <span class="na">1:</span>
+                        <span class="na">ans</span><span class="err">+=</span><span class="na">1</span><span class="err">;</span>
+                        <span class="na">break</span><span class="err">;</span>
+                        <span class="na">case</span> <span class="na">2:</span>
+                        <span class="na">ans</span><span class="err">+=</span><span class="na">1</span><span class="err">;</span>
+                        <span class="na">break</span><span class="err">;</span>
+                        <span class="na">case</span> <span class="na">3:</span>
+                        <span class="na">ans</span><span class="err">+=</span><span class="na">2</span><span class="err">;</span>
+                    <span class="err">}</span>
+                <span class="na">i</span><span class="err">+=</span><span class="na">1</span><span class="err">;</span>
+
+            <span class="err">}</span>
+        <span class="na">return</span> <span class="na">ans</span><span class="err">;</span>
+    <span class="err">}</span>
+
+<span class="na">int</span> <span class="na">main</span><span class="err">()</span>
+    <span class="err">{</span>
+
+
+        <span class="na">cout</span><span class="err">&lt;&lt;</span><span class="na">noOfOnesGivenHex</span><span class="err">(&quot;</span><span class="na">AAC8</span><span class="err">&quot;);</span>
+        <span class="na">return</span> <span class="na">0</span><span class="err">;</span>
+    <span class="err">}</span>
+</pre></div>
+
+
+<p>There has to be some better way of doing this,maybe without a switch
+case.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

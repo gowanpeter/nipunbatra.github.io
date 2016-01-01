@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>A Pelican Blog - Machine Learning</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="A Pelican Blog Atom Feed" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">A Pelican Blog </a></h1>
+                <nav><ul>
+                    <li><a href="/pages/about.html">About</a></li>
+                    <li><a href="/pages/education.html">Education</a></li>
+                    <li><a href="/pages/projects.html">Projects</a></li>
+                    <li><a href="/pages/publications.html">Publications</a></li>
+                    <li><a href="/pages/subscribe.html">Subscribe</a></li>
+                    <li><a href="/pages/tutorials.html">Tutorials</a></li>
+                    <li><a href="/category/blog.html">Blog</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/when-memory-matters.html">When memory matters: float64 vs float32 for storing data</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2013-12-16T15:49:00+00:00">
+                Published: Mon 16 December 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/nipunbatra.html">nipunbatra</a>
+        </address>
+<p>In <a href="/category/blog.html">Blog</a>. </p>
+<p>tags: <a href="/tag/machine-learning.html">Machine Learning</a> <a href="/tag/python.html">Python</a> </p>
+</footer><!-- /.post-info --><p>Dealing with large dataset can be a bit of bother. Hardware has grown,
+but so have the datasets. Recently, while loading some Electricity
+datasets into memory with Pandas and processing on them, I was running
+out of memory.</p>
+<p><a href="http://jack-kelly.com/">Jack</a> suggested that I use float32 instead of the default float64
+provided by Pandas. Following is a comparison of the in-memory
+comparisons between the two datatypes for representing the same data.</p>
+<p>Firstly, as suggested by Jeff on <a href="http://stackoverflow.com/questions/18089667/pandas-how-to-estimate-how-much-memory-a-dataframe-will-need">Stack overflow</a>, here is small
+function to find the size requirements (in bytes) of a DataFrame</p>
+<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">:</span> <span class="n">def</span> <span class="n">sizedf</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="o">:</span>  
+<span class="p">...</span><span class="o">:</span> <span class="k">return</span> <span class="n">df</span><span class="p">.</span><span class="n">values</span><span class="p">.</span><span class="n">nbytes</span> <span class="o">+</span> <span class="n">df</span><span class="p">.</span><span class="n">index</span><span class="p">.</span><span class="n">nbytes</span> <span class="o">+</span> <span class="n">df</span><span class="p">.</span><span class="n">columns</span><span class="p">.</span><span class="n">nbytes</span>
+</pre></div>
+
+
+<p>Let us create a large dataframe.</p>
+<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">:</span> <span class="n">a</span> <span class="o">=</span><span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">random</span><span class="p">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100000</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">:</span> <span class="n">a</span>  
+<span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">:</span>  
+<span class="o">&lt;</span><span class="n">class</span> <span class="err">&#39;</span><span class="n">pandas</span><span class="p">.</span><span class="n">core</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">DataFrame</span><span class="err">&#39;</span><span class="o">&gt;</span> 
+<span class="nl">Int64Index:</span> <span class="mi">100000</span> <span class="n">entries</span><span class="p">,</span> <span class="mi">0</span> <span class="n">to</span> <span class="mi">99999</span>  
+<span class="n">Data</span> <span class="n">columns</span> <span class="p">(</span><span class="n">total</span> <span class="mi">10</span> <span class="n">columns</span><span class="p">)</span><span class="o">:</span>  
+<span class="mi">0</span> <span class="mi">100000</span> <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>  
+<span class="mi">1</span> <span class="mi">100000</span> <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>  
+<span class="mi">2</span> <span class="mi">100000</span> <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>  
+<span class="mi">3</span> <span class="mi">100000</span> <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>  
+<span class="mi">4</span> <span class="mi">100000</span> <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>  
+<span class="mi">5</span> <span class="mi">100000</span> <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>  
+<span class="mi">6</span> <span class="mi">100000</span> <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>  
+<span class="mi">7</span> <span class="mi">100000</span> <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>  
+<span class="mi">8</span> <span class="mi">100000</span> <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>  
+<span class="mi">9</span> <span class="mi">100000</span> <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>  
+<span class="nl">dtypes:</span> <span class="n">float64</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+
+
+<p>We can see that the data type of the dataframe is float64. Let us now
+create a dataframe b, casted as float32.</p>
+<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="p">.</span><span class="n">astype</span><span class="p">(</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">:</span> <span class="n">b</span>  
+<span class="n">Out</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">:</span>  
+<span class="err">\</span><span class="o">&lt;</span><span class="n">class</span> <span class="err">&#39;</span><span class="n">pandas</span><span class="p">.</span><span class="n">core</span><span class="p">.</span><span class="n">frame</span><span class="p">.</span><span class="n">DataFrame</span><span class="err">&#39;\</span><span class="o">&gt;</span>  
+<span class="nl">Int64Index:</span> <span class="mi">100000</span> <span class="n">entries</span><span class="p">,</span> <span class="mi">0</span> <span class="n">to</span> <span class="mi">99999</span>  
+<span class="n">Data</span> <span class="n">columns</span> <span class="p">(</span><span class="n">total</span> <span class="mi">10</span> <span class="n">columns</span><span class="p">)</span><span class="o">:</span>  
+<span class="mi">0</span> <span class="mi">100000</span> <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>  
+<span class="mi">1</span> <span class="mi">100000</span> <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>  
+<span class="mi">2</span> <span class="mi">100000</span> <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>  
+<span class="mi">3</span> <span class="mi">100000</span> <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>  
+<span class="mi">4</span> <span class="mi">100000</span> <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>  
+<span class="mi">5</span> <span class="mi">100000</span> <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>  
+<span class="mi">6</span> <span class="mi">100000</span> <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>  
+<span class="mi">7</span> <span class="mi">100000</span> <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>  
+<span class="mi">8</span> <span class="mi">100000</span> <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>  
+<span class="mi">9</span> <span class="mi">100000</span> <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>  
+<span class="nl">dtypes:</span> <span class="n">float32</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Now, let us compare the in-memory sizes of the two dataframes.</p>
+<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">:</span> <span class="n">size_df</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>  
+<span class="n">Out</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span><span class="o">:</span> <span class="mi">8800080</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">:</span> <span class="n">size_df</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>  
+<span class="n">Out</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">:</span> <span class="mi">4800080</span>
+</pre></div>
+
+
+<p>The dataframe with datatype as float32 does a lot better. What about
+memory usage on disk?<br />
+Let us export the data to HDF5 store and see.</p>
+<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="o">:</span> <span class="n">a</span><span class="p">.</span><span class="n">to_hdf</span><span class="p">(</span><span class="err">&#39;</span><span class="n">df_a</span><span class="p">.</span><span class="n">h5</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">df</span><span class="err">&#39;</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="o">:</span> <span class="n">b</span><span class="p">.</span><span class="n">to_hdf</span><span class="p">(</span><span class="err">&#39;</span><span class="n">df_b</span><span class="p">.</span><span class="n">h5</span><span class="err">&#39;</span><span class="p">,</span> <span class="err">&#39;</span><span class="n">df</span><span class="err">&#39;</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">11</span><span class="p">]</span><span class="o">:</span> <span class="o">!</span> <span class="n">ls</span> <span class="o">-</span><span class="n">lah</span> <span class="n">df_a</span><span class="p">.</span><span class="n">h5</span>  
+<span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">r</span><span class="o">--</span> <span class="mi">1</span> <span class="n">nipun</span> <span class="n">nipun</span> <span class="mf">8.4</span><span class="n">M</span> <span class="n">Dec</span> <span class="mi">16</span> <span class="mi">15</span><span class="o">:</span><span class="mi">22</span> <span class="n">df_a</span><span class="p">.</span><span class="n">h5</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]</span><span class="o">:</span> <span class="o">!</span> <span class="n">ls</span> <span class="o">-</span><span class="n">lah</span> <span class="n">df_b</span><span class="p">.</span><span class="n">h5</span>  
+<span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">rw</span><span class="o">-</span><span class="n">r</span><span class="o">--</span> <span class="mi">1</span> <span class="n">nipun</span> <span class="n">nipun</span> <span class="mf">4.6</span><span class="n">M</span> <span class="n">Dec</span> <span class="mi">16</span> <span class="mi">15</span><span class="o">:</span><span class="mi">42</span> <span class="n">df_b</span><span class="p">.</span><span class="n">h5</span>
+</pre></div>
+
+
+<p>Clearly, we save a lot of on disk and raw memory when using float32 as
+opposed to float64(which is the default). Whenever, we don't need such
+high precision, float32 might just save you a lot of memory issues!</p>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

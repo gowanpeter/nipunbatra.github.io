@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>Paper summary: Building Application Stack (BAS) | Nipun Batra | </title>
+    <meta name="description" content="Nipun Batra, ">
+    <meta name="author" content="Nipun Batra">
+
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Feeds
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="alternate" href="http://nipunbatra.github.io/feeds/all.atom.xml" type="application/atom+xml" title="Nipun Batra Atom Feed" />
+
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata">
+
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/custom.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/pygments.css">
+
+    <!-- Scripts
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fitvids/1.1.0/jquery.fitvids.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".container").fitVids();
+        });
+    </script>
+
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="http://nipunbatra.github.io/theme/assets/favicon.png">
+
+
+<!-- Using MathJax, with the delimiters $ -->
+<!-- Conflict with pygments for the .mo and .mi -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  "HTML-CSS": {
+  styles: {
+  ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
+  },
+  tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']],processEscapes: true}
+  });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+</head>
+<body>
+
+    <!-- Primary Page Layout
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    
+    <div class="container">
+        <section class="header">
+            <img src="http://nipunbatra.github.io/lk.jpg" class="logo">
+        </section>
+    </div>
+
+    <div class="container">
+        <nav class="navbar">
+            <div class="container">
+                <ul class="navbar-list">
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/" class="navbar-link">Blog home</a></li>
+                    <li class="navbar-item"><a href="https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                <!--
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/http://nipunbatra.github.io/" class="navbar-link">Blog home</a></li>
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                -->
+                    <li class="navbar-icon">
+                        <a href="http://twitter.com/nipun_batra">
+                            <i class="fa fa-twitter fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://github.com/nipunreddevil">
+                            <i class="fa fa-github fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://www.linkedin.com/profile/view?id=43966733">
+                            <i class="fa fa-linkedin fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <section class="post">
+            <header class="post-header">
+                <h3>Paper summary: Building Application Stack (BAS)</h3>
+                <p class="post-meta">
+                    Wed 19 February 2014 &middot; tagged 
+                        <a class="post-category" href="http://nipunbatra.github.io/tag/buildings.html">buildings</a>
+                        <a class="post-category" href="http://nipunbatra.github.io/tag/energy.html">energy</a>
+                </p>
+            </header>
+        </section>
+        <section class="post-content">
+            <p>Buildings house a number of sensors  and actuator ranging across various
+applications including, but not limited to, utility metering (water,
+gas, electricity), HVAC control, lighting, security. Each of these
+sub-systems usually expose their data over different protocols making it
+difficult to design generic applications on top. This gets particularly
+hard when moving across different buildings. Maybe, time to do software
+engineering for buildings?</p>
+<p>In this post I summarize the paper <a href="http://www.cs.berkeley.edu/~krioukov/BAS.pdf">Building Application Stack (BAS)</a>
+which won the best paper award at Buildsys 2012. The paper motivates the
+need of an API for building applications owing to lack of "portability"
+in building applications. While many Building automation protocols such
+as BACnet, LONtalk partially address this via their schemes, the lack of
+portability remains a concern. Another target of the paper is to be able
+to answer and address queries such as the following: What is the
+<strong>light</strong> level of on all floors <strong>above</strong> the <strong>10th floor?</strong>For
+answering such queries sensors and its abstractions are necessary, but
+not complete. The various relationships among different sensors,
+actuator, physical spaces, etc. should be taken into account.</p>
+<p>The approach followed in the paper is based on well known software
+engineering principles. The layered architecture is summarized at
+follows:</p>
+<ol>
+<li>Close to the hardware is the interconnection interface which exposes
+    the hardware points via their protocols such as BACnet. These points
+    have non-trivial names such as “SDH.AH1A.SF VFD:INPUT" which is a
+    speed input to variable frequency drive.</li>
+<li>To introduce portability, the next layer consists of drivers which
+    expose necessary interfaces. For instance, a fan driver would expose
+    get_speed() and set_speed(x). Drivers can be constructed in
+    hierarchical fashion. HVAC chiller driver may contain drivers for
+    fan etc.</li>
+<li>Functional and spatial relationships are needed to answer questions
+    like which circuit powers lighting, which AHU serves a particular
+    room. For modeling functional relationships, BAS uses directed
+    graphs. For modeling spatial relationships BAS incorporates spatial
+    tags.</li>
+<li>The top most layer is the query layer and allows accessing driver
+    objects based on different attributes. Those who know about jQuery
+    might see some parallels with the driver access. BAS query layer is
+    language agnostic.</li>
+</ol>
+<p>The authors use BAS and compare its tradeoff with conventional
+customized building applications across two buildings and two
+application scenarios. The intended purposes are evident by the minimal
+changes required while porting across buildings which use different
+automation protocols. In conclusion, the paper brings software
+engineering to the buildings domain and the rich query interface allows
+diverse set of applications to be built easily on top of BAS.</p>
+        </section>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'nipunbatra';
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript><footer class="footer">
+    &copy; Nipun Batra &ndash;
+        Proudly published with <a href="http://blog.getpelican.com/">Pelican</a>
+</footer>    </div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50180272-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    <!-- End Document
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

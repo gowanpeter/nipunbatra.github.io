@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>A Pelican Blog - cpp</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="A Pelican Blog Atom Feed" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">A Pelican Blog </a></h1>
+                <nav><ul>
+                    <li><a href="/pages/about.html">About</a></li>
+                    <li><a href="/pages/education.html">Education</a></li>
+                    <li><a href="/pages/projects.html">Projects</a></li>
+                    <li><a href="/pages/publications.html">Publications</a></li>
+                    <li><a href="/pages/subscribe.html">Subscribe</a></li>
+                    <li><a href="/pages/tutorials.html">Tutorials</a></li>
+                    <li><a href="/category/blog.html">Blog</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/no-of-possible-paranthesisations.html">No. of possible paranthesisations</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2010-08-22T18:30:00+00:00">
+                Published: Sun 22 August 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/nipunbatra.html">nipunbatra</a>
+        </address>
+<p>In <a href="/category/blog.html">Blog</a>. </p>
+<p>tags: <a href="/tag/algorithms.html">algorithms</a> <a href="/tag/cpp.html">cpp</a> </p>
+</footer><!-- /.post-info --><p>Now this is a problem which we encounter while using matrix
+multiplication in the most efficient manner.<br />
+A simple problem on CodeChef wanted to give the possible number of
+paranthesisations given the number of matrices.<br />
+The recurrence relation</p>
+<div class="highlight"><pre> <span class="n">P</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">=</span><span class="n">summation</span> <span class="n">i</span> <span class="n">from</span> <span class="mi">1</span> <span class="n">to</span> <span class="n">n</span><span class="o">-</span><span class="mi">1</span> <span class="n">on</span> <span class="n">P</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">*</span><span class="n">P</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+
+
+<p>would suffice.<br />
+Now this evaluates to some expression in terms of combinations which
+didnt work for me.<br />
+Thus i used this recurrence relation along with memoization to get the
+thing done.<br />
+The code follows. A bottom up approach could also have been very
+efficient.</p>
+<div class="highlight"><pre><span class="n">map</span> <span class="n">intToFunction</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">P</span><span class="p">(</span><span class="kt">int</span> <span class="n">n</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">r</span><span class="p">;</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">n</span><span class="o">==</span><span class="mi">1</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="k">else</span><span class="p">{</span>
+            <span class="n">r</span><span class="o">=</span><span class="n">intToFunction</span><span class="p">[</span><span class="n">n</span><span class="p">];</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">r</span><span class="o">==</span><span class="mi">0</span><span class="p">)</span>
+                <span class="p">{</span>
+                <span class="kt">int</span> <span class="n">sum</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+                <span class="kt">int</span> <span class="n">k</span><span class="p">;</span>
+                <span class="k">for</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span><span class="n">k</span><span class="o">&lt;</span><span class="n">n</span><span class="p">;</span><span class="n">k</span><span class="o">++</span><span class="p">)</span>
+                <span class="n">sum</span><span class="o">+=</span><span class="n">P</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="n">P</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">k</span><span class="p">);</span>
+
+                <span class="n">intToFunction</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">=</span><span class="n">sum</span><span class="p">;</span>
+                <span class="n">r</span><span class="o">=</span><span class="n">sum</span><span class="p">;</span>
+
+                <span class="p">}</span>
+            <span class="k">return</span> <span class="n">r</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="p">}</span>
+</pre></div>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

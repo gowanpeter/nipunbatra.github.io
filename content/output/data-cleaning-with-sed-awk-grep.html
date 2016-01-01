@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Data Cleaning with sed, awk, grep...</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="A Pelican Blog Atom Feed" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">A Pelican Blog </a></h1>
+                <nav><ul>
+                    <li><a href="/pages/about.html">About</a></li>
+                    <li><a href="/pages/education.html">Education</a></li>
+                    <li><a href="/pages/projects.html">Projects</a></li>
+                    <li><a href="/pages/publications.html">Publications</a></li>
+                    <li><a href="/pages/subscribe.html">Subscribe</a></li>
+                    <li><a href="/pages/tutorials.html">Tutorials</a></li>
+                    <li class="active"><a href="/category/blog.html">Blog</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/data-cleaning-with-sed-awk-grep.html" rel="bookmark"
+           title="Permalink to Data Cleaning with sed, awk, grep...">Data Cleaning with sed, awk, grep...</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-06-15T16:24:00+00:00">
+                Published: Sat 15 June 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/nipunbatra.html">nipunbatra</a>
+        </address>
+<p>In <a href="/category/blog.html">Blog</a>. </p>
+<p>tags: <a href="/tag/python.html">Python</a> <a href="/tag/shell.html">shell</a> </p>
+</footer><!-- /.post-info -->      <p>Being mostly a Python user, loathed using awk, sed,.. and did not feel
+comfortable with them. But after spending a few hours in cleaning a file
+and trying to do so wihtout using lower level stuff like reading a file
+and stuff, i resorted to shell tools. The data cleaning process is
+required due to the fact that data is collected from sensors and a lot
+of reasons may cause it to have more characters, lines merged etc.<br />
+Usually i collect data in CSV. Here is one such CSV whose head and tail
+looks clean.</p>
+<div class="highlight"><pre><span class="err">$</span> <span class="n">head</span> <span class="o">-</span><span class="n">n</span> <span class="mi">4</span> <span class="n">data</span><span class="p">.</span><span class="n">csv</span>
+<span class="mf">1370500041.39</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">1370500041.59</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">1370500041.79</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">1370500041.99</span><span class="p">,</span><span class="mi">0</span>
+</pre></div>
+
+
+<p>So the characteristics of a correct line are that it should have a
+delimiter (","), the portion before the delimiter is epoch time obtained
+in Python and is in seconds, the portion after the comma should be a 0
+or a 1.<br />
+While analysing data in Pandas i realized some of my lines had much
+more characters than required. First lets count the number of lines in
+the file. I used <strong>wc</strong> for this.</p>
+<div class="highlight"><pre><span class="err">$</span> <span class="n">wc</span> <span class="o">-</span><span class="n">l</span> <span class="o">&lt;</span> <span class="n">data</span><span class="p">.</span><span class="n">csv</span> 
+<span class="mi">3249743</span>
+</pre></div>
+
+
+<p>Now we find lines which have more than 15 characters. Will use awk for
+this.</p>
+<div class="highlight"><pre><span class="err">$</span>  <span class="n">awk</span> <span class="err">&#39;</span><span class="n">length</span><span class="o">&gt;</span><span class="mi">15</span><span class="err">&#39;</span> <span class="n">data</span><span class="p">.</span><span class="n">csv</span> 
+<span class="mf">13705051370503037.59</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">13706751370672237.1</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">1370744413.53</span><span class="p">,</span><span class="mf">01370744236.88</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">1370752771370751437.64</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">137071370751438.98</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">137079701370794636.9</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">1370865773.91370863036.87</span><span class="p">,</span><span class="mi">1</span>
+<span class="mf">1370914473.69</span><span class="p">,</span><span class="mf">1370913437.91</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">1371040575.321371039437.08</span><span class="p">,</span><span class="mi">0</span>
+<span class="mf">1371198314.1371197837.01</span><span class="p">,</span><span class="mi">0</span>
+</pre></div>
+
+
+<p>So quiet a lot of lines which would have created trouble while parsing.
+Removing these and finding the number of lines in the new cleaned file.</p>
+<div class="highlight"><pre> <span class="err">$</span> <span class="n">awk</span> <span class="err">&#39;</span><span class="n">length</span> <span class="n">cleaned</span><span class="p">.</span><span class="n">csv</span>
+<span class="err">$</span> <span class="n">wc</span> <span class="o">-</span><span class="n">l</span> <span class="o">&lt;</span> <span class="n">cleaned</span><span class="p">.</span><span class="n">csv</span>
+<span class="mi">3249733</span>
+</pre></div>
+
+
+<p>Only 10 lines were creating havoc in analysis. Just checking now if
+there is a comma in every line. Or finding all those lines where "," is
+not in the file.</p>
+<div class="highlight"><pre><span class="err">$</span> <span class="n">grep</span> <span class="o">-</span><span class="n">vn</span> <span class="s">&quot;,&quot;</span> <span class="n">cleaned</span><span class="p">.</span><span class="n">csv</span>
+</pre></div>
+
+
+<p>No output from this grep means that all the lines now contain a ","</p>
+<p>Much more stuff can be done. But for now this much suffices. Need to
+learn a bit of shell stuff as well!<br />
+Python is not the universal solution!</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

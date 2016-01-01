@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Pandas: Reading CSV with Unix timestamps and converting to local timezone</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="A Pelican Blog Atom Feed" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">A Pelican Blog </a></h1>
+                <nav><ul>
+                    <li><a href="/pages/about.html">About</a></li>
+                    <li><a href="/pages/education.html">Education</a></li>
+                    <li><a href="/pages/projects.html">Projects</a></li>
+                    <li><a href="/pages/publications.html">Publications</a></li>
+                    <li><a href="/pages/subscribe.html">Subscribe</a></li>
+                    <li><a href="/pages/tutorials.html">Tutorials</a></li>
+                    <li class="active"><a href="/category/blog.html">Blog</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/pandas-reading-csv-with-unix-timestamps-and-converting-to-local-timezone.html" rel="bookmark"
+           title="Permalink to Pandas: Reading CSV with Unix timestamps and converting to local timezone">Pandas: Reading CSV with Unix timestamps and converting to local timezone</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-06-07T07:51:00+00:00">
+                Published: Fri 07 June 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/nipunbatra.html">nipunbatra</a>
+        </address>
+<p>In <a href="/category/blog.html">Blog</a>. </p>
+<p>tags: <a href="/tag/python.html">Python</a> </p>
+</footer><!-- /.post-info -->      <p>In this post we shall learn how to use pandas to analyse timeseries CSV
+data with epoch based timestamps. Epoch timestamp represent the number
+of seconds since Jan 1, 1970 and are commonly used for data recording in
+many scientific applications. Unix command date can be used to give the
+current time and we can also extract the current epoch timestamp as
+follows:</p>
+<div class="highlight"><pre><span class="sx">!date</span>
+
+<span class="n">Thu</span> <span class="n">Jun</span>  <span class="mi">6</span> <span class="mi">09</span><span class="p">:</span><span class="mi">01</span><span class="p">:</span><span class="mi">16</span> <span class="n">IST</span> <span class="mi">2013</span>
+
+<span class="sx">!date +%s</span>
+
+<span class="mi">1370489477</span>
+</pre></div>
+
+
+<p>We now create a dummy dataset using pandas containing 10 rows and 2
+columns and save it locally as a CSV.</p>
+<div class="highlight"><pre><span class="n">import</span> <span class="n">pandas</span> <span class="n">as</span> <span class="n">pd</span>
+<span class="n">print</span> <span class="n">pd</span><span class="p">.</span><span class="n">__version__</span>
+<span class="n">import</span> <span class="n">datetime</span><span class="p">,</span><span class="n">time</span>
+<span class="n">from</span> <span class="n">pandas</span> <span class="n">import</span> <span class="n">DataFrame</span>
+<span class="n">import</span> <span class="n">numpy</span> <span class="n">as</span> <span class="n">np</span>
+
+<span class="mf">0.11.0</span>
+
+<span class="n">start_time</span><span class="o">=</span><span class="kt">int</span><span class="p">(</span><span class="n">time</span><span class="p">.</span><span class="n">time</span><span class="p">())</span>
+<span class="n">timestamp</span><span class="o">=</span><span class="n">start_time</span><span class="o">+</span><span class="n">np</span><span class="p">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">column_1</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">column_2</span><span class="o">=</span><span class="n">np</span><span class="p">.</span><span class="n">random</span><span class="p">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">df</span><span class="o">=</span><span class="n">DataFrame</span><span class="p">({</span><span class="err">&#39;</span><span class="n">timestamp</span><span class="err">&#39;</span><span class="o">:</span><span class="n">timestamp</span><span class="p">,</span><span class="err">&#39;</span><span class="n">column_1</span><span class="err">&#39;</span><span class="o">:</span><span class="n">column_1</span><span class="p">,</span><span class="err">&#39;</span><span class="n">column_2</span><span class="err">&#39;</span><span class="o">:</span><span class="n">column_2</span><span class="p">})</span>
+<span class="n">df</span>
+
+    <span class="n">column_1</span>    <span class="n">column_2</span>    <span class="n">timestamp</span>
+<span class="mi">0</span>   <span class="mf">0.620274</span>    <span class="mf">0.720347</span>    <span class="mi">1370489479</span>
+<span class="mi">1</span>   <span class="mf">0.603379</span>    <span class="mf">0.214927</span>    <span class="mi">1370489480</span>
+<span class="mi">2</span>   <span class="mf">0.508877</span>    <span class="mf">0.562860</span>    <span class="mi">1370489481</span>
+<span class="mi">3</span>   <span class="mf">0.236682</span>    <span class="mf">0.062259</span>    <span class="mi">1370489482</span>
+<span class="mi">4</span>   <span class="mf">0.923264</span>    <span class="mf">0.278048</span>    <span class="mi">1370489483</span>
+<span class="mi">5</span>   <span class="mf">0.105673</span>    <span class="mf">0.246425</span>    <span class="mi">1370489484</span>
+<span class="mi">6</span>   <span class="mf">0.204324</span>    <span class="mf">0.770854</span>    <span class="mi">1370489485</span>
+<span class="mi">7</span>   <span class="mf">0.206739</span>    <span class="mf">0.702672</span>    <span class="mi">1370489486</span>
+<span class="mi">8</span>   <span class="mf">0.180858</span>    <span class="mf">0.440023</span>    <span class="mi">1370489487</span>
+<span class="mi">9</span>   <span class="mf">0.269232</span>    <span class="mf">0.684387</span>    <span class="mi">1370489488</span>
+</pre></div>
+
+
+<p>Saving the dataframe into a CSV file.</p>
+<div class="highlight"><pre><span class="n">df</span><span class="p">.</span><span class="n">to_csv</span><span class="p">(</span><span class="err">&#39;</span><span class="n">epoch_demo</span><span class="p">.</span><span class="n">csv</span><span class="err">&#39;</span><span class="p">,</span><span class="n">index</span><span class="o">=</span><span class="n">False</span><span class="p">)</span>
+<span class="o">!</span><span class="n">cat</span> <span class="n">epoch_demo</span><span class="p">.</span><span class="n">csv</span>
+
+<span class="n">column_1</span><span class="p">,</span><span class="n">column_2</span><span class="p">,</span><span class="n">timestamp</span>
+<span class="mf">0.6202741436145147</span><span class="p">,</span><span class="mf">0.7203473783163402</span><span class="p">,</span><span class="mi">1370489479</span>
+<span class="mf">0.603378652829255</span><span class="p">,</span><span class="mf">0.2149274411077019</span><span class="p">,</span><span class="mi">1370489480</span>
+<span class="mf">0.5088772165417312</span><span class="p">,</span><span class="mf">0.5628600230105181</span><span class="p">,</span><span class="mi">1370489481</span>
+<span class="mf">0.23668184075365228</span><span class="p">,</span><span class="mf">0.062259281774838415</span><span class="p">,</span><span class="mi">1370489482</span>
+<span class="mf">0.923263574664376</span><span class="p">,</span><span class="mf">0.27804805708797475</span><span class="p">,</span><span class="mi">1370489483</span>
+<span class="mf">0.10567266566500166</span><span class="p">,</span><span class="mf">0.24642510043158228</span><span class="p">,</span><span class="mi">1370489484</span>
+<span class="mf">0.20432401714102266</span><span class="p">,</span><span class="mf">0.7708544521037892</span><span class="p">,</span><span class="mi">1370489485</span>
+<span class="mf">0.20673911644596843</span><span class="p">,</span><span class="mf">0.7026719669208518</span><span class="p">,</span><span class="mi">1370489486</span>
+<span class="mf">0.1808583958327319</span><span class="p">,</span><span class="mf">0.4400233442122533</span><span class="p">,</span><span class="mi">1370489487</span>
+<span class="mf">0.2692318429010231</span><span class="p">,</span><span class="mf">0.684387368168343</span><span class="p">,</span><span class="mi">1370489488</span>
+
+
+<span class="n">df_2</span><span class="o">=</span><span class="n">pd</span><span class="p">.</span><span class="n">read_csv</span><span class="p">(</span><span class="err">&#39;</span><span class="n">epoch_demo</span><span class="p">.</span><span class="n">csv</span><span class="err">&#39;</span><span class="p">,</span><span class="n">index_col</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">df_2</span>
+
+    <span class="n">column_1</span>    <span class="n">column_2</span>
+<span class="n">timestamp</span>       
+<span class="mi">1370489479</span>  <span class="mf">0.620274</span>    <span class="mf">0.720347</span>
+<span class="mi">1370489480</span>  <span class="mf">0.603379</span>    <span class="mf">0.214927</span>
+<span class="mi">1370489481</span>  <span class="mf">0.508877</span>    <span class="mf">0.562860</span>
+<span class="mi">1370489482</span>  <span class="mf">0.236682</span>    <span class="mf">0.062259</span>
+<span class="mi">1370489483</span>  <span class="mf">0.923264</span>    <span class="mf">0.278048</span>
+<span class="mi">1370489484</span>  <span class="mf">0.105673</span>    <span class="mf">0.246425</span>
+<span class="mi">1370489485</span>  <span class="mf">0.204324</span>    <span class="mf">0.770854</span>
+<span class="mi">1370489486</span>  <span class="mf">0.206739</span>    <span class="mf">0.702672</span>
+<span class="mi">1370489487</span>  <span class="mf">0.180858</span>    <span class="mf">0.440023</span>
+<span class="mi">1370489488</span>  <span class="mf">0.269232</span>    <span class="mf">0.684387</span>
+</pre></div>
+
+
+<p>We can notice that currently the index is of integer type. To convert it
+into DateTime type we use to_datetime() function, which accepts time in
+nanoseconds.<br />
+1 second=10\^9 nanoseconds</p>
+<div class="highlight"><pre><span class="n">df_2</span><span class="p">.</span><span class="n">index</span><span class="o">=</span><span class="n">pd</span><span class="p">.</span><span class="n">to_datetime</span><span class="p">((</span><span class="n">df_2</span><span class="p">.</span><span class="n">index</span><span class="p">.</span><span class="n">values</span><span class="o">*</span><span class="mf">1e9</span><span class="p">).</span><span class="n">astype</span><span class="p">(</span><span class="kt">int</span><span class="p">))</span>
+<span class="n">df_2</span>
+
+    <span class="n">column_1</span>    <span class="n">column_2</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">06</span> <span class="mo">03</span><span class="o">:</span><span class="mi">31</span><span class="o">:</span><span class="mi">19</span>     <span class="mf">0.620274</span>    <span class="mf">0.720347</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">06</span> <span class="mo">03</span><span class="o">:</span><span class="mi">31</span><span class="o">:</span><span class="mi">20</span>     <span class="mf">0.603379</span>    <span class="mf">0.214927</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">06</span> <span class="mo">03</span><span class="o">:</span><span class="mi">31</span><span class="o">:</span><span class="mi">21</span>     <span class="mf">0.508877</span>    <span class="mf">0.562860</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">06</span> <span class="mo">03</span><span class="o">:</span><span class="mi">31</span><span class="o">:</span><span class="mi">22</span>     <span class="mf">0.236682</span>    <span class="mf">0.062259</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">06</span> <span class="mo">03</span><span class="o">:</span><span class="mi">31</span><span class="o">:</span><span class="mi">23</span>     <span class="mf">0.923264</span>    <span class="mf">0.278048</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">06</span> <span class="mo">03</span><span class="o">:</span><span class="mi">31</span><span class="o">:</span><span class="mi">24</span>     <span class="mf">0.105673</span>    <span class="mf">0.246425</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">06</span> <span class="mo">03</span><span class="o">:</span><span class="mi">31</span><span class="o">:</span><span class="mi">25</span>     <span class="mf">0.204324</span>    <span class="mf">0.770854</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">06</span> <span class="mo">03</span><span class="o">:</span><span class="mi">31</span><span class="o">:</span><span class="mi">26</span>     <span class="mf">0.206739</span>    <span class="mf">0.702672</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">06</span> <span class="mo">03</span><span class="o">:</span><span class="mi">31</span><span class="o">:</span><span class="mi">27</span>     <span class="mf">0.180858</span>    <span class="mf">0.440023</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">06</span> <span class="mo">03</span><span class="o">:</span><span class="mi">31</span><span class="o">:</span><span class="mi">28</span>     <span class="mf">0.269232</span>    <span class="mf">0.684387</span>
+
+<span class="n">df_2</span><span class="p">.</span><span class="n">index</span>
+
+
+<span class="p">[</span><span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">06</span> <span class="mo">03</span><span class="o">:</span><span class="mi">31</span><span class="o">:</span><span class="mi">19</span><span class="p">,</span> <span class="p">...,</span> <span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">06</span> <span class="mo">03</span><span class="o">:</span><span class="mi">31</span><span class="o">:</span><span class="mi">28</span><span class="p">]</span>
+<span class="nl">Length:</span> <span class="mi">10</span><span class="p">,</span> <span class="n">Freq</span><span class="o">:</span> <span class="n">None</span><span class="p">,</span> <span class="n">Timezone</span><span class="o">:</span> <span class="n">None</span>
+</pre></div>
+
+
+<p>However, now we can see that the time is lagging the current local time
+and the index does not yet have an associated timezone. Thus, we first
+put the index in UTC to associate a timezone and then localize with our
+timezone (Asia/Kolkata) in our case.</p>
+<div class="highlight"><pre><span class="n">df_2</span><span class="p">.</span><span class="n">index</span><span class="o">=</span><span class="n">df_2</span><span class="p">.</span><span class="n">index</span><span class="p">.</span><span class="n">tz_localize</span><span class="p">(</span><span class="err">&#39;</span><span class="n">UTC</span><span class="err">&#39;</span><span class="p">).</span><span class="n">tz_convert</span><span class="p">(</span><span class="err">&#39;</span><span class="n">Asia</span><span class="o">/</span><span class="n">Kolkata</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="n">df_2</span>
+
+                                 <span class="n">column_1</span>   <span class="n">column_2</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">06</span> <span class="mi">09</span><span class="o">:</span><span class="mo">01</span><span class="o">:</span><span class="mi">19</span><span class="o">+</span><span class="mo">05</span><span class="o">:</span><span class="mi">30</span>   <span class="mf">0.620274</span>    <span class="mf">0.720347</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">06</span> <span class="mi">09</span><span class="o">:</span><span class="mo">01</span><span class="o">:</span><span class="mi">20</span><span class="o">+</span><span class="mo">05</span><span class="o">:</span><span class="mi">30</span>   <span class="mf">0.603379</span>    <span class="mf">0.214927</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">06</span> <span class="mi">09</span><span class="o">:</span><span class="mo">01</span><span class="o">:</span><span class="mi">21</span><span class="o">+</span><span class="mo">05</span><span class="o">:</span><span class="mi">30</span>   <span class="mf">0.508877</span>    <span class="mf">0.562860</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">06</span> <span class="mi">09</span><span class="o">:</span><span class="mo">01</span><span class="o">:</span><span class="mi">22</span><span class="o">+</span><span class="mo">05</span><span class="o">:</span><span class="mi">30</span>   <span class="mf">0.236682</span>    <span class="mf">0.062259</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">06</span> <span class="mi">09</span><span class="o">:</span><span class="mo">01</span><span class="o">:</span><span class="mi">23</span><span class="o">+</span><span class="mo">05</span><span class="o">:</span><span class="mi">30</span>   <span class="mf">0.923264</span>    <span class="mf">0.278048</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">06</span> <span class="mi">09</span><span class="o">:</span><span class="mo">01</span><span class="o">:</span><span class="mi">24</span><span class="o">+</span><span class="mo">05</span><span class="o">:</span><span class="mi">30</span>   <span class="mf">0.105673</span>    <span class="mf">0.246425</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">06</span> <span class="mi">09</span><span class="o">:</span><span class="mo">01</span><span class="o">:</span><span class="mi">25</span><span class="o">+</span><span class="mo">05</span><span class="o">:</span><span class="mi">30</span>   <span class="mf">0.204324</span>    <span class="mf">0.770854</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">06</span> <span class="mi">09</span><span class="o">:</span><span class="mo">01</span><span class="o">:</span><span class="mi">26</span><span class="o">+</span><span class="mo">05</span><span class="o">:</span><span class="mi">30</span>   <span class="mf">0.206739</span>    <span class="mf">0.702672</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">06</span> <span class="mi">09</span><span class="o">:</span><span class="mo">01</span><span class="o">:</span><span class="mi">27</span><span class="o">+</span><span class="mo">05</span><span class="o">:</span><span class="mi">30</span>   <span class="mf">0.180858</span>    <span class="mf">0.440023</span>
+<span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">06</span> <span class="mi">09</span><span class="o">:</span><span class="mo">01</span><span class="o">:</span><span class="mi">28</span><span class="o">+</span><span class="mo">05</span><span class="o">:</span><span class="mi">30</span>   <span class="mf">0.269232</span>    <span class="mf">0.684387</span>
+
+<span class="n">df_2</span><span class="p">.</span><span class="n">index</span>
+
+
+<span class="p">[</span><span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">06</span> <span class="mi">09</span><span class="o">:</span><span class="mo">01</span><span class="o">:</span><span class="mi">19</span><span class="p">,</span> <span class="p">...,</span> <span class="mi">2013</span><span class="o">-</span><span class="mo">06</span><span class="o">-</span><span class="mo">06</span> <span class="mi">09</span><span class="o">:</span><span class="mo">01</span><span class="o">:</span><span class="mi">28</span><span class="p">]</span>
+<span class="nl">Length:</span> <span class="mi">10</span><span class="p">,</span> <span class="n">Freq</span><span class="o">:</span> <span class="n">None</span><span class="p">,</span> <span class="n">Timezone</span><span class="o">:</span> <span class="n">Asia</span><span class="o">/</span><span class="n">Kolkata</span>
+</pre></div>
+
+
+<p>So, we are done finally. Read the CSV and converted the datetime index
+into our local timezone.</p>
+<p>References<br />
+https://github.com/pydata/pandas/issues/3757<br />
+https://github.com/pydata/pandas/issues/3746</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

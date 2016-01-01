@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>Notes on the Prototype NILM paper from George Hart released in 1985 | Nipun Batra | </title>
+    <meta name="description" content="Nipun Batra, ">
+    <meta name="author" content="Nipun Batra">
+
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Feeds
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="alternate" href="http://nipunbatra.github.io/feeds/all.atom.xml" type="application/atom+xml" title="Nipun Batra Atom Feed" />
+
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata">
+
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/custom.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/pygments.css">
+
+    <!-- Scripts
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fitvids/1.1.0/jquery.fitvids.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".container").fitVids();
+        });
+    </script>
+
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="http://nipunbatra.github.io/theme/assets/favicon.png">
+
+
+<!-- Using MathJax, with the delimiters $ -->
+<!-- Conflict with pygments for the .mo and .mi -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  "HTML-CSS": {
+  styles: {
+  ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
+  },
+  tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']],processEscapes: true}
+  });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+</head>
+<body>
+
+    <!-- Primary Page Layout
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    
+    <div class="container">
+        <section class="header">
+            <img src="http://nipunbatra.github.io/lk.jpg" class="logo">
+        </section>
+    </div>
+
+    <div class="container">
+        <nav class="navbar">
+            <div class="container">
+                <ul class="navbar-list">
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/" class="navbar-link">Blog home</a></li>
+                    <li class="navbar-item"><a href="https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                <!--
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/http://nipunbatra.github.io/" class="navbar-link">Blog home</a></li>
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                -->
+                    <li class="navbar-icon">
+                        <a href="http://twitter.com/nipun_batra">
+                            <i class="fa fa-twitter fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://github.com/nipunreddevil">
+                            <i class="fa fa-github fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://www.linkedin.com/profile/view?id=43966733">
+                            <i class="fa fa-linkedin fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <section class="post">
+            <header class="post-header">
+                <h3>Notes on the Prototype NILM paper from George Hart released in 1985</h3>
+                <p class="post-meta">
+                    Thu 07 August 2014 &middot; tagged 
+                        <a class="post-category" href="http://nipunbatra.github.io/tag/nilm.html">nilm</a>
+                </p>
+            </header>
+        </section>
+        <section class="post-content">
+            <p>The following post contains my notes from reading <a href="http://georgehart.com/">George Hart</a>'s <a href="http://georgehart.com/research/Hart1985.pdf">1985 report on the prototype NILM system</a>.</p>
+<h3>Introduction</h3>
+<ul>
+<li>Microprocessor based</li>
+<li>First determines the number of appliances and then the electrical nature of each of these</li>
+<li>Process is completely automatic without any appliance survey or contact with the occupants</li>
+<li>Limitations<ul>
+<li>Performance degrades as we consider low power consuming appliances<ul>
+<li>Useful threshold of 100-200 W. Appliances consuming less than this unlikely to do well.</li>
+</ul>
+</li>
+<li>Best suited for on-off appliances<ul>
+<li>Either ignore multi-state appliances or learn individual components</li>
+<li>Was able to detect the two state appliances with an accuracy of 75-90% across 3 homes</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Two state algorithm</h3>
+<ul>
+<li>Two different use cases are considered:<ul>
+<li>Static optimization: Where we have sufficient storage and we can store an year worth of data. Given the data find the most likely set to explain the observations.</li>
+<li>Dynamic optimisation: Where we are constrained by memory and at each time point explain data up to that point. Sufficient statistics are maintained and given the low memory constraints, they are a good fit.</li>
+</ul>
+</li>
+<li>
+<p>Static two state load monitor consists of the following stages:</p>
+</li>
+<li>
+<p>Measurement</p>
+<ul>
+<li>Measure both real and reactive power for both legs</li>
+<li>In addition measure the voltage</li>
+<li>Sampling above 10 Hz not found to be useful</li>
+</ul>
+</li>
+<li>
+<p>Normalization</p>
+<ul>
+<li>Adjust real and reactive power given that the utility can vary voltage which impacts power consumption</li>
+<li>
+<div class="math">$$\mathrm{Adjusted Power = Measured Power * } {\frac{Rated voltage}{measured voltage}}^2$$</div>
+</li>
+<li>Eliminates changes in power due only to voltage fluctuation</li>
+</ul>
+</li>
+<li>
+<p>Edge detection</p>
+<ul>
+<li>Divide sequence into time periods which are steady and changing. <ul>
+<li>Steady period: sequence of minimum length where the power does not vary more than a threshold</li>
+<li>Current implementation used 2 seconds as minimum length and 15 W or VAR as threshold</li>
+</ul>
+</li>
+<li>Compute the change in power between two steady states</li>
+</ul>
+</li>
+<li>
+<p>Clustering</p>
+<ul>
+<li>Cluster together similar changes in power between two steady states</li>
+<li>Necessary as the power change between two steady states may vary due to a variety of reasons: sensors, measurement noise, A/D conversion, etc.</li>
+</ul>
+</li>
+<li>
+<p>On-off matching</p>
+<ul>
+<li>On-off pairs of each appliance are grouped together.</li>
+</ul>
+</li>
+<li>
+<p>Separating simultaneous changes</p>
+<ul>
+<li>Say, we observe a step change of +700 W. This can be due to +500 W and +200 W appliances turning on. </li>
+<li>Can be separated based on the following:<ol>
+<li>+700 W does not occur often</li>
+<li>+700 occurs between two on or off event of an appliance signifying that this event was missed</li>
+<li>Observed change is appx. sum of two known changes (+500 and +200)</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>
+<p>Identification</p>
+<ul>
+<li>Observe the properties of on-off cluster and determine which appliance it is</li>
+<li>Algorithm would compare against a table, which contains information such as:<ol>
+<li>Active and reactive power consumption of different appliance classes, e.g. refrigerator: 100-500 W, water heater: 4000 W</li>
+<li>Weather correlation with appliance, e.g. space heating more likely to be used when it is cold outside</li>
+<li>Timing information:<ol>
+<li>Average length of on/off cycle</li>
+<li>Number of cycles per day</li>
+<li>Time of day properties, e.g. light more likely to be used in the night</li>
+</ol>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Real time implementation</h3>
+<ul>
+<li>Implemented on an HP9845B computer. Pretty low end compared to today's watches!</li>
+<li>1500 lines of BASIC code requiring 64K memory</li>
+<li>Dynamic edge detection algorithm
+-- Memory efficient version of the static edge detection algorithm discussed above
+-- Steady state power is the average of the power observed during the steady state</li>
+</ul>
+<h4>Dynamic edge detection</h4>
+<div class="highlight"><pre><span class="c"># Initialization</span>
+<span class="n">steady_state_power</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">last_steady_state_power</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">previous_measurement</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">power_changing</span> <span class="o">=</span> <span class="bp">False</span>
+<span class="n">power_change_progress</span> <span class="o">=</span> <span class="bp">False</span>
+
+<span class="c"># Maximum difference in successive readings during steady state</span>
+<span class="n">steady_state_threshold</span> <span class="o">=</span> <span class="mi">15</span> <span class="n">W</span>
+<span class="c"># Don&#39;t consider appliances below this level</span>
+<span class="n">noise_level</span> <span class="o">=</span> <span class="mi">70</span> <span class="n">W</span>
+
+<span class="c"># Loop over measurements</span>
+<span class="k">for</span> <span class="n">measurement</span> <span class="ow">in</span> <span class="n">measurement_sequence</span><span class="p">:</span>
+    <span class="n">delta_power</span> <span class="o">=</span> <span class="n">power</span> <span class="o">-</span> <span class="n">previous_measurement</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">delta_power</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">steady_state_threshold</span><span class="p">:</span>
+        <span class="c"># Load is active</span>
+        <span class="n">power_changing</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">power_changing</span> <span class="o">=</span> <span class="bp">False</span>
+
+    <span class="c">#Step 3 A</span>
+    <span class="k">if</span> <span class="n">power_changing</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">power_change_progress</span><span class="p">:</span>
+        <span class="c"># Transition is just beginning</span>
+        <span class="n">previous_transition</span> <span class="o">=</span> <span class="n">steady_state_power</span> <span class="o">-</span> <span class="n">last_steady_state_power</span>
+        <span class="k">if</span> <span class="n">previous_transition</span> <span class="o">&gt;</span> <span class="n">noise_level</span><span class="p">:</span>
+            <span class="c"># Transition is significant to be considered</span>
+            <span class="n">store</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+            <span class="n">store</span><span class="p">(</span><span class="n">previous_transition</span><span class="p">)</span>
+
+    <span class="c"># Step 3 B</span>
+    <span class="n">last_steady_state_power</span> <span class="o">=</span> <span class="n">steady_state_power</span>
+    <span class="n">T</span>  <span class="o">=</span> <span class="n">time</span>
+
+    <span class="c"># Step 4</span>
+    <span class="k">if</span> <span class="n">power_changing</span><span class="p">:</span>
+        <span class="c"># New steady state may be starting</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c"># Step 5</span>
+    <span class="c"># Update estimate for steady state power </span>
+    <span class="n">steady_state_power</span> <span class="o">=</span> <span class="p">(</span><span class="n">steady_state_power</span> <span class="o">*</span><span class="n">N</span> <span class="o">+</span> <span class="n">measurement</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c"># Step 6</span>
+    <span class="c"># Update count for samples in current steady state</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">N</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="c"># Step 7</span>
+    <span class="n">power_change_progress</span> <span class="o">=</span> <span class="n">power_changing</span>
+
+    <span class="c"># Step 8</span>
+    <span class="n">previous_measurement</span> <span class="o">=</span> <span class="n">measurement</span>
+</pre></div>
+
+
+<h4>Dynamic on-off matching</h4>
+<ul>
+<li>Pairs on and off transitions based on size</li>
+<li>Average of on transition and the negative of off transition is used for clustering purposes</li>
+<li>A pair is said to match when the following four conditions are true:<ol>
+<li>They are both on the same phase</li>
+<li>They are both unmarked</li>
+<li>The earlier has a positive real component</li>
+<li>When added together, the absolute value of real power is less than 35 W or 3.5% of the positive edge (which ever is more).</li>
+</ol>
+</li>
+<li>When an appliance turns on and off many times, the ordering is very important, as there can be many possible pairings
+    -The algorithm must not allow matching an on event with an off event from some other cycle. This problem is similar to parity errors. Two errors within a small time frame can occur; one is detectable, two ain't.<ul>
+<li>Example: We see the following edge sequence: +1000, -1100, +1000, -1000,....
+For this case, the +1000 would be matched with -1000 from the second cycle, which is wrong and overestimates the energy consumption. This is checked by looking at closer elements first for matching and gradually increase the distance. By this procedure, the second cycle would get properly matched. </li>
+<li>Another domain specific way to deal with this issue is the following. We had observed a +1000 W transition and for now we will assume that this appliance consumes 1000 W. If at any time the total power consumption falls below 1000 W, then this appliance is off. This can happen when we see an edge of -1100 W, which we earlier didn't match to +1000 W. <em>Specifically, the unassigned power between and on and an off transition must never fall below the operating power of the appliance</em>.</li>
+</ul>
+</li>
+</ul>
+<h4>Dynamic clustering</h4>
+<ul>
+<li>Extremely unlikely that the exactly correct set of clusters would be found by any clustering technique</li>
+<li>Problem area: Two clusters which may almost merge into a single larger cluster- is it due to the presence of two similar appliances or due to a single inconsistent appliance. To mitigate this a technique for splitting clusters is discussed as follows.</li>
+</ul>
+<h5>Representation system for a cluster</h5>
+<ul>
+<li>Each appliance represented by three ellipses:<ul>
+<li>one main ellipse indicating range of real and reactive values</li>
+<li>and, two sub ellipses which indicate sub ranges for splitting up the cluster into two smaller sub clusters</li>
+</ul>
+</li>
+<li>Insights from refrigerator cluster<ul>
+<li>cluster is elongated to left and right: real power tends to vary more than reactive power</li>
+<li>slight tilt to upper left and lower right: if real power is higher than average, reactive power tends to be lower than average and vice versa. This behaviour is typical of induction motors and is a consequence of non-linearity of their power consumption.</li>
+</ul>
+</li>
+<li>Statistical tests are used whether to join or split clusters</li>
+</ul>
+<h3>Results</h3>
+<ul>
+<li>3 homes were tested</li>
+</ul>
+<h4>House 1</h4>
+<ul>
+<li>45 appliance representations found in a one week test</li>
+<li>Of these 45, only 20 contain significant number of cycles or energy</li>
+<li>Appliance names labelling each cluster were provided by the author</li>
+<li>Vast majority of appliances recognized well</li>
+<li>~3600 transitions found above 70W, which is a transition every 3 minutes</li>
+<li>Of these ~3600, 83.5% were matched into pairs</li>
+<li>
+<p>On-off durations and time of day usage can be used to label some of the appliances</p>
+</li>
+<li>
+<p>Shortcomings</p>
+</li>
+<li>Lights and small appliances tend to be fused together in a cluster just above the noise threshold of 70W.</li>
+<li>Threshold for discrimination appears to be about 120W.</li>
+<li>Some refrigerator transitions didn't get paired together. This can be rectified by performing clustering before transition pair matching.</li>
+</ul>
+<h4>House 2</h4>
+<ul>
+<li>Several clusters were not identified. However, most are correctly analysed into correct single cluster.</li>
+<li>Power consumption over time ramps us as dishwasher fills with water</li>
+<li>Oven being an unbalanced load does not do well</li>
+<li>There is a large cluster around 1200 W. Likely due to a number of appliances including a hair dryer. This is a <strong>fundamental limitation of NILM</strong>: It cannot distinguish appliances which are electrically very similar.</li>
+<li>Energy profile of kitchen light shows the three-meal-per-day pattern</li>
+</ul>
+<h4>House 3</h4>
+<ul>
+<li>Largest of the 3 homes tested</li>
+<li>Contains electric water heater and central air conditioning</li>
+</ul>
+<h3>Recommendations</h3>
+<ul>
+<li>Results from these three field tests considered satisfactory</li>
+<li>Most two state appliances performing up to expectations</li>
+<li>Adjustments to be incorporated:</li>
+<li>Simultaneous transition analysis</li>
+<li>Faster sampling- reduces simultaneous transitions</li>
+<li>Clustering before pairing- may be able to handle appliances showing variable transitions</li>
+<li>Unassigned power level or residual power</li>
+<li>Multi-state appliances</li>
+</ul>
+<h2>Multi-state appliances</h2>
+<ul>
+<li>For appliances such as dishwasher or electric dryer, the two state model could not learn the characteristics</li>
+<li>Off transition for motor never found; the heating element may be easy to learn though.</li>
+<li>Each appliance can be represented by a finite state machine (FSM)</li>
+</ul>
+<h3>Algorithms</h3>
+<ul>
+<li>Like two-state algorithms, these algorithms can be divided into two parts- the part which learns what appliances are in the home and the part which keeps track of the appliances once they are learned.</li>
+<li>Clustering</li>
+<li>Clustering must occur before on-off edge matching</li>
+<li>Assumed that each cluster of transitions can only belong to a single appliance</li>
+<li>Cyclic factor analysis</li>
+<li>Remove the easy to process on-off pairs, which correspond to two-state appliances. Here on-off pairing is on clusters and not on individual transitions. Two clusters having approx. the same number of entries and similar means are sought.</li>
+<li>A set of clusters whose mean values add approx. to zero and which contain transitions that occur in the buffer in a cyclic sequence can be sought out. Also, if the number of transitions in these clusters match, the matching is not merely coincidental</li>
+<li>Traversal analysis</li>
+<li>Used to learn complex multi-state appliances which could not be learnt by the above process</li>
+<li>Examine the transitions in sequence, while keeping track of state pointer</li>
+<li>Assume only a single multi-state appliance left at this stage</li>
+<li>Factoring</li>
+<li>If traversal analysis was done on two or more multi-state appliances, a single FSM will be learnt. </li>
+<li>This FSM needs to be broken down into two separate appliance representations.</li>
+<li>This factoring is akin to prime factorisation</li>
+</ul>
+<h2>Apparatus</h2>
+<h3>Computational requirement</h3>
+<ul>
+<li>Algorithms can be implemented on state-of-the-art microprocessor systems</li>
+<li>Components in such a system would include: power supply, backup battery, sensors (CTs), A/D, ROM, modem, microprocessor.</li>
+</ul>
+<h3>Mounting</h3>
+<ul>
+<li>Expect to fit the entire load monitor in a space half the volume of a conventional meter</li>
+</ul>
+<h2>Future directions</h2>
+<h3>Identification algorithm</h3>
+<h4>Selecting parameters</h4>
+<p>Some possible parameters
+1. Real power
+2. Reactive power
+3. 120 Volt, 240 Volts
+4. Time-of-day usage 
+5. Usage-vs-temperature
+6. On-time vs Off-time distributions</p>
+<h4>Methodology</h4>
+<ul>
+<li>Classification and lookup methodology should be designed</li>
+<li>Should output something like:" There is a 92% probability that this is water heater, 3% that this is a space heater and so on"</li>
+</ul>
+<h4>DBMS</h4>
+<ul>
+<li>Designed to allow load researchers to examine appliance data </li>
+</ul>
+<h3>Multi-house test</h3>
+<ul>
+<li>Project will greatly benefit by research on 10 houses</li>
+<li>Benefits of multiple homes:</li>
+<li>Will prove that the method is capable of operating with a variety of residential appliances mix</li>
+<li>It will allow the performance to be quantified precisely</li>
+<li>Provides opportunity to refine the algorithms</li>
+<li>Allow assessment of multi-state appliances</li>
+</ul>
+<h3>Multi-state appliances algorithms</h3>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+    
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+        </section>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'nipunbatra';
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript><footer class="footer">
+    &copy; Nipun Batra &ndash;
+        Proudly published with <a href="http://blog.getpelican.com/">Pelican</a>
+</footer>    </div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50180272-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    <!-- End Document
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

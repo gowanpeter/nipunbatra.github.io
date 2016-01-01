@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>Simulating a Discrete Hidden Markov Model | Nipun Batra | </title>
+    <meta name="description" content="Nipun Batra, ">
+    <meta name="author" content="Nipun Batra">
+
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Feeds
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="alternate" href="http://nipunbatra.github.io/feeds/all.atom.xml" type="application/atom+xml" title="Nipun Batra Atom Feed" />
+
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata">
+
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/custom.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/pygments.css">
+
+    <!-- Scripts
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fitvids/1.1.0/jquery.fitvids.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".container").fitVids();
+        });
+    </script>
+
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="http://nipunbatra.github.io/theme/assets/favicon.png">
+
+
+<!-- Using MathJax, with the delimiters $ -->
+<!-- Conflict with pygments for the .mo and .mi -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  "HTML-CSS": {
+  styles: {
+  ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
+  },
+  tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']],processEscapes: true}
+  });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+</head>
+<body>
+
+    <!-- Primary Page Layout
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <div class="container">
+        <section class="header">
+            <img src="http://nipunbatra.github.io/theme/assets/stewie.jpg" class="logo">
+        </section>
+    </div>
+    <div class="container">
+        <nav class="navbar">
+            <div class="container">
+                <ul class="navbar-list">
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io//archives.html" class="navbar-link">Blog archives</a></li>
+                    <li class="navbar-icon">
+                        <a href="http://twitter.com/nipun_batra">
+                            <i class="fa fa-twitter fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://github.com/nipunreddevil">
+                            <i class="fa fa-github fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://www.linkedin.com/profile/view?id=43966733">
+                            <i class="fa fa-linkedin fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <section class="post">
+            <header class="post-header">
+                <h3>Simulating a Discrete Hidden Markov Model</h3>
+                <p class="post-meta">
+                    Sat 11 May 2013 &middot; tagged 
+                        <a class="post-category" href="http://nipunbatra.github.io/tag/hidden-markov-model.html">Hidden Markov Model</a>
+                        <a class="post-category" href="http://nipunbatra.github.io/tag/python.html">Python</a>
+                </p>
+            </header>
+        </section>
+        <section class="post-content">
+            <p>In this post we shall create a Hidden Markov Model [1] for the Unfair
+Casino problem [2]. In short the problem is as follows: In a casino
+there may be two die- one fair and the other biased. The biased die is
+much more likely to produce a 6 than the other numbers. With the fair
+die all the outcomes (1 through 6) are equally likely. For the biased
+die, probability of observing a 6 is 0.5 and observing 1,2,3,4,5 is 0.1
+each. Also, there are probabilies associated with the choice of a die to
+be thrown. The observer is only able to observe the values of die being
+thrown, without having a knowldge whether a fair or biased die were
+used.</p>
+<p>In all it matches the description of a discrete Hidden Markov Model. The
+different components of the Discrete HMM are as follows:</p>
+<ul>
+<li><strong>Observed States</strong> : 1 through 6 on the die faces</li>
+<li><strong>Hidden States</strong> : Fair or Biased Die</li>
+<li><strong>Prior (pi)</strong> : Probability that the first throw is made from a
+    fair or a biased die, which is : Pr (first throw is fair) and Pr
+    (first throw is biased), which is represented as a 1 X 2 row matrix</li>
+<li><strong>Transition Matrix (A)</strong>: Matrix encoding the probability of the 4
+    possible transition between fair and biased die, which are: Fair->
+    Fair, Fair-> Biased, Biased-> Fair and Biased->Biased, which is
+    represented as a 2 X 2 matrix</li>
+<li><strong>Emission Matrix (B)</strong> : Matrix encoding the probability of an
+    observation given the hidden state. It is a 2 X 6 Matrix</li>
+</ul>
+<p>Next, we import the basic set of libraries used for matrix manipulation
+and for plotting.</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="c">#Setting Font Size as 20</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s">&#39;font.size&#39;</span><span class="p">:</span> <span class="mi">20</span><span class="p">})</span>
+</pre></div>
+
+
+<p>Next, we define the different components of HMM which were described
+above.</p>
+<div class="highlight"><pre>&#39;&#39;&#39;
+Pi : Fair die is twice as likely as biased die
+
+A  : The die thrower likes to keep in one state (fair/biased), and the tranisition from 
+1. Fair-&gt; Fair : .95
+2. Fair-&gt;Biased: 1-.95=.05
+3. Biased-&gt;Biased: .90
+4. Biased-&gt;Biased=1-.90=.10
+
+B  : The fair die is equally likely to produce observations 1 through 6, for the biased die
+Pr(6)=0.5 and Pr(1)=Pr(2)=Pr(3)=Pr(4)=Pr(5)=0.1
+&#39;&#39;&#39;
+pi=np.array([2.0/3,1.0/3])
+A=np.array([[.95,.05],[.1,.9]])
+B=np.array([[1.0/6 for i in range(6)],[.1,.1,.1,.1,.1,.5]])
+</pre></div>
+
+
+<p>Now based on these probability sequences we need to produce a sequence
+of <strong>observed</strong> and <strong>hidden</strong> states. We use the notion of weighted
+sampling, which basically means that terms/states with higher
+probabilies assigned to them are more likely to be selected/sampled. For
+example,let us consider the starting state. For this we need to use the
+<strong>pi</strong> matrix, since that encodes the likiliness of starting in a
+particular state. We observe that for starting in <strong>Fair</strong> state the
+probability is .667 and twice that of starting in <strong>Biased</strong> state.
+Thus, it is much more likely that we start in Fair state. We use
+<strong>Fitness Proportionate Selection</strong> [3] to sample states based on
+weights (probability). For selection of starting state we would proceed
+as follows:</p>
+<ul>
+<li>We choose a random value between 0 and 1</li>
+<li>
+<p>We iterate over the list of values (prior) and iteratively subtract
+    the value at current position from the number which we chose at
+    random and as soon as it becomes negative, we return the index. Let
+    us demonstrate this with a function.</p>
+<p>'''
+Returns next state according to weigted probability array. Code based on Weighted random generation in Python [4]
+'''
+def next_state(weights):
+    choice = random.random() * sum(weights)
+    for i, w in enumerate(weights):
+        choice -= w
+        if choice &lt; 0:
+            return i</p>
+</li>
+</ul>
+<p>We test the above function by making a call to it 1000 times and then we
+try to see how many times do we get a 0 (Fair) wrt 1 (Biased), given the <strong>pi</strong> vector.</p>
+<div class="highlight"><pre>count=0
+for i in range(1000):
+    count+=next_state(pi)
+print &quot;Expected number of Fair states:&quot;,1000-count
+print &quot;Expected number of Biased states:&quot;,count
+
+Expected number of Fair states: 649
+Expected number of Biased states: 351
+</pre></div>
+
+
+<p>Next, we write the following functions:</p>
+<ul>
+<li>create_hidden_sequence (pi,A,length): which creates a hidden
+    sequence (Markov Chain) of desired length based on <strong>Pi</strong> and <strong>A</strong>.
+    The algorithm followed is as follows: We choose the first state as
+    described above. Next on the basis of current state, we see it's
+    transition matrix and assign the next state by weighted sampling (by
+    invoking next_state with argument as A[current_state])</li>
+<li>
+<p>create_observed_sequence (hidden_sequence,B): which create an
+    observed sequence based on hidden states and associated <strong>B</strong>. Based
+    on current hidden state, we use it's emission parameters to sample
+    the observation.</p>
+<p>def create_hidden_sequence(pi,A,length):
+    out=[None]*length
+    out[0]=next_state(pi)
+    for i in range(1,length):
+        out[i]=next_state(A[out[i-1]])
+    return out</p>
+<p>def create_observation_sequence(hidden_sequence,B):
+    length=len(hidden_sequence)
+    out=[None]*length
+    for i in range(length):
+        out[i]=next_state(B[hidden_sequence[i]])
+    return out</p>
+</li>
+</ul>
+<p>Thus, using these functions and the HMM paramters we decided earlier, we
+create length 1000 sequence for hidden and observed states.</p>
+<div class="highlight"><pre>hidden=np.array(create_hidden_sequence(pi,A,1000))
+observed=np.array(create_observation_sequence(hidden,B))
+</pre></div>
+
+
+<p>Now, we create helper functions to plot the two sequence in a way we can
+intuitively understand the HMM.</p>
+<div class="highlight"><pre>&#39;&#39;&#39;Group all contiguous values in tuple. Recipe picked from Stack Overflow [5]&#39;&#39;&#39;
+def group(L):
+    first = last = L[0]
+    for n in L[1:]:
+        if n - 1 == last: # Part of the group, bump the end
+            last = n
+        else: # Not part of the group, yield current group and start a new
+            yield first, last
+            first = last = n
+    yield first, last # Yield the last group
+
+&#39;&#39;&#39;Create tuples of the form (start, number_of_continuous values&#39;&#39;&#39;
+def create_tuple(x):
+    return [(a,b-a+1) for (a,b) in x]
+</pre></div>
+
+
+<p>Now the main code</p>
+<div class="highlight"><pre>#Tuples of form index value, number of continuous values corresponding to Fair State
+indices_hidden_fair=np.where(hidden==0)[0]
+tuples_contiguous_values_fair=list(group(indices_hidden_fair))
+tuples_start_break_fair=create_tuple(tuples_contiguous_values_fair)
+
+#Tuples of form index value, number of continuous values corresponding to Biased State
+indices_hidden_biased=np.where(hidden==1)[0]
+tuples_contiguous_values_biased=list(group(indices_hidden_biased))
+tuples_start_break_biased=create_tuple(tuples_contiguous_values_biased)
+
+#Tuples for observations
+observation_tuples=[]
+for i in range(6):
+    observation_tuples.append(create_tuple(group(list(np.where(observed==i)[0]))))
+</pre></div>
+
+
+<p>Now we plot the hidden and observation sequences</p>
+<div class="highlight"><pre><span class="nt">plt</span><span class="nc">.figsize</span><span class="o">(</span><span class="nt">20</span><span class="o">,</span><span class="nt">10</span><span class="o">)</span>
+<span class="nt">plt</span><span class="nc">.subplot</span><span class="o">(</span><span class="nt">2</span><span class="o">,</span><span class="nt">1</span><span class="o">,</span><span class="nt">1</span><span class="o">)</span>
+<span class="nt">plt</span><span class="nc">.xlim</span><span class="o">((</span><span class="nt">0</span><span class="o">,</span><span class="nt">1000</span><span class="o">));</span>
+<span class="nt">plt</span><span class="nc">.title</span><span class="o">(</span><span class="s1">&#39;Observations&#39;</span><span class="o">);</span>
+<span class="nt">for</span> <span class="nt">i</span> <span class="nt">in</span> <span class="nt">range</span><span class="o">(</span><span class="nt">6</span><span class="o">):</span>
+    <span class="nt">plt</span><span class="nc">.broken_barh</span><span class="o">(</span><span class="nt">observation_tuples</span><span class="cp">[</span><span class="nx">i</span><span class="cp">]</span><span class="o">,(</span><span class="nt">i</span><span class="o">+</span><span class="nt">0</span><span class="nc">.5</span><span class="o">,</span><span class="nt">1</span><span class="o">),</span><span class="nt">facecolor</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="o">);</span>
+<span class="nt">plt</span><span class="nc">.subplot</span><span class="o">(</span><span class="nt">2</span><span class="o">,</span><span class="nt">1</span><span class="o">,</span><span class="nt">2</span><span class="o">);</span>
+<span class="nt">plt</span><span class="nc">.xlim</span><span class="o">((</span><span class="nt">0</span><span class="o">,</span><span class="nt">1000</span><span class="o">));</span>
+<span class="nt">plt</span><span class="nc">.title</span><span class="o">(</span><span class="s1">&#39;Hidden States Green:Fair, Red: Biased&#39;</span><span class="o">);</span>
+<span class="nt">plt</span><span class="nc">.broken_barh</span><span class="o">(</span><span class="nt">tuples_start_break_fair</span><span class="o">,(</span><span class="nt">0</span><span class="o">,</span><span class="nt">1</span><span class="o">),</span><span class="nt">facecolor</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="o">);</span>
+<span class="nt">plt</span><span class="nc">.broken_barh</span><span class="o">(</span><span class="nt">tuples_start_break_biased</span><span class="o">,(</span><span class="nt">0</span><span class="o">,</span><span class="nt">1</span><span class="o">),</span><span class="nt">facecolor</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="o">);</span>
+</pre></div>
+
+
+<p>Following is the produced output. Red indicates biased die and green
+indicates fair die. We can confirm our HMM simulation by seeing a very
+high number of 6 when biased die is used and a similar observation for
+other states. </p>
+<p><img src="http://nipunbatra.files.wordpress.com/2013/05/index.png" alt="[before]" title="[before]"></p>
+<p>This code is part of a HMM package that i am building, which can be
+found here on <a href="https://github.com/nipunreddevil/PyHMM">Github</a>. Contributions welcome!  The IPython notebook
+for this example can be found <a href="http://nbviewer.ipython.org/5558903">here</a>. Similar IPython based tutorials
+can be found in the <a href="http://nipunbatra.github.io/tutorials">tutorials</a> section.</p>
+<p>Watch out for the next post on this topic describing Simulating
+Continuous HMM's.</p>
+<p>References</p>
+<ol>
+<li>http://en.wikipedia.org/wiki/Hidden_Markov_model</li>
+<li>http://www.stanford.edu/class/stats366/hmmR2.html</li>
+<li>http://en.wikipedia.org/wiki/Fitness_proportionate_selection</li>
+<li>http://eli.thegreenplace.net/2010/01/22/weighted-random-generation-in-python/</li>
+<li>http://stackoverflow.com/questions/2154249/identify-groups-of-continuous-numbers-in-a-list</li>
+</ol>
+        </section>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'nipunbatra';
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript><footer class="footer">
+    &copy; Nipun Batra &ndash;
+        Proudly published with <a href="http://blog.getpelican.com/">Pelican</a>
+</footer>    </div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50180272-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    <!-- End Document
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

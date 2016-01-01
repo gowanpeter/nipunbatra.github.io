@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Revisiting Matt Might's 3 shell scripts to improve your writing</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="A Pelican Blog Atom Feed" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">A Pelican Blog </a></h1>
+                <nav><ul>
+                    <li><a href="/pages/about.html">About</a></li>
+                    <li><a href="/pages/education.html">Education</a></li>
+                    <li><a href="/pages/projects.html">Projects</a></li>
+                    <li><a href="/pages/publications.html">Publications</a></li>
+                    <li><a href="/pages/subscribe.html">Subscribe</a></li>
+                    <li><a href="/pages/tutorials.html">Tutorials</a></li>
+                    <li class="active"><a href="/category/blog.html">Blog</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/revisiting-matt-mights-3-shell-scripts-to-improve-your-writing.html" rel="bookmark"
+           title="Permalink to Revisiting Matt Might's 3 shell scripts to improve your writing">Revisiting Matt Might's 3 shell scripts  to improve your writing</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-08-11T20:17:00+00:00">
+                Published: Sun 11 August 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/nipunbatra.html">nipunbatra</a>
+        </address>
+<p>In <a href="/category/blog.html">Blog</a>. </p>
+<p>tags: <a href="/tag/latex.html">latex</a> </p>
+</footer><!-- /.post-info -->      <p>Having made extensive use, and greatly benefited by Matt Might's article
+entitled -"3 shell scripts to improve your writing", i thought of
+sharing how we can apply this same set of scripts on already published
+work, available only as pdf. Maybe, it can help a reviewer! I use a
+recent <a href="http://fredjiang.com/papers/MobiSys2013Auditeur.pdf">2013 Mobisys paper</a> for illustration.</p>
+<p>Following are the required steps:</p>
+<ul>
+<li>
+<p>Convert pdf to text or HTML</p>
+<p><code>$ pdftotext MobiSys2013Auditeur.pdf</code></p>
+</li>
+</ul>
+<p>or  </p>
+<div class="highlight"><pre><span class="err">$</span> <span class="n">pdftohtml</span> <span class="n">MobiSys2013Auditeur</span><span class="p">.</span><span class="n">pdf</span>  
+<span class="err">$</span> <span class="n">lynx</span> <span class="o">-</span><span class="n">dump</span> <span class="n">MobiSys2013Auditeur</span><span class="p">.</span><span class="n">html</span> <span class="o">&gt;&gt;</span> <span class="n">MobiSys2013Auditeur</span><span class="p">.</span><span class="n">txt</span>
+</pre></div>
+
+
+<ul>
+<li>Remove non printable characters</li>
+</ul>
+<!-- -->
+
+<div class="highlight"><pre><span class="n">perl</span> <span class="o">-</span><span class="n">lpe</span> <span class="n">s</span><span class="o">/</span><span class="p">[</span><span class="o">^</span><span class="p">[</span><span class="o">:</span><span class="n">print</span><span class="o">:</span><span class="p">]]</span><span class="o">+</span><span class="c1">//g MobiSys2013Auditeur.txt &gt;&gt; clean.txt</span>
+</pre></div>
+
+
+<ul>
+<li>Now using Matt's scripts (located in the same folder) to find
+    lexical illusions</li>
+</ul>
+<!-- -->
+
+<div class="highlight"><pre><span class="err">$</span> <span class="n">perl</span> <span class="n">dups</span> <span class="n">clean</span><span class="p">.</span><span class="n">txt</span>       
+<span class="n">clean</span><span class="p">.</span><span class="n">txt</span><span class="o">:</span><span class="mi">429</span> <span class="n">Space</span>      
+<span class="n">clean</span><span class="p">.</span><span class="n">txt</span><span class="o">:</span><span class="mi">552</span> <span class="n">soundlet</span>       
+<span class="n">clean</span><span class="p">.</span><span class="n">txt</span><span class="o">:</span><span class="mi">850</span> <span class="n">Mean</span>       
+<span class="n">clean</span><span class="p">.</span><span class="n">txt</span><span class="o">:</span><span class="mi">1630</span> <span class="n">two</span>
+</pre></div>
+
+
+<p>This means that the following words have been used consecutively. Let us
+analyze.<br />
+The "Space" repetition is shown by the script due to our "hacky" method
+of getting text from pdf. In the paper, Private Space and Public Space
+are used in a figure.<br />
+The other one is "soundlet". Now this happens to be a Java object
+initialization: Soundlet soundlet and thus is perfectly fine.<br />
+"Mean" also occurs twice in a figure. Again it is due to our flawed
+hack!<br />
+"two" occurs in the following sentence: "Vehicle Sense<br />
+and Kitchen Sense are trained on samples collected from members of two
+two-person families, and are tested on them separately in 3-5 hours long
+experiments."<br />
+So this is again not a lexical illusion. Good to go to finding weasel
+words.</p>
+<ul>
+<li>Checking weasel words</li>
+</ul>
+<!-- -->
+
+<div class="highlight"><pre><span class="nx">$</span> <span class="nx">sh</span> <span class="nx">weasel</span> <span class="nx">clean</span><span class="p">.</span><span class="nx">txt</span>       
+<span class="mi">88</span><span class="o">:</span><span class="nx">Beyond</span> <span class="nx">just</span> <span class="nx">time</span><span class="p">,</span> <span class="nx">many</span> <span class="nx">developers</span> <span class="k">do</span> <span class="nx">not</span> <span class="nx">have</span> <span class="nx">the</span> <span class="nx">necessary</span> <span class="nx">technical</span> <span class="nx">background</span> <span class="nx">to</span> <span class="nx">implement</span> <span class="nx">these</span> <span class="nx">functions</span> <span class="nx">correctly</span> <span class="nx">or</span> <span class="nx">efficiently</span><span class="p">.</span> <span class="nx">Because</span> <span class="nx">of</span> <span class="k">this</span><span class="p">,</span> <span class="nx">there</span> <span class="nx">is</span> <span class="nx">a</span> <span class="nx">growing</span> <span class="nx">trend</span> <span class="nx">where</span> <span class="nx">smartphone</span>         
+<span class="mi">94</span><span class="o">:</span><span class="nx">Smartphones</span> <span class="nx">have</span> <span class="nx">begun</span> <span class="nx">to</span> <span class="nx">use</span> <span class="nx">their</span> <span class="nx">microphones</span> <span class="k">for</span> <span class="nx">various</span>        
+<span class="mi">144</span><span class="o">:</span><span class="nx">Several</span> <span class="nx">salient</span> <span class="nx">features</span> <span class="nx">when</span> <span class="nx">taken</span> <span class="k">in</span> <span class="nx">combination</span> <span class="nx">make</span> <span class="nx">Auditeur</span> <span class="nx">unique</span><span class="p">.</span> <span class="nx">First</span><span class="p">,</span> <span class="nx">Auditeur</span> <span class="nx">provides</span> <span class="nx">a</span> <span class="nx">simple</span> <span class="nx">yet</span> <span class="nx">powerful</span> <span class="nx">API</span>       
+<span class="p">...</span>
+</pre></div>
+
+
+<p>I have only captured the top few suggestions. Going through the
+suggestions, it seems that the writing is OK and the usage of words like
+"many", "several" is justified.</p>
+<ul>
+<li>Checking incorrect passive voice usage</li>
+</ul>
+<!-- -->
+
+<div class="highlight"><pre><span class="err">$</span> <span class="n">sh</span> <span class="n">passive</span> <span class="n">clean</span><span class="p">.</span><span class="n">txt</span>
+</pre></div>
+
+
+<p>Since the script suggested a lot of places where passive voice was used-
+i just took a snapshot.</p>
+<p>There might be some scope of improvement. Overall, the paper is very
+well written! Extracting text out of pdf might create some problems.<br />
+References<br />
+1. <a href="http://matt.might.net/articles/shell-scripts-for-passive-voice-weasel-words-duplicates/">Matt Might's scripts</a><br />
+2. <a href="http://skipperkongen.dk/2011/09/07/creating-a-word-cloud-from-pdf-documents/">Creating a wordle from pdf</a>- Plan to use this soon for generating
+my wordle!</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

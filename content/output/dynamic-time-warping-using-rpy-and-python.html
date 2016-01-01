@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Dynamic Time Warping using rpy and Python</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="A Pelican Blog Atom Feed" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">A Pelican Blog </a></h1>
+                <nav><ul>
+                    <li><a href="/pages/about.html">About</a></li>
+                    <li><a href="/pages/education.html">Education</a></li>
+                    <li><a href="/pages/projects.html">Projects</a></li>
+                    <li><a href="/pages/publications.html">Publications</a></li>
+                    <li><a href="/pages/subscribe.html">Subscribe</a></li>
+                    <li><a href="/pages/tutorials.html">Tutorials</a></li>
+                    <li class="active"><a href="/category/blog.html">Blog</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/dynamic-time-warping-using-rpy-and-python.html" rel="bookmark"
+           title="Permalink to Dynamic Time Warping using rpy and Python">Dynamic Time Warping using rpy and Python</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2013-06-09T12:44:00+00:00">
+                Published: Sun 09 June 2013
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/nipunbatra.html">nipunbatra</a>
+        </address>
+<p>In <a href="/category/blog.html">Blog</a>. </p>
+<p>tags: <a href="/tag/python.html">Python</a> <a href="/tag/r.html">R</a> </p>
+</footer><!-- /.post-info -->      <p>Dynamic Time Warping is a technique used for measuring similarity
+between sequences. Since i deal mostly with time series data which is
+essentially sequential, i had been told to give DTW a try. There are
+numerous implementations of DTW, but i found the implementation in R to
+be most complete. Since it has been a long time since i last used R
+seriously and since i do most of my work in Python, i chose to use rpy2,
+which is a bridge between R and Python. R has a lot of open source well
+implemented code and rpy2 allows to leverage that while maintaining the
+comfort of Python.<br />
+In this post i download financial stock data from Yahoo finance and
+leverage Pandas' libraries for the same. I also present results
+comparing the implementation in R and in Python (mlpy).</p>
+<p>Loading the data</p>
+<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">:</span> <span class="n">from</span> <span class="n">pandas</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="n">data</span> <span class="n">import</span> <span class="n">DataReader</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">:</span> <span class="n">from</span> <span class="n">datetime</span> <span class="n">import</span> <span class="n">datetime</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">:</span> <span class="n">goog</span> <span class="o">=</span> <span class="n">DataReader</span><span class="p">(</span><span class="s">&quot;GOOG&quot;</span><span class="p">,</span>  <span class="s">&quot;yahoo&quot;</span><span class="p">,</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">:</span> <span class="n">goog</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">:</span>
+
+<span class="nl">DatetimeIndex:</span> <span class="mi">1857</span> <span class="n">entries</span><span class="p">,</span> <span class="mi">2004</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">19</span> <span class="mo">00</span><span class="o">:</span><span class="mo">00</span><span class="o">:</span><span class="mo">00</span> <span class="n">to</span> <span class="mi">2011</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">30</span> <span class="mo">00</span><span class="o">:</span><span class="mo">00</span><span class="o">:</span><span class="mo">00</span>
+<span class="n">Data</span> <span class="n">columns</span> <span class="p">(</span><span class="n">total</span> <span class="mi">6</span> <span class="n">columns</span><span class="p">)</span><span class="o">:</span>
+<span class="n">Open</span>         <span class="mi">1857</span>  <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>
+<span class="n">High</span>         <span class="mi">1857</span>  <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>
+<span class="n">Low</span>          <span class="mi">1857</span>  <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>
+<span class="n">Close</span>        <span class="mi">1857</span>  <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>
+<span class="n">Volume</span>       <span class="mi">1857</span>  <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>
+<span class="n">Adj</span> <span class="n">Close</span>    <span class="mi">1857</span>  <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>
+<span class="nl">dtypes:</span> <span class="n">float64</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">int64</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Separating out data for the years 2008 and 2009 in different dataframes.</p>
+<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="o">:</span> <span class="n">goog_2008</span><span class="o">=</span><span class="n">goog</span><span class="p">[</span><span class="n">goog</span><span class="p">.</span><span class="n">index</span><span class="p">.</span><span class="n">year</span><span class="o">==</span><span class="mi">2008</span><span class="p">]</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="o">:</span> <span class="n">goog_2009</span><span class="o">=</span><span class="n">goog</span><span class="p">[</span><span class="n">goog</span><span class="p">.</span><span class="n">index</span><span class="p">.</span><span class="n">year</span><span class="o">==</span><span class="mi">2009</span><span class="p">]</span>
+</pre></div>
+
+
+<p>Plotting the "Volume" field of the two dataframes</p>
+<div class="highlight"><pre><span class="n">n</span> <span class="p">[</span><span class="mi">79</span><span class="p">]</span><span class="o">:</span> <span class="n">goog_2008</span><span class="p">.</span><span class="n">Volume</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">&quot;2008 Volume&quot;</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">79</span><span class="p">]</span><span class="o">:</span> 
+<span class="n">In</span> <span class="p">[</span><span class="mi">80</span><span class="p">]</span><span class="o">:</span> <span class="n">goog_2009</span><span class="p">.</span><span class="n">Volume</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s">&quot;2009 Volume&quot;</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">80</span><span class="p">]</span><span class="o">:</span>
+</pre></div>
+
+
+<p>Here is how the data looks like<br />
+<img alt="2008_title" src="http://nipunbatra.files.wordpress.com/2013/06/2008_title.png?w=300" /> 
+<img alt="2009_title" src="http://nipunbatra.files.wordpress.com/2013/06/2009_title.png?w=300" /></p>
+<p>Importing stuff to make R work from within Python</p>
+<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]</span><span class="o">:</span> <span class="n">import</span> <span class="n">rpy2</span><span class="p">.</span><span class="n">robjects</span><span class="p">.</span><span class="n">numpy2ri</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">11</span><span class="p">]</span><span class="o">:</span> <span class="n">rpy2</span><span class="p">.</span><span class="n">robjects</span><span class="p">.</span><span class="n">numpy2ri</span><span class="p">.</span><span class="n">activate</span><span class="p">()</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]</span><span class="o">:</span> <span class="n">from</span> <span class="n">rpy2</span><span class="p">.</span><span class="n">robjects</span><span class="p">.</span><span class="n">packages</span> <span class="n">import</span> <span class="n">importr</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">13</span><span class="p">]</span><span class="o">:</span> <span class="n">R</span> <span class="o">=</span> <span class="n">rpy2</span><span class="p">.</span><span class="n">robjects</span><span class="p">.</span><span class="n">r</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">14</span><span class="p">]</span><span class="o">:</span> <span class="n">DTW</span> <span class="o">=</span> <span class="n">importr</span><span class="p">(</span><span class="err">&#39;</span><span class="n">dtw</span><span class="err">&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Computing the alignment of the two sequences</p>
+<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">17</span><span class="p">]</span><span class="o">:</span> <span class="n">alignment</span> <span class="o">=</span> <span class="n">R</span><span class="p">.</span><span class="n">dtw</span><span class="p">(</span><span class="n">goog_2008</span><span class="p">.</span><span class="n">Volume</span><span class="p">.</span><span class="n">values</span><span class="p">,</span> <span class="n">goog_2009</span><span class="p">.</span><span class="n">Volume</span><span class="p">.</span><span class="n">values</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="n">True</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Plotting the `twoway` and `threeway` type plot for the alignment
+obtained.</p>
+<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">20</span><span class="p">]</span><span class="o">:</span> <span class="n">R</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">alignment</span><span class="p">,</span><span class="n">type</span><span class="o">=</span><span class="s">&quot;twoway&quot;</span><span class="p">);</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">21</span><span class="p">]</span><span class="o">:</span> <span class="n">R</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">alignment</span><span class="p">,</span><span class="n">type</span><span class="o">=</span><span class="s">&quot;threeway&quot;</span><span class="p">);</span>
+</pre></div>
+
+
+<p><img alt="2way" src="http://nipunbatra.files.wordpress.com/2013/06/2way.png?w=285" /></p>
+<p><img alt="3way" src="http://nipunbatra.files.wordpress.com/2013/06/3way.png?w=287" /></p>
+<p>Finding the distance between the two time series</p>
+<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">21</span><span class="p">]</span><span class="o">:</span> <span class="n">dist</span> <span class="o">=</span> <span class="n">alignment</span><span class="p">.</span><span class="n">rx</span><span class="p">(</span><span class="err">&#39;</span><span class="n">distance</span><span class="err">&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">22</span><span class="p">]</span><span class="o">:</span> <span class="n">dist</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">22</span><span class="p">]</span><span class="o">:</span> <span class="mf">417765600.0</span>
+</pre></div>
+
+
+<p>Now, we try and do the same analysis using MlPy's DTW implementation.</p>
+<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">25</span><span class="p">]</span><span class="o">:</span> <span class="n">import</span> <span class="n">mlpy</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">26</span><span class="p">]</span><span class="o">:</span> <span class="n">import</span> <span class="n">matplotlib</span><span class="p">.</span><span class="n">cm</span> <span class="n">as</span> <span class="n">cm</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">27</span><span class="p">]</span><span class="o">:</span> <span class="n">dist</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="n">mlpy</span><span class="p">.</span><span class="n">dtw_std</span><span class="p">(</span><span class="n">goog_2008</span><span class="p">.</span><span class="n">Volume</span><span class="p">.</span><span class="n">values</span><span class="p">,</span> <span class="n">goog_2009</span><span class="p">.</span><span class="n">Volume</span><span class="p">.</span><span class="n">values</span><span class="p">,</span> <span class="n">dist_only</span><span class="o">=</span><span class="n">False</span><span class="p">)</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">28</span><span class="p">]</span><span class="o">:</span> <span class="n">dist</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">28</span><span class="p">]</span><span class="o">:</span> <span class="mf">377532600.0</span>
+</pre></div>
+
+
+<p>For some reason the distance obtained using the two implementation is
+not the same. Next, we aim to draw the warped path.</p>
+<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">29</span><span class="p">]</span><span class="o">:</span> <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">30</span><span class="p">]</span><span class="o">:</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="p">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">31</span><span class="p">]</span><span class="o">:</span> <span class="n">plot1</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">cost</span><span class="p">.</span><span class="n">T</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="err">&#39;</span><span class="n">lower</span><span class="err">&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="p">.</span><span class="n">gray</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="err">&#39;</span><span class="n">nearest</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">32</span><span class="p">]</span><span class="o">:</span> <span class="n">plot2</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">path</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">path</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="sc">&#39;w&#39;</span><span class="p">)</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">33</span><span class="p">]</span><span class="o">:</span> <span class="n">xlim</span> <span class="o">=</span> <span class="n">ax</span><span class="p">.</span><span class="n">set_xlim</span><span class="p">((</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">cost</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">0.5</span><span class="p">))</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">34</span><span class="p">]</span><span class="o">:</span> <span class="n">ylim</span> <span class="o">=</span> <span class="n">ax</span><span class="p">.</span><span class="n">set_ylim</span><span class="p">((</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">cost</span><span class="p">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="mf">0.5</span><span class="p">))</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">35</span><span class="p">]</span><span class="o">:</span> <span class="n">plt</span><span class="p">.</span><span class="n">draw</span><span class="p">()</span>
+</pre></div>
+
+
+<p><img alt="dtw_mlpy" src="http://nipunbatra.files.wordpress.com/2013/06/dtw_mlpy.png?w=300" /></p>
+<p>Both the alignment diagrams look very similar, which is as expected.<br />
+This is probably all that can be easily done using mlpy, since the
+documentation is only a single page. Whereas R's DTW package is a lot
+more feature and documentation rich.<br />
+For example, we first plot the cost density plot. Again this can be
+plotted using Matplotlib, but having the convenience of a method to do
+it for you looks better!</p>
+<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">37</span><span class="p">]</span><span class="o">:</span> <span class="n">R</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">alignment</span><span class="p">,</span><span class="n">type</span><span class="o">=</span><span class="s">&quot;density&quot;</span><span class="p">);</span>
+</pre></div>
+
+
+<p><img alt="cost_density" src="http://nipunbatra.files.wordpress.com/2013/06/cost_density.png?w=287" /></p>
+<p>Also, now we can use "DTW" as similarity metric for computing distance
+matrices. We can further use this distance matrix to perform clustering.
+HClust inherently supports distance matrices.</p>
+<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">39</span><span class="p">]</span><span class="o">:</span> <span class="n">distMatrix</span> <span class="o">=</span><span class="n">R</span><span class="p">.</span><span class="n">dist</span><span class="p">(</span><span class="n">goog_2009</span><span class="p">.</span><span class="n">values</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">&quot;DTW&quot;</span><span class="p">)</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">40</span><span class="p">]</span><span class="o">:</span> <span class="n">distMatrix</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">40</span><span class="p">]</span><span class="o">:</span>
+
+<span class="p">[</span><span class="mf">2557065.470000</span><span class="p">,</span> <span class="mf">5629523.270000</span><span class="p">,</span> <span class="mf">1768054.390000</span><span class="p">,</span> <span class="p">...,</span> <span class="mf">81622.300000</span><span class="p">,</span> <span class="mf">410006.360000</span><span class="p">,</span> <span class="mf">491625.100000</span><span class="p">]</span>
+</pre></div>
+
+
+<p>Performing hclust</p>
+<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">42</span><span class="p">]</span><span class="o">:</span> <span class="n">hc</span> <span class="o">=</span><span class="n">R</span><span class="p">.</span><span class="n">hclust</span><span class="p">(</span><span class="n">distMatrix</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s">&quot;average&quot;</span><span class="p">)</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">43</span><span class="p">]</span><span class="o">:</span> <span class="n">R</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hc</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">43</span><span class="p">]</span><span class="o">:</span> <span class="n">rpy2</span><span class="p">.</span><span class="n">rinterface</span><span class="p">.</span><span class="nb">NULL</span>
+</pre></div>
+
+
+<p>The Dendogram produced was way too shabby to be included in this post,
+so ommitted it.<br />
+Takeaway:</p>
+<ul>
+<li>R's DTW package has a lot more features and is well documented</li>
+<li>It has inbuilt plotting features which make the plots intuitive</li>
+<li>R can allow you to use DTW as a distance metric, which means it can
+    be used in clustering approaches. This is on current action list</li>
+<li>For  initial analysis, mlpy might also be very good</li>
+<li>rpy2 is easy to use and really extends data mining in Python</li>
+</ul>
+<p>What would be good to have</p>
+<ul>
+<li>If Pandas would allow these operations natively on DataFrame
+    objects. So we could easily play with more than 1 dimension. R code
+    is GPL and has a significant chunk written in C. Not sure if that
+    can be directly used in Python</li>
+<li>Ability to use different distance metrics in different clustering
+    implementations</li>
+<li>More open source code from research community. Some publications do
+    talk about DTW and finance and clustering, but absence of code ,
+    makes it hard to reproduce the results</li>
+<li>More Pandas documentation on fiddling with rpy2</li>
+</ul>
+<p>References</p>
+<ol>
+<li>http://rdatamining.wordpress.com/2011/08/23/time-series-analysis-and-mining-with-r/</li>
+<li>http://stackoverflow.com/questions/5695388/dynamic-time-warping-in-python</li>
+<li>http://data-matters.blogspot.in/2008/07/simple-implementation-of-dtwdynamic.html</li>
+<li>http://mlpy.sourceforge.net/docs/3.4/dtw.html</li>
+<li>https://en.wikipedia.org/wiki/Dynamic_time_warping</li>
+<li>https://github.com/pydata/pandas/issues/3810</li>
+<li>http://www.jstatsoft.org/v31/i07/paper</li>
+<li>http://stat.ethz.ch/R-manual/R-patched/library/stats/html/hclust.html</li>
+<li>http://pandas.pydata.org/pandas-docs/dev/io.html</li>
+</ol>
+<p>Caveat: I am pretty new to DTW and my analysis might be highly flawed.
+Also the dataset used is only for demo purposes and may not be a good
+one to illustrate the concept. A better dataset may be ECG data or some
+of the applications mentioned in [7]</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

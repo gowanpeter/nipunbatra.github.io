@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>Storing Laptop CPU and Memory Usage in Tempo-DB | Nipun Batra | </title>
+    <meta name="description" content="Nipun Batra, ">
+    <meta name="author" content="Nipun Batra">
+
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Feeds
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="alternate" href="http://nipunbatra.github.io/feeds/all.atom.xml" type="application/atom+xml" title="Nipun Batra Atom Feed" />
+
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata">
+
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/custom.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/pygments.css">
+
+    <!-- Scripts
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fitvids/1.1.0/jquery.fitvids.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".container").fitVids();
+        });
+    </script>
+
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="http://nipunbatra.github.io/theme/assets/favicon.png">
+
+
+<!-- Using MathJax, with the delimiters $ -->
+<!-- Conflict with pygments for the .mo and .mi -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  "HTML-CSS": {
+  styles: {
+  ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
+  },
+  tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']],processEscapes: true}
+  });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+</head>
+<body>
+
+    <!-- Primary Page Layout
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    
+    <div class="container">
+        <section class="header">
+            <img src="http://nipunbatra.github.io/lk.jpg" class="logo">
+        </section>
+    </div>
+
+    <div class="container">
+        <nav class="navbar">
+            <div class="container">
+                <ul class="navbar-list">
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/" class="navbar-link">Blog home</a></li>
+                    <li class="navbar-item"><a href="https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                <!--
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/http://nipunbatra.github.io/" class="navbar-link">Blog home</a></li>
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                -->
+                    <li class="navbar-icon">
+                        <a href="http://twitter.com/nipun_batra">
+                            <i class="fa fa-twitter fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://github.com/nipunreddevil">
+                            <i class="fa fa-github fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://www.linkedin.com/profile/view?id=43966733">
+                            <i class="fa fa-linkedin fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <section class="post">
+            <header class="post-header">
+                <h3>Storing Laptop CPU and Memory Usage in Tempo-DB</h3>
+                <p class="post-meta">
+                    Fri 17 May 2013 &middot; tagged 
+                        <a class="post-category" href="http://nipunbatra.github.io/tag/python.html">Python</a>
+                </p>
+            </header>
+        </section>
+        <section class="post-content">
+            <p>Very often i deal with timeseries data and end up storing collected data
+in MySQL. I have also used MongoDB a lot. This time decided to give
+<a href="https://tempo-db.com/">Tempo-DB</a> which is a timeseries database a try. The API is fairly
+simple to use and within a couple of minutes one can publish data and
+also visualize it with some basic statistics. The caveat is that the DB
+is hosted on the cloud and available as a service over the internet. So
+if you want to push some timeseries data real quick and visualize it,
+Tempo-DB looks promising. In this post, i shall be pushing my CPU
+percentage usage and free RAM (MB) to the DB i created. The code
+follows:</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">datetime</span><span class="o">,</span><span class="nn">psutil</span><span class="o">,</span><span class="nn">time</span><span class="o">,</span><span class="nn">pytz</span>
+<span class="kn">from</span> <span class="nn">tempodb</span> <span class="kn">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">DataPoint</span>
+
+<span class="c"># Modify these with your credentials found at: http://tempo-db.com/manage/</span>
+<span class="n">API_KEY</span> <span class="o">=</span> <span class="s">&#39;*************************&#39;</span>
+<span class="n">API_SECRET</span> <span class="o">=</span> <span class="s">&#39;**************************&#39;</span>
+<span class="n">TEMP_DATA</span> <span class="o">=</span> <span class="s">&#39;CPU Temperature&#39;</span>
+<span class="n">RAM_DATA</span> <span class="o">=</span> <span class="s">&#39;Available RAM&#39;</span>
+<span class="n">client</span> <span class="o">=</span> <span class="n">Client</span><span class="p">(</span><span class="n">API_KEY</span><span class="p">,</span> <span class="n">API_SECRET</span><span class="p">)</span>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">timestamp</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">pytz</span><span class="o">.</span><span class="n">timezone</span><span class="p">(</span><span class="s">&#39;Asia/Kolkata&#39;</span><span class="p">))</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">write_key</span><span class="p">(</span><span class="n">TEMP_DATA</span><span class="p">,[</span><span class="n">DataPoint</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span><span class="n">psutil</span><span class="o">.</span><span class="n">cpu_percent</span><span class="p">())])</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">write_key</span><span class="p">(</span><span class="n">RAM_DATA</span><span class="p">,[</span><span class="n">DataPoint</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span><span class="n">psutil</span><span class="o">.</span><span class="n">avail_phymem</span><span class="p">()</span><span class="o">/</span><span class="mi">1000000</span><span class="p">)])</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+
+<p>So within few LOC you can be up and running. The following screenshot
+shows visualization for free RAM on my system.</p>
+<p><img alt="tempo" src="http://nipunbatra.files.wordpress.com/2013/05/tempo.png?w=660" /></p>
+<p>While i have not given querying a try, on initial looks Tempo-DB looks
+promising. The <a href="https://tempo-db.com/features/">Features</a> page on their site also mentions that query
+time is independent of DB size and only dependent on the query size!</p>
+        </section>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'nipunbatra';
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript><footer class="footer">
+    &copy; Nipun Batra &ndash;
+        Proudly published with <a href="http://blog.getpelican.com/">Pelican</a>
+</footer>    </div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50180272-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    <!-- End Document
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

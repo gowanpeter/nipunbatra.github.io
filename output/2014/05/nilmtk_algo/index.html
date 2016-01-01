@@ -1,0 +1,2157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>Adding a new disaggregation algorithm to NILMTK | Nipun Batra | </title>
+    <meta name="description" content="Nipun Batra, ">
+    <meta name="author" content="Nipun Batra">
+
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Feeds
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="alternate" href="http://nipunbatra.github.io/feeds/all.atom.xml" type="application/atom+xml" title="Nipun Batra Atom Feed" />
+
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata">
+
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/custom.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/pygments.css">
+
+    <!-- Scripts
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fitvids/1.1.0/jquery.fitvids.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".container").fitVids();
+        });
+    </script>
+
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="http://nipunbatra.github.io/theme/assets/favicon.png">
+
+
+<!-- Using MathJax, with the delimiters $ -->
+<!-- Conflict with pygments for the .mo and .mi -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  "HTML-CSS": {
+  styles: {
+  ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
+  },
+  tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']],processEscapes: true}
+  });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+</head>
+<body>
+
+    <!-- Primary Page Layout
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <div class="container">
+        <section class="header">
+            <img src="http://nipunbatra.github.io/theme/assets/stewie.jpg" class="logo">
+        </section>
+    </div>
+    <div class="container">
+        <nav class="navbar">
+            <div class="container">
+                <ul class="navbar-list">
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io//archives.html" class="navbar-link">Blog archives</a></li>
+                    <li class="navbar-icon">
+                        <a href="http://twitter.com/nipun_batra">
+                            <i class="fa fa-twitter fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://github.com/nipunreddevil">
+                            <i class="fa fa-github fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://www.linkedin.com/profile/view?id=43966733">
+                            <i class="fa fa-linkedin fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <section class="post">
+            <header class="post-header">
+                <h3>Adding a new disaggregation algorithm to NILMTK</h3>
+                <p class="post-meta">
+                    Tue 27 May 2014 &middot; tagged 
+                        <a class="post-category" href="http://nipunbatra.github.io/tag/nilmtk.html">nilmtk</a>
+                </p>
+            </header>
+        </section>
+        <section class="post-content">
+            <p>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In this post I will illustrate how to add a new disaggregation algorithm to <a href="http://nilmtk.github.io">NILMTK</a> v0.1. This algorithm is purely for demonstration purpose and is expected to perform really bad! NILMTK is evolving and we might soon hit v0.2 which should make dealing with larger datasets much easier.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Customary-Python-imports">Customary Python imports<a class="anchor-link" href="#Customary-Python-imports">&#182;</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="NILMTK-imports">NILMTK imports<a class="anchor-link" href="#NILMTK-imports">&#182;</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="kn">from</span> <span class="nn">nilmtk.cross_validation</span> <span class="k">import</span> <span class="n">train_test_split</span>
+<span class="kn">import</span> <span class="nn">nilmtk.preprocessing.electricity.building</span> <span class="k">as</span> <span class="nn">prepb</span>
+<span class="kn">import</span> <span class="nn">nilmtk.stats.electricity.building</span> <span class="k">as</span> <span class="nn">bstats</span>
+<span class="kn">import</span> <span class="nn">nilmtk.stats.electricity.single</span> <span class="k">as</span> <span class="nn">sstats</span>
+<span class="kn">from</span> <span class="nn">nilmtk.dataset</span> <span class="k">import</span> <span class="n">DataSet</span>
+<span class="kn">from</span> <span class="nn">nilmtk.cross_validation</span> <span class="k">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">nilmtk.disaggregate.disaggregator</span> <span class="k">import</span> <span class="n">Disaggregator</span>
+<span class="kn">from</span> <span class="nn">nilmtk.sensors.electricity</span> <span class="k">import</span> <span class="n">Measurement</span><span class="p">,</span> <span class="n">ApplianceName</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Loading-REDD-dataset">Loading REDD dataset<a class="anchor-link" href="#Loading-REDD-dataset">&#182;</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">ds</span> <span class="o">=</span> <span class="n">DataSet</span><span class="p">()</span>
+<span class="n">ds</span><span class="o">.</span><span class="n">load_hdf5</span><span class="p">(</span><span class="s">&#39;/home/nipun/Dropbox/nilmtk_datasets/redd/low_freq/&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Preprocessing-first-building">Preprocessing first building<a class="anchor-link" href="#Preprocessing-first-building">&#182;</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">building</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">buildings</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">building</span><span class="o">.</span><span class="n">utility</span><span class="o">.</span><span class="n">electric</span> <span class="o">=</span> <span class="n">building</span><span class="o">.</span><span class="n">utility</span><span class="o">.</span><span class="n">electric</span><span class="o">.</span><span class="n">sum_split_supplies</span><span class="p">()</span>
+<span class="n">building</span> <span class="o">=</span> <span class="n">prepb</span><span class="o">.</span><span class="n">downsample</span><span class="p">(</span><span class="n">building</span><span class="p">,</span> <span class="n">rule</span><span class="o">=</span><span class="s">&#39;1T&#39;</span><span class="p">)</span>
+<span class="n">building</span> <span class="o">=</span> <span class="n">prepb</span><span class="o">.</span><span class="n">fill_appliance_gaps</span><span class="p">(</span><span class="n">building</span><span class="p">)</span>
+<span class="n">building</span> <span class="o">=</span> <span class="n">prepb</span><span class="o">.</span><span class="n">drop_missing_mains</span><span class="p">(</span><span class="n">building</span><span class="p">)</span>
+<span class="n">building</span> <span class="o">=</span> <span class="n">prepb</span><span class="o">.</span><span class="n">make_common_index</span><span class="p">(</span><span class="n">building</span><span class="p">)</span>
+<span class="n">building</span><span class="o">.</span><span class="n">utility</span><span class="o">.</span><span class="n">electric</span><span class="o">.</span><span class="n">mains</span><span class="p">[(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)]</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="n">Measurement</span><span class="p">(</span><span class="s">&#39;power&#39;</span><span class="p">,</span><span class="s">&#39;apparent&#39;</span><span class="p">):</span> <span class="n">Measurement</span><span class="p">(</span><span class="s">&#39;power&#39;</span><span class="p">,</span><span class="s">&#39;active&#39;</span><span class="p">)},</span> <span class="n">inplace</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Creating-a-new-disaggregation-algorithm">Creating a new disaggregation algorithm<a class="anchor-link" href="#Creating-a-new-disaggregation-algorithm">&#182;</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Every disaggregation algorithm should inherit the abstract <code>Disaggregator</code> class. It must define the following four functions:</p>
+<ol>
+<li>Train: Train to create a model</li>
+<li>Disaggregate: Disaggregate on test data to create predictions</li>
+<li>Export model: Export learnt model to a JSON file</li>
+<li>Import model: Import model from JSON file</li>
+</ol>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="k">class</span> <span class="nc">RandomPowerDisaggregator</span><span class="p">(</span><span class="n">Disaggregator</span><span class="p">):</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">predictions</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        
+    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">building</span><span class="p">,</span> <span class="n">aggregate</span><span class="o">=</span><span class="s">&#39;mains&#39;</span><span class="p">,</span> <span class="n">submetered</span><span class="o">=</span><span class="s">&#39;appliances&#39;</span><span class="p">,</span>
+              <span class="n">disagg_features</span><span class="o">=</span><span class="p">[</span><span class="n">Measurement</span><span class="p">(</span><span class="s">&#39;power&#39;</span><span class="p">,</span> <span class="s">&#39;active&#39;</span><span class="p">)],</span>
+              <span class="n">environmental</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method accepts as input a nilmtk building object, contains</span>
+<span class="sd">        information on how to do disaggregation: mains-&gt;appliances or </span>
+<span class="sd">        mains-&gt;circuits, features to use for disaggregation</span>
+<span class="sd">        </span>
+<span class="sd">        In this particular demo algorithm, the model contains mean power of </span>
+<span class="sd">        each appliance</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">train_appliances</span> <span class="o">=</span> <span class="n">building</span><span class="o">.</span><span class="n">utility</span><span class="o">.</span><span class="n">electric</span><span class="o">.</span><span class="n">get_dataframe_of_appliances</span><span class="p">(</span>
+            <span class="n">measurement</span><span class="o">=</span><span class="n">disagg_features</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="n">train_mains</span> <span class="o">=</span> <span class="n">building</span><span class="o">.</span><span class="n">utility</span><span class="o">.</span><span class="n">electric</span><span class="o">.</span><span class="n">get_dataframe_of_mains</span><span class="p">(</span>
+            <span class="n">measurement</span><span class="o">=</span><span class="n">disagg_features</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        
+        <span class="k">for</span> <span class="n">appliance_name</span><span class="p">,</span> <span class="n">appliance_df</span> <span class="ow">in</span> <span class="n">train_appliances</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">[</span><span class="n">appliance_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">appliance_df</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    
+    <span class="k">def</span> <span class="nf">disaggregate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">building</span><span class="p">,</span> <span class="n">disagg_features</span><span class="o">=</span><span class="p">[</span><span class="n">Measurement</span><span class="p">(</span><span class="s">&#39;power&#39;</span><span class="p">,</span> <span class="s">&#39;active&#39;</span><span class="p">)],</span> <span class="n">environmental</span><span class="o">=</span><span class="k">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Disaggregate method takes a test building and produces a predicted power time series. It must use</span>
+<span class="sd">        the same disaggregation features as the training algortihm</span>
+<span class="sd">        </span>
+<span class="sd">        In this demo algorithm, each appliance at each time instant is predicted to consume</span>
+<span class="sd">        its mean power. Not too smart.. But this is only for demo</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="n">test_mains</span> <span class="o">=</span> <span class="n">building</span><span class="o">.</span><span class="n">utility</span><span class="o">.</span><span class="n">electric</span><span class="o">.</span><span class="n">get_dataframe_of_mains</span><span class="p">(</span><span class="n">measurement</span><span class="o">=</span><span class="n">disagg_features</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">predicted_power</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">appliance</span><span class="p">,</span> <span class="n">appliance_mean</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">predicted_power</span><span class="p">[</span><span class="n">appliance</span><span class="p">]</span> <span class="o">=</span> <span class="n">appliance_mean</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">test_mains</span><span class="o">.</span><span class="n">index</span><span class="p">))</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">predictions</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+            <span class="n">predicted_power</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">test_mains</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">export_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Exporting learnt model to JSON file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">model_copy</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">appliance</span><span class="p">,</span> <span class="n">appliance_states</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">model_copy</span><span class="p">[</span>
+                <span class="s">&quot;{}_{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">appliance</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">appliance</span><span class="o">.</span><span class="n">instance</span><span class="p">)]</span> <span class="o">=</span> <span class="n">appliance_states</span>
+        <span class="n">j</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">model_copy</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;w+&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+    
+    <span class="k">def</span> <span class="nf">import_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Importing a model from JSON file</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">temp</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">appliance</span><span class="p">,</span> <span class="n">power</span> <span class="ow">in</span> <span class="n">temp</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+            <span class="n">appliance_name</span> <span class="o">=</span> <span class="n">appliance</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;_&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s">&quot;ascii&quot;</span><span class="p">)</span>
+            <span class="n">appliance_instance</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">appliance</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">appliance_name_instance</span> <span class="o">=</span> <span class="n">ApplianceName</span><span class="p">(</span>
+                <span class="n">appliance_name</span><span class="p">,</span> <span class="n">appliance_instance</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">[</span><span class="n">appliance_name_instance</span><span class="p">]</span> <span class="o">=</span> <span class="n">power</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let us instantiate this disaggregator</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">disagg</span> <span class="o">=</span> <span class="n">RandomPowerDisaggregator</span><span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Splitting the data into 50% training and 50% test</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">train</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">building</span><span class="p">,</span> <span class="n">train_size</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">)</span> 
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Train</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">disagg</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Our learnt model</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">disagg</span><span class="o">.</span><span class="n">model</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[9]:</div>
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>{ApplianceName(name=&apos;bathroom misc&apos;, instance=1): 7.3195716492395437,
+ ApplianceName(name=&apos;dishwasher&apos;, instance=1): 24.274560361216729,
+ ApplianceName(name=&apos;fridge&apos;, instance=1): 54.242927756653991,
+ ApplianceName(name=&apos;hob&apos;, instance=1): 0.13866325117336026,
+ ApplianceName(name=&apos;kitchen outlets&apos;, instance=1): 21.262307509505703,
+ ApplianceName(name=&apos;kitchen outlets&apos;, instance=2): 29.023764258555133,
+ ApplianceName(name=&apos;kitchen outlets&apos;, instance=3): 5.3056077709125473,
+ ApplianceName(name=&apos;kitchen outlets&apos;, instance=4): 3.2023354325095057,
+ ApplianceName(name=&apos;lighting&apos;, instance=1): 43.010152091254753,
+ ApplianceName(name=&apos;lighting&apos;, instance=2): 20.489001901140686,
+ ApplianceName(name=&apos;lighting&apos;, instance=3): 13.632855275665399,
+ ApplianceName(name=&apos;microwave&apos;, instance=1): 27.826884505703422,
+ ApplianceName(name=&apos;oven&apos;, instance=1): 9.1898776140684415,
+ ApplianceName(name=&apos;space heater&apos;, instance=1): 0.15786827174429657,
+ ApplianceName(name=&apos;washer dryer&apos;, instance=1): 22.071126425855514}</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Exporting our learnt model</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">disagg</span><span class="o">.</span><span class="n">export_model</span><span class="p">(</span><span class="s">&#39;model.json&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="o">!</span>cat model.json
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>{&quot;fridge_1&quot;: 54.242927756653991, &quot;washer dryer_1&quot;: 22.071126425855514, &quot;kitchen outlets_2&quot;: 29.023764258555133, &quot;kitchen outlets_3&quot;: 5.3056077709125473, &quot;hob_1&quot;: 0.13866325117336026, &quot;kitchen outlets_1&quot;: 21.262307509505703, &quot;oven_1&quot;: 9.1898776140684415, &quot;microwave_1&quot;: 27.826884505703422, &quot;kitchen outlets_4&quot;: 3.2023354325095057, &quot;dishwasher_1&quot;: 24.274560361216729, &quot;space heater_1&quot;: 0.15786827174429657, &quot;bathroom misc_1&quot;: 7.3195716492395437, &quot;lighting_3&quot;: 13.632855275665399, &quot;lighting_2&quot;: 20.489001901140686, &quot;lighting_1&quot;: 43.010152091254753}</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let us now delete the previous disaggregator and load our model from JSON</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">disagg</span> <span class="o">=</span> <span class="n">RandomPowerDisaggregator</span><span class="p">()</span>
+<span class="n">disagg</span><span class="o">.</span><span class="n">import_model</span><span class="p">(</span><span class="s">&#39;model.json&#39;</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Finally, let us use this model to disaggregate.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">disagg</span><span class="o">.</span><span class="n">disaggregate</span><span class="p">(</span><span class="n">test</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">disagg</span><span class="o">.</span><span class="n">predictions</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt output_prompt">Out[14]:</div>
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div style="max-height:1000px;max-width:1500px;overflow:auto;">
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>(bathroom misc, 1)</th>
+      <th>(dishwasher, 1)</th>
+      <th>(fridge, 1)</th>
+      <th>(hob, 1)</th>
+      <th>(kitchen outlets, 1)</th>
+      <th>(kitchen outlets, 2)</th>
+      <th>(kitchen outlets, 3)</th>
+      <th>(kitchen outlets, 4)</th>
+      <th>(lighting, 1)</th>
+      <th>(lighting, 2)</th>
+      <th>(lighting, 3)</th>
+      <th>(microwave, 1)</th>
+      <th>(oven, 1)</th>
+      <th>(space heater, 1)</th>
+      <th>(washer dryer, 1)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2011-04-27 19:10:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:11:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:12:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:13:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:14:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:15:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:16:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:17:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:18:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:19:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:20:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:21:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:22:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:23:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:24:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:25:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:26:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:27:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:28:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:29:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:30:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:31:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:32:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:33:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:34:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:35:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:36:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:37:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:38:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:39:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:40:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:41:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:42:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:43:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:44:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:45:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:46:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:47:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:48:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:49:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:50:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:51:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:52:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:53:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:54:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:55:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:56:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:57:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:58:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 19:59:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 20:00:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 20:01:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 20:02:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 20:03:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 20:04:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 20:05:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 20:06:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 20:07:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 20:08:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th>2011-04-27 20:09:00-04:00</th>
+      <td> 7.319572</td>
+      <td> 24.27456</td>
+      <td> 54.242928</td>
+      <td> 0.138663</td>
+      <td> 21.262308</td>
+      <td> 29.023764</td>
+      <td> 5.305608</td>
+      <td> 3.202335</td>
+      <td> 43.010152</td>
+      <td> 20.489002</td>
+      <td> 13.632855</td>
+      <td> 27.826885</td>
+      <td> 9.189878</td>
+      <td> 0.157868</td>
+      <td> 22.071126</td>
+    </tr>
+    <tr>
+      <th></th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+  </tbody>
+</table>
+<p>13150 rows × 15 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span class="n">ax</span> <span class="o">=</span> <span class="n">disagg</span><span class="o">.</span><span class="n">predictions</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+<span class="n">box</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_position</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_position</span><span class="p">([</span><span class="n">box</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">y0</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">width</span> <span class="o">*</span> <span class="mf">0.8</span><span class="p">,</span> <span class="n">box</span><span class="o">.</span><span class="n">height</span><span class="p">])</span>
+
+<span class="c"># Put a legend to the right of the current axis</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s">&#39;center left&#39;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">));</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgQAAAFrCAYAAACuSJGEAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
+AAALEgAACxIB0t1+/AAAIABJREFUeJzs3X98zfX///HbOZthG2NrGBO2MT+qaSG/orcIRb3fafm5
+kryj3vUelt5DDIWiUlF+JGHIb8q7NxX5+JmfZQoNkV+thQ37gf063z/2ddrYj7Od7ey1db/+E+e8
+zut536kue5zX63Ved5PFYrEgIiIif2nm0g4gIiIipU8DgYiIiGggEBEREQ0EIiIiggYCERERQQOB
+iIiIAM6F2XjOnDls2bKFtLQ0BgwYQHBwMBEREZjNZho2bEhkZCQmk6mksoqIiEgJsfkIwZ49e/jh
+hx9YtmwZUVFRnD17ljfffJMRI0awZMkSLBYLmzdvLsmsIiIiUkJsHgh27txJYGAgL774IkOHDqVT
+p04cPnyYli1bAtChQwd27dpVYkFFRESk5Nh8yiA+Pp7Y2FjmzJnD2bNnGTp0KNlvcujq6kpiYmKJ
+hBQREZGSZfNAUL16dfz9/XF2dqZBgwZUrFiRP/74w/p8cnIyVatWLXA/6ekZODs7FS2tiIiIlAib
+B4L77ruPRYsW8eyzzxIXF8f169dp3bo1e/fupVWrVmzbto02bdoUuJ+EhBS7AheFt3cVLlww7tEL
+5bOPkfMZORson73KQz5v7yoOSiNGZ/NA8OCDD7Jv3z6efPJJMjMziYyMpE6dOowdO5a0tDT8/f3p
+1q1bSWYVERGRElKorx2OHDnytseioqKKLYyIiIiUDt2YSERERDQQiIiIiAYCERERQQOBiIiIoIFA
+RERE0EAgIiIiaCAQERERNBCIiIgIGghEREQEDQQiIiKCBgIRERFBA4GIiIiggUBERETQQCAiIiJo
+IBARERE0EIiIiAgaCERERAQNBCIiIoIGAhEREUEDgYiIiKCBQERERNBAICIiImggEBEREcDZ0Qum
+J1519JKkuWSSnpjk8HVtpXz2MXI+I2cD5bNXWc9nMpnBu4oDE4mRmSwWi8WRC+58vJcjlxMRkXy0
++3x1aUcQg3D4EQL3+1o4ekkqVqzAjRtpDl/XVspnHyPnM3I2UD57lfV8JrPOGsufHH6E4MKFREcu
+B4C3d5VSWddWymcfI+czcjZQPnuVh3zeOmUg/5/GQxEREdFAICIiIhoIREREBA0EIiIiggYCERER
+QQOBiIiIoIFARERE0EAgIiIiaCAQERERNBCIiIgIGghEREQEDQQiIiKCBgIRERFBA4GIiIiggUBE
+RETQQCAiIiKAc2E2/sc//oG7uzsAdevWZciQIURERGA2m2nYsCGRkZGYTKYSCSoiIiIlx+aB4MaN
+GwBERUVZHxs6dCgjRoygZcuWREZGsnnzZjp37lz8KUVERKRE2XzK4Oeff+batWs899xzPPPMMxw8
+eJAjR47QsmVLADp06MCuXbtKLKiIiPx1JCQkMG7cOAB69Ohh8+v27dtHTEwMAO3atSuRbMVh+/bt
+rFixotj298033xAeHm79+4wZM/jll18KtQ+bjxBUrlyZ5557jpCQEH799VcGDx6c43lXV1cSExML
+3E/16q44OzsVKmRx8Pau4vA1C0P57GPkfEbOBspnL+UrGe+99x4DBgwAKNSp6NWrV/Poo48SGBho
+6FPYDzzwQLHt64033mDnzp00bdrU+tjAgQMJDw9n7ty5Nu/H5oGgfv361KtXz/rnatWqcfToUevz
+ycnJVK1atcD9JCSk2ByuuHh7V+HChYKHldKifPYxcj4jZwPls1d5yFfQwDB//WF2Rp8vzli0C6rD
+oJ7N8nw+KSmJn376iUaNGgGQmJjISy+9xKVLl2jatCljx47l999/Z/z48aSmpnLhwgXCwsLw8fFh
+x44dHD16lICAAFJTUwkPDyc2NpZq1arxwQcfMGvWLH744QdSUlKYNGkSW7du5X//+x/Ozs60aNGC
+V155hatXrzJy5EiSk5NJT09n2LBhtG7dmp49e9KyZUtiYmLw8/PDy8uL/fv34+Liwty5c3F2/vNX
+amhoKI0bN+b48eO4urrSokULduzYwdWrV5k/fz6bNm3i1KlTvPzyy/z73/8mOTmZa9euMXz4cNq1
+a8fKlStZtmwZmZmZdOrUiZdffjnP9ys4OJguXbqwfPly62NVqlShUqVKxMTEEBgYaNO/F5tPGaxZ
+s4Y333wTgLi4OJKTk2nXrh179+4FYNu2bbRo0cLW3YmIiOTq4MGDNGjQwPr35ORkJk6cyGeffcal
+S5f49ttvOXXqFIMGDWL+/PlMnDiRpUuX0qxZMx544AFGjhyJj48PKSkphIeHs3TpUhITEzly5Agm
+k4mAgACWLVtGeno6GzduZPny5SxbtozTp0/zf//3f8yaNYv27duzePFi3n//fcaMGWPN0bNnT5Ys
+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
+6tVj4sSJ9O7dm3nz5lGlShXuv/9+lixZQpMmTXjiiSdYtmwZM2bM4PDhw1y+fJnAwECmTJlCr169
++OCDD6hTpw4bN27kwIEDhIWFMXr0aC5fznq/XnvttdsaG7MLDg6mS5cuOaqZS7Mt0Zj3rRQRkb+s
+W9sOf/vtN4YPH86SJUuIioqiX79+rFy5kgMHDpCYmGj9+uSyZcuoW7cuy5YtY/r06URHR2MymfDw
+8GDp0qU0btyYmTNnsmjRIpYuXUrVqlVZsWIFDz30ENu3b+fAgQPUrVuXnTt3cuLECerXr09qaioe
+Hh7Mnz+fVatWER0dTVxcHE8++STr1q0DYO3atfTu3ZtZs2bRpk0bFi1axMSJExk/fny+P+cjj+R+
+D4ibbYmOpjsViohInkKa+Ob7ab4k3Np2WK1aNWrVqgVkfaPN398fyPo0fePGDet2p06dokOHDgDU
+q1ePZ555hrVr11qHi7NnzxIQEGD91lzLli3ZsWMH/fv3Z9asWdSuXZvhw4cTFRVFZmYmXbt2pVKl
+Sly6dInw8HBcXV1JSUkhIyODnj170q9fP0JCQkhKSiIgIIBjx46xZ88e/ve//wHkW9CUn9JqS9QR
+AhERMZRb2w5tvYGSv78/P/74I5D1y3/kyJEAmM1Zv+p8fX355ZdfuHbtGgB79uyhQYMGNGzYkLNn
+z/Ljjz/SsWNHkpOT+fbbb+nYsSNbt27l999/55133mH48OHWSmV3d3eaNWvG5MmT6dWrl3X9gQMH
+EhUVxdtvv83f//73Iv38pdWWqIFAREQMJSgoiJ9//rnA7bIPCiaTiT59+nD27FlCQ0OJiIhg4MCB
+Obbz9PTk5Zdf5umnn6Z3795cuXKFvn37AnD//ffj6emJyWSiVatWeHl5UalSJYKCgjh79ixPP/00
+kyZNIigoiD/++AOAp556ih07dlgP/Q8dOpQNGzYQGhpqvb0/wOTJk/P8eUwm020Dz6FDh2jTpk0h
+3rHiobZDA1A++xg5n5GzgfLZqzzkM+p9CPJrOyxrykpboo4QiIiI4YSFhbF06dLSjlEsHnroIZuG
+ASjdtkRdVCgiIobj6emZa/VxWWRrdTJkDUKlRUcIRERERAOBiIiIaCAQERERNBCIiIgIGghERMSA
+CtN2WBImT57MsmXLALBYLEREROS4K2J5pIFAREQMpzBth8UpPj6ewYMHs2XLFusNg0wmEz169ODj
+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
+JMD/ARA9I6XMnm1SAAAAAElFTkSuQmCC
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So there you go. Here was a simple disaggregation algo! Nothing revolutionary- Just a hint on how to get started with writing disaggregation algorithms in NILMTK.</p>
+
+</div>
+</div>
+</div></p>
+        </section>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'nipunbatra';
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript><footer class="footer">
+    &copy; Nipun Batra &ndash;
+        Proudly published with <a href="http://blog.getpelican.com/">Pelican</a>
+</footer>    </div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50180272-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    <!-- End Document
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

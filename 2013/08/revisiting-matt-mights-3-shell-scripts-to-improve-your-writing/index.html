@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>Revisiting Matt Might's 3 shell scripts to improve your writing | Nipun Batra | </title>
+    <meta name="description" content="Nipun Batra, ">
+    <meta name="author" content="Nipun Batra">
+
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Feeds
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="alternate" href="http://nipunbatra.github.io/feeds/all.atom.xml" type="application/atom+xml" title="Nipun Batra Atom Feed" />
+
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata">
+
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/custom.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/pygments.css">
+
+    <!-- Scripts
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fitvids/1.1.0/jquery.fitvids.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".container").fitVids();
+        });
+    </script>
+
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="http://nipunbatra.github.io/theme/assets/favicon.png">
+
+
+<!-- Using MathJax, with the delimiters $ -->
+<!-- Conflict with pygments for the .mo and .mi -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  "HTML-CSS": {
+  styles: {
+  ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
+  },
+  tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']],processEscapes: true}
+  });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+</head>
+<body>
+
+    <!-- Primary Page Layout
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    
+    <div class="container">
+        <section class="header">
+            <img src="http://nipunbatra.github.io/lk.jpg" class="logo">
+        </section>
+    </div>
+
+    <div class="container">
+        <nav class="navbar">
+            <div class="container">
+                <ul class="navbar-list">
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/" class="navbar-link">Blog home</a></li>
+                    <li class="navbar-item"><a href="https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                <!--
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/http://nipunbatra.github.io/" class="navbar-link">Blog home</a></li>
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                -->
+                    <li class="navbar-icon">
+                        <a href="http://twitter.com/nipun_batra">
+                            <i class="fa fa-twitter fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://github.com/nipunreddevil">
+                            <i class="fa fa-github fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://www.linkedin.com/profile/view?id=43966733">
+                            <i class="fa fa-linkedin fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <section class="post">
+            <header class="post-header">
+                <h3>Revisiting Matt Might's 3 shell scripts  to improve your writing</h3>
+                <p class="post-meta">
+                    Sun 11 August 2013 &middot; tagged 
+                        <a class="post-category" href="http://nipunbatra.github.io/tag/latex.html">latex</a>
+                </p>
+            </header>
+        </section>
+        <section class="post-content">
+            <p>Having made extensive use, and greatly benefited by Matt Might's article
+entitled -"3 shell scripts to improve your writing", i thought of
+sharing how we can apply this same set of scripts on already published
+work, available only as pdf. Maybe, it can help a reviewer! I use a
+recent <a href="http://fredjiang.com/papers/MobiSys2013Auditeur.pdf">2013 Mobisys paper</a> for illustration.</p>
+<p>Following are the required steps:</p>
+<ul>
+<li>
+<p>Convert pdf to text or HTML</p>
+<p><code>$ pdftotext MobiSys2013Auditeur.pdf</code></p>
+</li>
+</ul>
+<p>or  </p>
+<div class="highlight"><pre><span class="nv">$ </span>pdftohtml MobiSys2013Auditeur.pdf  
+<span class="nv">$ </span>lynx -dump MobiSys2013Auditeur.html &gt;&gt; MobiSys2013Auditeur.txt
+</pre></div>
+
+
+<ul>
+<li>Remove non printable characters</li>
+</ul>
+<!-- -->
+
+<div class="highlight"><pre>perl -lpe s/[^[:print:]]+//g MobiSys2013Auditeur.txt &gt;&gt; clean.txt
+</pre></div>
+
+
+<ul>
+<li>Now using Matt's scripts (located in the same folder) to find
+    lexical illusions</li>
+</ul>
+<!-- -->
+
+<div class="highlight"><pre><span class="nv">$ </span>perl dups clean.txt       
+clean.txt:429 Space      
+clean.txt:552 soundlet       
+clean.txt:850 Mean       
+clean.txt:1630 two
+</pre></div>
+
+
+<p>This means that the following words have been used consecutively. Let us
+analyze.<br />
+The "Space" repetition is shown by the script due to our "hacky" method
+of getting text from pdf. In the paper, Private Space and Public Space
+are used in a figure.<br />
+The other one is "soundlet". Now this happens to be a Java object
+initialization: Soundlet soundlet and thus is perfectly fine.<br />
+"Mean" also occurs twice in a figure. Again it is due to our flawed
+hack!<br />
+"two" occurs in the following sentence: "Vehicle Sense<br />
+and Kitchen Sense are trained on samples collected from members of two
+two-person families, and are tested on them separately in 3-5 hours long
+experiments."<br />
+So this is again not a lexical illusion. Good to go to finding weasel
+words.</p>
+<ul>
+<li>Checking weasel words</li>
+</ul>
+<!-- -->
+
+<div class="highlight"><pre><span class="nv">$ </span>sh weasel clean.txt       
+88:Beyond just <span class="nb">time</span>, many developers <span class="k">do</span> not have the necessary technical background to implement these functions correctly or efficiently. Because of this, there is a growing trend where smartphone         
+94:Smartphones have begun to use their microphones <span class="k">for</span> various        
+144:Several salient features when taken in combination make Auditeur unique. First, Auditeur provides a simple yet powerful API       
+...
+</pre></div>
+
+
+<p>I have only captured the top few suggestions. Going through the
+suggestions, it seems that the writing is OK and the usage of words like
+"many", "several" is justified.</p>
+<ul>
+<li>Checking incorrect passive voice usage</li>
+</ul>
+<!-- -->
+
+<div class="highlight"><pre><span class="nv">$ </span>sh passive clean.txt
+</pre></div>
+
+
+<p>Since the script suggested a lot of places where passive voice was used-
+i just took a snapshot.</p>
+<p>There might be some scope of improvement. Overall, the paper is very
+well written! Extracting text out of pdf might create some problems.<br />
+References<br />
+1. <a href="http://matt.might.net/articles/shell-scripts-for-passive-voice-weasel-words-duplicates/">Matt Might's scripts</a><br />
+2. <a href="http://skipperkongen.dk/2011/09/07/creating-a-word-cloud-from-pdf-documents/">Creating a wordle from pdf</a>- Plan to use this soon for generating
+my wordle!</p>
+        </section>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'nipunbatra';
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript><footer class="footer">
+    &copy; Nipun Batra &ndash;
+        Proudly published with <a href="http://blog.getpelican.com/">Pelican</a>
+</footer>    </div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50180272-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    <!-- End Document
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

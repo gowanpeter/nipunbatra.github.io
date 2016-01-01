@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>Pandas: Reading CSV with Unix timestamps and converting to local timezone | Nipun Batra | </title>
+    <meta name="description" content="Nipun Batra, ">
+    <meta name="author" content="Nipun Batra">
+
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Feeds
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="alternate" href="http://nipunbatra.github.io/feeds/all.atom.xml" type="application/atom+xml" title="Nipun Batra Atom Feed" />
+
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata">
+
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/custom.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/pygments.css">
+
+    <!-- Scripts
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fitvids/1.1.0/jquery.fitvids.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".container").fitVids();
+        });
+    </script>
+
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="http://nipunbatra.github.io/theme/assets/favicon.png">
+
+
+<!-- Using MathJax, with the delimiters $ -->
+<!-- Conflict with pygments for the .mo and .mi -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  "HTML-CSS": {
+  styles: {
+  ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
+  },
+  tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']],processEscapes: true}
+  });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+</head>
+<body>
+
+    <!-- Primary Page Layout
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <div class="container">
+        <section class="header">
+            <img src="http://nipunbatra.github.io/theme/assets/stewie.jpg" class="logo">
+        </section>
+    </div>
+    <div class="container">
+        <nav class="navbar">
+            <div class="container">
+                <ul class="navbar-list">
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io//archives.html" class="navbar-link">Blog archives</a></li>
+                    <li class="navbar-icon">
+                        <a href="http://twitter.com/nipun_batra">
+                            <i class="fa fa-twitter fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://github.com/nipunreddevil">
+                            <i class="fa fa-github fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://www.linkedin.com/profile/view?id=43966733">
+                            <i class="fa fa-linkedin fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <section class="post">
+            <header class="post-header">
+                <h3>Pandas: Reading CSV with Unix timestamps and converting to local timezone</h3>
+                <p class="post-meta">
+                    Fri 07 June 2013 &middot; tagged 
+                        <a class="post-category" href="http://nipunbatra.github.io/tag/python.html">Python</a>
+                </p>
+            </header>
+        </section>
+        <section class="post-content">
+            <p>In this post we shall learn how to use pandas to analyse timeseries CSV
+data with epoch based timestamps. Epoch timestamp represent the number
+of seconds since Jan 1, 1970 and are commonly used for data recording in
+many scientific applications. Unix command date can be used to give the
+current time and we can also extract the current epoch timestamp as
+follows:</p>
+<div class="highlight"><pre><span class="sx">!date</span>
+
+<span class="n">Thu</span> <span class="n">Jun</span>  <span class="mi">6</span> <span class="mi">09</span><span class="p">:</span><span class="mi">01</span><span class="p">:</span><span class="mi">16</span> <span class="n">IST</span> <span class="mi">2013</span>
+
+<span class="sx">!date +%s</span>
+
+<span class="mi">1370489477</span>
+</pre></div>
+
+
+<p>We now create a dummy dataset using pandas containing 10 rows and 2
+columns and save it locally as a CSV.</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="k">print</span> <span class="n">pd</span><span class="o">.</span><span class="n">__version__</span>
+<span class="kn">import</span> <span class="nn">datetime</span><span class="o">,</span><span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="mf">0.11</span><span class="o">.</span><span class="mi">0</span>
+
+<span class="n">start_time</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">())</span>
+<span class="n">timestamp</span><span class="o">=</span><span class="n">start_time</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="kp">arange</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">column_1</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">column_2</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">df</span><span class="o">=</span><span class="n">DataFrame</span><span class="p">({</span><span class="s">&#39;timestamp&#39;</span><span class="p">:</span><span class="n">timestamp</span><span class="p">,</span><span class="s">&#39;column_1&#39;</span><span class="p">:</span><span class="n">column_1</span><span class="p">,</span><span class="s">&#39;column_2&#39;</span><span class="p">:</span><span class="n">column_2</span><span class="p">})</span>
+<span class="n">df</span>
+
+    <span class="n">column_1</span>    <span class="n">column_2</span>    <span class="n">timestamp</span>
+<span class="mi">0</span>   <span class="mf">0.620274</span>    <span class="mf">0.720347</span>    <span class="mi">1370489479</span>
+<span class="mi">1</span>   <span class="mf">0.603379</span>    <span class="mf">0.214927</span>    <span class="mi">1370489480</span>
+<span class="mi">2</span>   <span class="mf">0.508877</span>    <span class="mf">0.562860</span>    <span class="mi">1370489481</span>
+<span class="mi">3</span>   <span class="mf">0.236682</span>    <span class="mf">0.062259</span>    <span class="mi">1370489482</span>
+<span class="mi">4</span>   <span class="mf">0.923264</span>    <span class="mf">0.278048</span>    <span class="mi">1370489483</span>
+<span class="mi">5</span>   <span class="mf">0.105673</span>    <span class="mf">0.246425</span>    <span class="mi">1370489484</span>
+<span class="mi">6</span>   <span class="mf">0.204324</span>    <span class="mf">0.770854</span>    <span class="mi">1370489485</span>
+<span class="mi">7</span>   <span class="mf">0.206739</span>    <span class="mf">0.702672</span>    <span class="mi">1370489486</span>
+<span class="mi">8</span>   <span class="mf">0.180858</span>    <span class="mf">0.440023</span>    <span class="mi">1370489487</span>
+<span class="mi">9</span>   <span class="mf">0.269232</span>    <span class="mf">0.684387</span>    <span class="mi">1370489488</span>
+</pre></div>
+
+
+<p>Saving the dataframe into a CSV file.</p>
+<div class="highlight"><pre>df.to_csv(&#39;epoch_demo.csv&#39;,index=False)
+!cat epoch_demo.csv
+
+column_1,column_2,timestamp
+0.6202741436145147,0.7203473783163402,1370489479
+0.603378652829255,0.2149274411077019,1370489480
+0.5088772165417312,0.5628600230105181,1370489481
+0.23668184075365228,0.062259281774838415,1370489482
+0.923263574664376,0.27804805708797475,1370489483
+0.10567266566500166,0.24642510043158228,1370489484
+0.20432401714102266,0.7708544521037892,1370489485
+0.20673911644596843,0.7026719669208518,1370489486
+0.1808583958327319,0.4400233442122533,1370489487
+0.2692318429010231,0.684387368168343,1370489488
+
+
+df_2=pd.read_csv(&#39;epoch_demo.csv&#39;,index_col=2)
+df_2
+
+    column_1    column_2
+timestamp       
+1370489479  0.620274    0.720347
+1370489480  0.603379    0.214927
+1370489481  0.508877    0.562860
+1370489482  0.236682    0.062259
+1370489483  0.923264    0.278048
+1370489484  0.105673    0.246425
+1370489485  0.204324    0.770854
+1370489486  0.206739    0.702672
+1370489487  0.180858    0.440023
+1370489488  0.269232    0.684387
+</pre></div>
+
+
+<p>We can notice that currently the index is of integer type. To convert it
+into DateTime type we use to_datetime() function, which accepts time in
+nanoseconds.<br />
+1 second=10\^9 nanoseconds</p>
+<div class="highlight"><pre>df_2.index=pd.to_datetime((df_2.index.values*1e9).astype(int))
+df_2
+
+    column_1    column_2
+2013-06-06 03:31:19     0.620274    0.720347
+2013-06-06 03:31:20     0.603379    0.214927
+2013-06-06 03:31:21     0.508877    0.562860
+2013-06-06 03:31:22     0.236682    0.062259
+2013-06-06 03:31:23     0.923264    0.278048
+2013-06-06 03:31:24     0.105673    0.246425
+2013-06-06 03:31:25     0.204324    0.770854
+2013-06-06 03:31:26     0.206739    0.702672
+2013-06-06 03:31:27     0.180858    0.440023
+2013-06-06 03:31:28     0.269232    0.684387
+
+df_2.index
+
+
+[2013-06-06 03:31:19, ..., 2013-06-06 03:31:28]
+Length: 10, Freq: None, Timezone: None
+</pre></div>
+
+
+<p>However, now we can see that the time is lagging the current local time
+and the index does not yet have an associated timezone. Thus, we first
+put the index in UTC to associate a timezone and then localize with our
+timezone (Asia/Kolkata) in our case.</p>
+<div class="highlight"><pre>df_2.index=df_2.index.tz_localize(&#39;UTC&#39;).tz_convert(&#39;Asia/Kolkata&#39;)
+df_2
+
+                                 column_1   column_2
+2013-06-06 09:01:19+05:30   0.620274    0.720347
+2013-06-06 09:01:20+05:30   0.603379    0.214927
+2013-06-06 09:01:21+05:30   0.508877    0.562860
+2013-06-06 09:01:22+05:30   0.236682    0.062259
+2013-06-06 09:01:23+05:30   0.923264    0.278048
+2013-06-06 09:01:24+05:30   0.105673    0.246425
+2013-06-06 09:01:25+05:30   0.204324    0.770854
+2013-06-06 09:01:26+05:30   0.206739    0.702672
+2013-06-06 09:01:27+05:30   0.180858    0.440023
+2013-06-06 09:01:28+05:30   0.269232    0.684387
+
+df_2.index
+
+
+[2013-06-06 09:01:19, ..., 2013-06-06 09:01:28]
+Length: 10, Freq: None, Timezone: Asia/Kolkata
+</pre></div>
+
+
+<p>So, we are done finally. Read the CSV and converted the datetime index
+into our local timezone.</p>
+<p>References<br />
+https://github.com/pydata/pandas/issues/3757<br />
+https://github.com/pydata/pandas/issues/3746</p>
+        </section>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'nipunbatra';
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript><footer class="footer">
+    &copy; Nipun Batra &ndash;
+        Proudly published with <a href="http://blog.getpelican.com/">Pelican</a>
+</footer>    </div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50180272-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    <!-- End Document
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Python script to send mail via SMTP</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="A Pelican Blog Atom Feed" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">A Pelican Blog </a></h1>
+                <nav><ul>
+                    <li><a href="/pages/about.html">About</a></li>
+                    <li><a href="/pages/education.html">Education</a></li>
+                    <li><a href="/pages/projects.html">Projects</a></li>
+                    <li><a href="/pages/publications.html">Publications</a></li>
+                    <li><a href="/pages/subscribe.html">Subscribe</a></li>
+                    <li><a href="/pages/tutorials.html">Tutorials</a></li>
+                    <li class="active"><a href="/category/blog.html">Blog</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/python-script-to-send-mail-via-smtp.html" rel="bookmark"
+           title="Permalink to Python script to send mail via SMTP">Python script to send mail via SMTP</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2011-02-20T12:43:00+00:00">
+                Published: Sun 20 February 2011
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/nipunbatra.html">nipunbatra</a>
+        </address>
+<p>In <a href="/category/blog.html">Blog</a>. </p>
+<p>tags: <a href="/tag/python.html">Python</a> </p>
+</footer><!-- /.post-info -->      <div class="highlight"><pre><span class="n">import</span> <span class="n">smtplib</span>
+<span class="n">SMTP_SERVER</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">smtp</span><span class="p">.</span><span class="n">gmail</span><span class="p">.</span><span class="n">com</span><span class="err">&#39;</span>
+<span class="n">SMTP_PORT</span> <span class="o">=</span> <span class="mi">587</span>
+<span class="n">sender</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">a</span><span class="err">@</span><span class="n">a</span><span class="p">.</span><span class="n">com</span> <span class="err">&#39;##</span><span class="n">Enter</span> <span class="n">your</span> <span class="n">mail</span> <span class="n">id</span> <span class="n">here</span>
+<span class="n">password</span> <span class="o">=</span> <span class="err">&#39;&#39;####</span><span class="n">Enter</span> <span class="n">your</span> <span class="n">password</span> <span class="n">here</span>
+<span class="n">recipient</span> <span class="o">=</span> <span class="err">&#39;&#39;##</span><span class="n">Enter</span> <span class="n">recepient</span> <span class="n">mail</span> <span class="n">id</span> <span class="n">here</span>
+<span class="n">subject</span> <span class="o">=</span> <span class="err">&#39;&#39;##</span><span class="n">Enter</span> <span class="n">subject</span> <span class="n">here</span>
+<span class="n">body</span> <span class="o">=</span> <span class="err">&#39;</span><span class="n">Enter</span> <span class="n">here</span> <span class="n">the</span> <span class="n">body</span> <span class="n">of</span> <span class="n">the</span> <span class="n">mail</span><span class="err">&#39;</span>
+<span class="s">&quot;Sends an e-mail to the specified recipient.&quot;</span>
+<span class="n">body</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> <span class="o">+</span> <span class="n">body</span> <span class="o">+</span> <span class="s">&quot;&quot;</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;From: &quot;</span> <span class="o">+</span> <span class="n">sender</span><span class="p">,</span>
+           <span class="s">&quot;Subject: &quot;</span> <span class="o">+</span> <span class="n">subject</span><span class="p">,</span>
+           <span class="s">&quot;To: &quot;</span> <span class="o">+</span> <span class="n">recipient</span><span class="p">,</span>
+           <span class="s">&quot;MIME-Version: 1.0&quot;</span><span class="p">,</span>
+           <span class="s">&quot;Content-Type: text/html&quot;</span><span class="p">]</span>
+<span class="n">headers</span> <span class="o">=</span> <span class="s">&quot;</span><span class="se">\r\n</span><span class="s">&quot;</span><span class="p">.</span><span class="n">join</span><span class="p">(</span><span class="n">headers</span><span class="p">)</span>
+<span class="n">session</span> <span class="o">=</span> <span class="n">smtplib</span><span class="p">.</span><span class="n">SMTP</span><span class="p">(</span><span class="n">SMTP_SERVER</span><span class="p">,</span> <span class="n">SMTP_PORT</span><span class="p">)</span>
+<span class="n">session</span><span class="p">.</span><span class="n">ehlo</span><span class="p">()</span>
+<span class="n">session</span><span class="p">.</span><span class="n">starttls</span><span class="p">()</span>
+<span class="n">session</span><span class="p">.</span><span class="n">ehlo</span>
+<span class="n">session</span><span class="p">.</span><span class="n">login</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+<span class="n">session</span><span class="p">.</span><span class="n">sendmail</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">recipient</span><span class="p">,</span> <span class="n">headers</span> <span class="o">+</span> <span class="s">&quot;</span><span class="se">\r\n\r\n</span><span class="s">&quot;</span> <span class="o">+</span> <span class="n">body</span><span class="p">)</span>
+<span class="n">session</span><span class="p">.</span><span class="n">quit</span><span class="p">()</span>
+</pre></div>
+
+
+<p>Liked it??</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

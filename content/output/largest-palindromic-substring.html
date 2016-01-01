@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Largest palindromic substring</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="A Pelican Blog Atom Feed" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">A Pelican Blog </a></h1>
+                <nav><ul>
+                    <li><a href="/pages/about.html">About</a></li>
+                    <li><a href="/pages/education.html">Education</a></li>
+                    <li><a href="/pages/projects.html">Projects</a></li>
+                    <li><a href="/pages/publications.html">Publications</a></li>
+                    <li><a href="/pages/subscribe.html">Subscribe</a></li>
+                    <li><a href="/pages/tutorials.html">Tutorials</a></li>
+                    <li class="active"><a href="/category/blog.html">Blog</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/largest-palindromic-substring.html" rel="bookmark"
+           title="Permalink to Largest palindromic substring">Largest palindromic substring</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2010-08-21T16:22:00+00:00">
+                Published: Sat 21 August 2010
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/nipunbatra.html">nipunbatra</a>
+        </address>
+<p>In <a href="/category/blog.html">Blog</a>. </p>
+<p>tags: <a href="/tag/algorithms.html">algorithms</a> </p>
+</footer><!-- /.post-info -->      <p>Now this is a question which my classmate Nikhil had asked. The best
+solution to find a palindromic substring given a string.An example which
+he cited was:
+Longest Palindromic substring for abclevelabc is level</p>
+<p>Thus i set trying to solve it.Here's a naive O(n^3) solution and i am
+trying to figure out how to optimise this program after which will try
+to find a better algo.</p>
+<div class="highlight"><pre><span class="kt">char</span><span class="o">*</span> <span class="nf">substring</span><span class="p">(</span><span class="kt">char</span><span class="o">*</span><span class="n">s</span><span class="p">,</span><span class="kt">int</span> <span class="n">start</span><span class="p">,</span><span class="kt">int</span> <span class="n">finish</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">ctr</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="kt">char</span> <span class="n">str</span><span class="p">[</span><span class="mi">1000</span><span class="p">];</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">start</span><span class="o">&lt;=</span><span class="n">finish</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">str</span><span class="p">[</span><span class="n">ctr</span><span class="p">]</span><span class="o">=</span><span class="n">s</span><span class="p">[</span><span class="n">start</span><span class="p">];</span>
+                <span class="n">start</span><span class="o">+=</span><span class="mi">1</span><span class="p">;</span>
+                <span class="n">ctr</span><span class="o">+=</span><span class="mi">1</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="n">str</span><span class="p">[</span><span class="n">ctr</span><span class="p">]</span><span class="o">=</span><span class="err">&#39;&#39;</span><span class="p">;</span>
+        <span class="k">return</span> <span class="n">str</span><span class="p">;</span>
+    <span class="p">}</span>
+
+<span class="kt">bool</span> <span class="nf">isPalindrome</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">s</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">size</span><span class="o">=</span><span class="n">strlen</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+        <span class="kt">int</span> <span class="n">j</span><span class="o">=</span><span class="n">size</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">((</span><span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">==</span><span class="n">s</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="o">&amp;&amp;</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="n">j</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="k">else</span>
+        <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+    <span class="p">{</span>
+
+        <span class="kt">int</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">;</span>
+        <span class="kt">char</span> <span class="n">s</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>
+        <span class="n">cin</span><span class="o">&gt;&gt;</span><span class="n">s</span><span class="p">;</span>
+
+        <span class="kt">int</span> <span class="n">size</span><span class="o">=</span><span class="n">strlen</span><span class="p">(</span><span class="n">s</span><span class="p">);</span>
+        <span class="kt">int</span> <span class="n">tempMax</span><span class="o">=</span><span class="n">size</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="n">tempMax</span><span class="o">&gt;</span><span class="mi">1</span><span class="p">)</span>
+        <span class="p">{</span>
+        <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">+</span><span class="n">tempMax</span><span class="o">&lt;</span><span class="n">size</span><span class="p">;</span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">isPalindrome</span><span class="p">(</span><span class="n">substring</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="n">tempMax</span><span class="p">)))</span><span class="c1">//O(n)</span>
+                    <span class="p">{</span>
+                        <span class="n">puts</span><span class="p">(</span><span class="n">substring</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="n">tempMax</span><span class="p">));</span>
+                        <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot; of size &quot;</span><span class="o">&lt;&lt;</span><span class="n">tempMax</span><span class="o">&lt;&lt;</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+                        <span class="k">break</span><span class="p">;</span>
+                    <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="n">tempMax</span><span class="o">-=</span><span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+
+
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+</pre></div>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>Data Cleaning with sed, awk, grep... | Nipun Batra | </title>
+    <meta name="description" content="Nipun Batra, ">
+    <meta name="author" content="Nipun Batra">
+
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Feeds
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="alternate" href="http://nipunbatra.github.io/feeds/all.atom.xml" type="application/atom+xml" title="Nipun Batra Atom Feed" />
+
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata">
+
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/custom.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/pygments.css">
+
+    <!-- Scripts
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fitvids/1.1.0/jquery.fitvids.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".container").fitVids();
+        });
+    </script>
+
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="http://nipunbatra.github.io/theme/assets/favicon.png">
+
+
+<!-- Using MathJax, with the delimiters $ -->
+<!-- Conflict with pygments for the .mo and .mi -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  "HTML-CSS": {
+  styles: {
+  ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
+  },
+  tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']],processEscapes: true}
+  });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+</head>
+<body>
+
+    <!-- Primary Page Layout
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <div class="container">
+        <section class="header">
+            <img src="http://nipunbatra.github.io/theme/assets/stewie.jpg" class="logo">
+        </section>
+    </div>
+    <div class="container">
+        <nav class="navbar">
+            <div class="container">
+                <ul class="navbar-list">
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io//archives.html" class="navbar-link">Blog archives</a></li>
+                    <li class="navbar-icon">
+                        <a href="http://twitter.com/nipun_batra">
+                            <i class="fa fa-twitter fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://github.com/nipunreddevil">
+                            <i class="fa fa-github fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://www.linkedin.com/profile/view?id=43966733">
+                            <i class="fa fa-linkedin fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <section class="post">
+            <header class="post-header">
+                <h3>Data Cleaning with sed, awk, grep...</h3>
+                <p class="post-meta">
+                    Sat 15 June 2013 &middot; tagged 
+                        <a class="post-category" href="http://nipunbatra.github.io/tag/python.html">Python</a>
+                        <a class="post-category" href="http://nipunbatra.github.io/tag/shell.html">shell</a>
+                </p>
+            </header>
+        </section>
+        <section class="post-content">
+            <p>Being mostly a Python user, loathed using awk, sed,.. and did not feel
+comfortable with them. But after spending a few hours in cleaning a file
+and trying to do so wihtout using lower level stuff like reading a file
+and stuff, i resorted to shell tools. The data cleaning process is
+required due to the fact that data is collected from sensors and a lot
+of reasons may cause it to have more characters, lines merged etc.<br />
+Usually i collect data in CSV. Here is one such CSV whose head and tail
+looks clean.</p>
+<div class="highlight"><pre><span class="nv">$ </span>head -n <span class="m">4</span> data.csv
+1370500041.39,0
+1370500041.59,0
+1370500041.79,0
+1370500041.99,0
+</pre></div>
+
+
+<p>So the characteristics of a correct line are that it should have a
+delimiter (","), the portion before the delimiter is epoch time obtained
+in Python and is in seconds, the portion after the comma should be a 0
+or a 1.<br />
+While analysing data in Pandas i realized some of my lines had much
+more characters than required. First lets count the number of lines in
+the file. I used <strong>wc</strong> for this.</p>
+<div class="highlight"><pre><span class="nv">$ </span>wc -l &lt; data.csv 
+3249743
+</pre></div>
+
+
+<p>Now we find lines which have more than 15 characters. Will use awk for
+this.</p>
+<div class="highlight"><pre><span class="nv">$ </span> awk <span class="s1">&#39;length&gt;15&#39;</span> data.csv 
+13705051370503037.59,0
+13706751370672237.1,0
+1370744413.53,01370744236.88,0
+1370752771370751437.64,0
+137071370751438.98,0
+137079701370794636.9,0
+1370865773.91370863036.87,1
+1370914473.69,1370913437.91,0
+1371040575.321371039437.08,0
+1371198314.1371197837.01,0
+</pre></div>
+
+
+<p>So quiet a lot of lines which would have created trouble while parsing.
+Removing these and finding the number of lines in the new cleaned file.</p>
+<div class="highlight"><pre> $ awk &#39;length cleaned.csv
+$ wc -l &lt; cleaned.csv
+3249733
+</pre></div>
+
+
+<p>Only 10 lines were creating havoc in analysis. Just checking now if
+there is a comma in every line. Or finding all those lines where "," is
+not in the file.</p>
+<div class="highlight"><pre><span class="nv">$ </span>grep -vn <span class="s2">&quot;,&quot;</span> cleaned.csv
+</pre></div>
+
+
+<p>No output from this grep means that all the lines now contain a ","</p>
+<p>Much more stuff can be done. But for now this much suffices. Need to
+learn a bit of shell stuff as well!<br />
+Python is not the universal solution!</p>
+        </section>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'nipunbatra';
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript><footer class="footer">
+    &copy; Nipun Batra &ndash;
+        Proudly published with <a href="http://blog.getpelican.com/">Pelican</a>
+</footer>    </div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50180272-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    <!-- End Document
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>Using namedtuples as column names in Pandas and indexing on them | Nipun Batra | </title>
+    <meta name="description" content="Nipun Batra, ">
+    <meta name="author" content="Nipun Batra">
+
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Feeds
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="alternate" href="http://nipunbatra.github.io/feeds/all.atom.xml" type="application/atom+xml" title="Nipun Batra Atom Feed" />
+
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata">
+
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/custom.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/pygments.css">
+
+    <!-- Scripts
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fitvids/1.1.0/jquery.fitvids.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".container").fitVids();
+        });
+    </script>
+
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="http://nipunbatra.github.io/theme/assets/favicon.png">
+
+
+<!-- Using MathJax, with the delimiters $ -->
+<!-- Conflict with pygments for the .mo and .mi -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  "HTML-CSS": {
+  styles: {
+  ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
+  },
+  tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']],processEscapes: true}
+  });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+</head>
+<body>
+
+    <!-- Primary Page Layout
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    
+    <div class="container">
+        <section class="header">
+            <img src="http://nipunbatra.github.io/lk.jpg" class="logo">
+        </section>
+    </div>
+
+    <div class="container">
+        <nav class="navbar">
+            <div class="container">
+                <ul class="navbar-list">
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/" class="navbar-link">Blog home</a></li>
+                    <li class="navbar-item"><a href="https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                <!--
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/http://nipunbatra.github.io/" class="navbar-link">Blog home</a></li>
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                -->
+                    <li class="navbar-icon">
+                        <a href="http://twitter.com/nipun_batra">
+                            <i class="fa fa-twitter fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://github.com/nipunreddevil">
+                            <i class="fa fa-github fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://www.linkedin.com/profile/view?id=43966733">
+                            <i class="fa fa-linkedin fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <section class="post">
+            <header class="post-header">
+                <h3>Using namedtuples as column names in Pandas and indexing on them</h3>
+                <p class="post-meta">
+                    Sun 15 December 2013 &middot; tagged 
+                        <a class="post-category" href="http://nipunbatra.github.io/tag/python.html">Python</a>
+                </p>
+            </header>
+        </section>
+        <section class="post-content">
+            <p>Named tuples are interesting collection datatype in Python. They are
+similar to regular Python tuple (and thus immutable), however, they
+allow to <strong>name</strong> the tuple entries. This functionality makes them
+similar to structures in C.</p>
+<p>The following answer on Stack Overflow provide details about
+namedtuples.</p>
+<p><a href="What%20are%20“named%20tuples”%20in%20Python?">What are “named tuples” in Python?</a></p>
+<p>Now, let us explore namedtuples as column names in Pandas. The use case
+comes from handling  datasets containing electricity information. In
+terms of vectors, power has two orthogonal dimensions (real/active and
+reactive). Let us explore this via an IPython session shown below.</p>
+<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">33</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">34</span><span class="p">]:</span> <span class="n">measurement</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s">&quot;measurement&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s">&quot;physical_quantity&quot;</span><span class="p">,</span>
+<span class="s">&quot;type&quot;</span><span class="p">])</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">35</span><span class="p">]:</span> <span class="n">power_active</span> <span class="o">=</span> <span class="n">measurement</span><span class="p">(</span><span class="s">&quot;power&quot;</span><span class="p">,</span> <span class="s">&quot;active&quot;</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">36</span><span class="p">]:</span> <span class="n">power_active</span>  
+<span class="n">Out</span><span class="p">[</span><span class="mi">36</span><span class="p">]:</span> <span class="n">measurement</span><span class="p">(</span><span class="n">physical_quantity</span><span class="o">=</span><span class="s">&quot;power&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&quot;active&quot;</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">37</span><span class="p">]:</span> <span class="n">power_active</span><span class="o">.</span>  
+<span class="n">power_active</span><span class="o">.</span><span class="n">count</span> <span class="n">power_active</span><span class="o">.</span><span class="n">index</span>
+<span class="n">power_active</span><span class="o">.</span><span class="n">physical_quantity</span> <span class="n">power_active</span><span class="o">.</span><span class="n">type</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">37</span><span class="p">]:</span> <span class="n">power_active</span><span class="o">.</span><span class="n">type</span>  
+<span class="n">Out</span><span class="p">[</span><span class="mi">37</span><span class="p">]:</span> <span class="s">&quot;active&quot;</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">38</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">39</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">43</span><span class="p">]:</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span>  
+<span class="n">Out</span><span class="p">[</span><span class="mi">43</span><span class="p">]:</span> <span class="n">Index</span><span class="p">([(</span><span class="s">u&quot;power&quot;</span><span class="p">,</span> <span class="s">u&quot;active&quot;</span><span class="p">)],</span> <span class="kp">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">44</span><span class="p">]:</span> <span class="n">power_reactive</span> <span class="o">=</span> <span class="n">measurement</span><span class="p">(</span><span class="s">&quot;power&quot;</span><span class="p">,</span> <span class="s">&quot;reactive&quot;</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">45</span><span class="p">]:</span> <span class="n">df</span> <span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="n">power_active</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span>
+<span class="n">power_reactive</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10</span><span class="p">)})</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">46</span><span class="p">]:</span> <span class="n">df</span>  
+<span class="n">Out</span><span class="p">[</span><span class="mi">46</span><span class="p">]:</span>  
+<span class="p">(</span><span class="kp">power</span><span class="p">,</span> <span class="n">active</span><span class="p">)</span> <span class="p">(</span><span class="kp">power</span><span class="p">,</span> <span class="n">reactive</span><span class="p">)</span>  
+<span class="mi">0</span> <span class="mf">0.766687</span> <span class="o">-</span><span class="mf">0.514405</span>  
+<span class="mi">1</span> <span class="mf">0.755576</span> <span class="mf">0.064147</span>  
+<span class="mi">2</span> <span class="o">-</span><span class="mf">0.652324</span> <span class="o">-</span><span class="mf">0.356600</span>  
+<span class="mi">3</span> <span class="o">-</span><span class="mf">0.685074</span> <span class="o">-</span><span class="mf">0.806747</span>  
+<span class="mi">4</span> <span class="o">-</span><span class="mf">0.611555</span> <span class="mf">1.211177</span>  
+<span class="mi">5</span> <span class="o">-</span><span class="mf">0.470568</span> <span class="o">-</span><span class="mf">0.414123</span>  
+<span class="mi">6</span> <span class="mf">0.666507</span> <span class="o">-</span><span class="mf">0.657422</span>  
+<span class="mi">7</span> <span class="o">-</span><span class="mf">0.062245</span> <span class="mf">0.274607</span>  
+<span class="mi">8</span> <span class="o">-</span><span class="mf">0.373324</span> <span class="o">-</span><span class="mf">1.101033</span>  
+<span class="mi">9</span> <span class="mf">1.811883</span> <span class="mf">0.321797</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">47</span><span class="p">]:</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span>  
+<span class="n">Out</span><span class="p">[</span><span class="mi">47</span><span class="p">]:</span> <span class="n">Index</span><span class="p">([(</span><span class="s">u&quot;power&quot;</span><span class="p">,</span> <span class="s">u&quot;active&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s">u&quot;power&quot;</span><span class="p">,</span> <span class="s">u&quot;reactive&quot;</span><span class="p">)],</span>
+<span class="kp">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">59</span><span class="p">]:</span> <span class="n">df</span><span class="p">[[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span><span class="s">&quot;active&quot;</span><span class="p">]]</span>  
+<span class="n">Out</span><span class="p">[</span><span class="mi">59</span><span class="p">]:</span>  
+<span class="p">(</span><span class="kp">power</span><span class="p">,</span> <span class="n">active</span><span class="p">)</span>  
+<span class="mi">0</span> <span class="mf">0.766687</span>  
+<span class="mi">1</span> <span class="mf">0.755576</span>  
+<span class="mi">2</span> <span class="o">-</span><span class="mf">0.652324</span>  
+<span class="mi">3</span> <span class="o">-</span><span class="mf">0.685074</span>  
+<span class="mi">4</span> <span class="o">-</span><span class="mf">0.611555</span>  
+<span class="mi">5</span> <span class="o">-</span><span class="mf">0.470568</span>  
+<span class="mi">6</span> <span class="mf">0.666507</span>  
+<span class="mi">7</span> <span class="o">-</span><span class="mf">0.062245</span>  
+<span class="mi">8</span> <span class="o">-</span><span class="mf">0.373324</span>  
+<span class="mi">9</span> <span class="mf">1.811883</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">60</span><span class="p">]:</span> <span class="n">df</span><span class="p">[[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">col</span><span class="o">.</span><span class="n">physical_quantity</span> <span class="o">==</span>
+<span class="s">&quot;power&quot;</span><span class="p">]]</span>  
+<span class="n">Out</span><span class="p">[</span><span class="mi">60</span><span class="p">]:</span>  
+<span class="p">(</span><span class="kp">power</span><span class="p">,</span> <span class="n">active</span><span class="p">)</span> <span class="p">(</span><span class="kp">power</span><span class="p">,</span> <span class="n">reactive</span><span class="p">)</span>  
+<span class="mi">0</span> <span class="mf">0.766687</span> <span class="o">-</span><span class="mf">0.514405</span>  
+<span class="mi">1</span> <span class="mf">0.755576</span> <span class="mf">0.064147</span>  
+<span class="mi">2</span> <span class="o">-</span><span class="mf">0.652324</span> <span class="o">-</span><span class="mf">0.356600</span>  
+<span class="mi">3</span> <span class="o">-</span><span class="mf">0.685074</span> <span class="o">-</span><span class="mf">0.806747</span>  
+<span class="mi">4</span> <span class="o">-</span><span class="mf">0.611555</span> <span class="mf">1.211177</span>  
+<span class="mi">5</span> <span class="o">-</span><span class="mf">0.470568</span> <span class="o">-</span><span class="mf">0.414123</span>  
+<span class="mi">6</span> <span class="mf">0.666507</span> <span class="o">-</span><span class="mf">0.657422</span>  
+<span class="mi">7</span> <span class="o">-</span><span class="mf">0.062245</span> <span class="mf">0.274607</span>  
+<span class="mi">8</span> <span class="o">-</span><span class="mf">0.373324</span> <span class="o">-</span><span class="mf">1.101033</span>  
+<span class="mi">9</span> <span class="mf">1.811883</span> <span class="mf">0.321797</span>
+</pre></div>
+
+
+<p>In Line 3, we create the named tuple for "measurement". This has 2
+attributes the physical quantity and the subtype.<br />
+In Line 25, we create a dataframe with namedtuples for active and
+reactive power as the column header.<br />
+In Line 44, we select columns based on a condition on a "measurement"
+field.</p>
+        </section>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'nipunbatra';
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript><footer class="footer">
+    &copy; Nipun Batra &ndash;
+        Proudly published with <a href="http://blog.getpelican.com/">Pelican</a>
+</footer>    </div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50180272-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    <!-- End Document
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

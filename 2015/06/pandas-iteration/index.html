@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>Efficiently iterating Pandas rows | Nipun Batra | </title>
+    <meta name="description" content="Nipun Batra, ">
+    <meta name="author" content="Nipun Batra">
+
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Feeds
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="alternate" href="http://nipunbatra.github.io/feeds/all.atom.xml" type="application/atom+xml" title="Nipun Batra Atom Feed" />
+
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata">
+
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/custom.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/pygments.css">
+
+    <!-- Scripts
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fitvids/1.1.0/jquery.fitvids.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".container").fitVids();
+        });
+    </script>
+
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="http://nipunbatra.github.io/theme/assets/favicon.png">
+
+
+<!-- Using MathJax, with the delimiters $ -->
+<!-- Conflict with pygments for the .mo and .mi -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  "HTML-CSS": {
+  styles: {
+  ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
+  },
+  tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']],processEscapes: true}
+  });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+</head>
+<body>
+
+    <!-- Primary Page Layout
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    
+    <div class="container">
+        <section class="header">
+            <img src="http://nipunbatra.github.io/lk.jpg" class="logo">
+        </section>
+    </div>
+
+    <div class="container">
+        <nav class="navbar">
+            <div class="container">
+                <ul class="navbar-list">
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/" class="navbar-link">Blog home</a></li>
+                    <li class="navbar-item"><a href="https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                <!--
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/http://nipunbatra.github.io/" class="navbar-link">Blog home</a></li>
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                -->
+                    <li class="navbar-icon">
+                        <a href="http://twitter.com/nipun_batra">
+                            <i class="fa fa-twitter fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://github.com/nipunreddevil">
+                            <i class="fa fa-github fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://www.linkedin.com/profile/view?id=43966733">
+                            <i class="fa fa-linkedin fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <section class="post">
+            <header class="post-header">
+                <h3>Efficiently iterating Pandas rows</h3>
+                <p class="post-meta">
+                    Tue 09 June 2015 &middot; tagged 
+                        <a class="post-category" href="http://nipunbatra.github.io/tag/pandas.html">pandas</a>
+                </p>
+            </header>
+        </section>
+        <section class="post-content">
+            <p>Often in my Pandas code, I've had to iterate through the rows. The first thing which comes to mind (as would do to any one who has studied C/C++ as the first language) is to access elements by index and loop on the index. This is considered "unPythonic". For this exact same reason, for loops in Python are written as <code>for a in list</code>. So, here's a quick comparison of two ways of iterating row-wise over a dataframe and accessing different attributes. </p>
+<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">di</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">10000</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">[</span><span class="s">&quot;a&quot;</span><span class="p">,</span> <span class="s">&quot;b&quot;</span><span class="p">,</span> <span class="s">&quot;c&quot;</span><span class="p">,</span> <span class="s">&quot;d&quot;</span><span class="p">]}</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">di</span><span class="p">)</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]:</span> <span class="n">df</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span> 
+             <span class="n">a</span>         <span class="n">b</span>         <span class="n">c</span>         <span class="n">d</span>
+<span class="mi">0</span>    <span class="o">-</span><span class="mf">1.924205</span> <span class="o">-</span><span class="mf">0.278529</span> <span class="o">-</span><span class="mf">0.261998</span> <span class="o">-</span><span class="mf">0.005286</span>
+<span class="mi">1</span>     <span class="mf">0.392045</span>  <span class="mf">1.609994</span>  <span class="mf">1.733763</span> <span class="o">-</span><span class="mf">1.539745</span>
+<span class="mi">2</span>    <span class="o">-</span><span class="mf">0.085711</span>  <span class="mf">0.756263</span> <span class="o">-</span><span class="mf">0.084361</span> <span class="o">-</span><span class="mf">0.424867</span>
+<span class="mi">3</span>    <span class="o">-</span><span class="mf">2.082346</span> <span class="o">-</span><span class="mf">0.593061</span>  <span class="mf">0.758439</span> <span class="o">-</span><span class="mf">0.522798</span>
+<span class="mi">4</span>     <span class="mf">1.064134</span>  <span class="mf">0.307272</span> <span class="o">-</span><span class="mf">1.829989</span> <span class="o">-</span><span class="mf">0.373749</span>
+<span class="mi">5</span>    <span class="o">-</span><span class="mf">2.428269</span>  <span class="mf">0.601626</span>  <span class="mf">1.421557</span> <span class="o">-</span><span class="mf">0.451481</span>
+<span class="mi">6</span>     <span class="mf">0.926092</span>  <span class="mf">0.100844</span> <span class="o">-</span><span class="mf">0.553302</span> <span class="o">-</span><span class="mf">1.135587</span>
+<span class="mi">7</span>    <span class="o">-</span><span class="mf">0.302778</span> <span class="o">-</span><span class="mf">0.064894</span> <span class="o">-</span><span class="mf">0.207799</span>  <span class="mf">0.729668</span>
+<span class="mi">8</span>     <span class="mf">1.428392</span> <span class="o">-</span><span class="mf">0.144769</span>  <span class="mf">0.567246</span> <span class="o">-</span><span class="mf">1.119571</span>
+<span class="mi">9</span>     <span class="mf">0.619530</span>  <span class="mf">1.140406</span> <span class="o">-</span><span class="mf">0.576779</span> <span class="o">-</span><span class="mf">0.522187</span>
+<span class="mi">10</span>   <span class="o">-</span><span class="mf">0.281899</span> <span class="o">-</span><span class="mf">0.375088</span> <span class="o">-</span><span class="mf">1.775103</span> <span class="o">-</span><span class="mf">0.618582</span>
+<span class="mi">11</span>    <span class="mf">1.773310</span> <span class="o">-</span><span class="mf">0.416744</span>  <span class="mf">0.274547</span> <span class="o">-</span><span class="mf">1.060010</span>
+<span class="mi">12</span>   <span class="o">-</span><span class="mf">1.204412</span> <span class="o">-</span><span class="mf">0.999966</span> <span class="o">-</span><span class="mf">0.055934</span> <span class="o">-</span><span class="mf">0.275807</span>
+<span class="mi">13</span>    <span class="mf">0.438753</span> <span class="o">-</span><span class="mf">1.375763</span>  <span class="mf">1.540492</span>  <span class="mf">0.902932</span>
+<span class="mi">14</span>    <span class="mf">1.259921</span> <span class="o">-</span><span class="mf">1.532213</span> <span class="o">-</span><span class="mf">0.092128</span> <span class="o">-</span><span class="mf">0.384513</span>
+<span class="mi">15</span>   <span class="o">-</span><span class="mf">1.524382</span> <span class="o">-</span><span class="mf">0.344728</span> <span class="o">-</span><span class="mf">0.593565</span> <span class="o">-</span><span class="mf">0.821939</span>
+<span class="mi">16</span>   <span class="o">-</span><span class="mf">0.428570</span> <span class="o">-</span><span class="mf">1.054547</span>  <span class="mf">0.330548</span> <span class="o">-</span><span class="mf">1.161294</span>
+<span class="mi">17</span>   <span class="o">-</span><span class="mf">1.281139</span>  <span class="mf">1.874195</span>  <span class="mf">0.919508</span> <span class="o">-</span><span class="mf">0.497726</span>
+<span class="mi">18</span>   <span class="o">-</span><span class="mf">0.176930</span> <span class="o">-</span><span class="mf">1.404015</span> <span class="o">-</span><span class="mf">1.174419</span> <span class="o">-</span><span class="mf">0.352054</span>
+<span class="mi">19</span>    <span class="mf">1.358412</span>  <span class="mf">0.443367</span>  <span class="mf">0.230506</span>  <span class="mf">1.451986</span>
+<span class="mi">20</span>    <span class="mf">0.200444</span>  <span class="mf">2.118015</span> <span class="o">-</span><span class="mf">0.217391</span> <span class="o">-</span><span class="mf">0.431538</span>
+<span class="mi">21</span>    <span class="mf">0.517777</span>  <span class="mf">0.201681</span>  <span class="mf">0.171583</span>  <span class="mf">0.738541</span>
+<span class="mi">22</span>   <span class="o">-</span><span class="mf">1.485768</span>  <span class="mf">0.449038</span> <span class="o">-</span><span class="mf">1.666890</span> <span class="o">-</span><span class="mf">0.287601</span>
+<span class="mi">23</span>   <span class="o">-</span><span class="mf">1.360219</span> <span class="o">-</span><span class="mf">0.572025</span>  <span class="mf">0.758204</span>  <span class="mf">1.118197</span>
+<span class="mi">24</span>    <span class="mf">0.936122</span>  <span class="mf">0.752759</span> <span class="o">-</span><span class="mf">0.584876</span> <span class="o">-</span><span class="mf">0.547799</span>
+<span class="mi">25</span>    <span class="mf">0.196639</span> <span class="o">-</span><span class="mf">1.954793</span> <span class="o">-</span><span class="mf">0.226771</span> <span class="o">-</span><span class="mf">1.471533</span>
+<span class="mi">26</span>    <span class="mf">0.797900</span> <span class="o">-</span><span class="mf">0.127020</span> <span class="o">-</span><span class="mf">0.725855</span> <span class="o">-</span><span class="mf">0.788692</span>
+<span class="mi">27</span>    <span class="mf">0.574896</span> <span class="o">-</span><span class="mf">0.225201</span>  <span class="mf">0.231093</span>  <span class="mf">0.353555</span>
+<span class="mi">28</span>    <span class="mf">0.729240</span> <span class="o">-</span><span class="mf">0.204078</span>  <span class="mf">0.895284</span> <span class="o">-</span><span class="mf">1.171200</span>
+<span class="mi">29</span>   <span class="o">-</span><span class="mf">1.267616</span> <span class="o">-</span><span class="mf">0.768759</span> <span class="o">-</span><span class="mf">0.013787</span>  <span class="mf">0.602042</span>
+<span class="o">...</span>        <span class="o">...</span>       <span class="o">...</span>       <span class="o">...</span>       <span class="o">...</span>
+<span class="mi">9970</span>  <span class="mf">0.065751</span> <span class="o">-</span><span class="mf">0.160771</span>  <span class="mf">0.399800</span>  <span class="mf">0.088873</span>
+<span class="mi">9971</span>  <span class="mf">1.705634</span> <span class="o">-</span><span class="mf">0.555078</span> <span class="o">-</span><span class="mf">0.124514</span> <span class="o">-</span><span class="mf">0.123454</span>
+<span class="mi">9972</span>  <span class="mf">0.103970</span>  <span class="mf">0.055869</span>  <span class="mf">0.170443</span>  <span class="mf">0.337169</span>
+<span class="mi">9973</span>  <span class="mf">0.901626</span> <span class="o">-</span><span class="mf">0.216274</span> <span class="o">-</span><span class="mf">1.024024</span> <span class="o">-</span><span class="mf">1.604295</span>
+<span class="mi">9974</span> <span class="o">-</span><span class="mf">1.090337</span>  <span class="mf">1.025474</span> <span class="o">-</span><span class="mf">1.060774</span> <span class="o">-</span><span class="mf">0.037345</span>
+<span class="mi">9975</span> <span class="o">-</span><span class="mf">0.321273</span> <span class="o">-</span><span class="mf">0.720859</span> <span class="o">-</span><span class="mf">0.189354</span> <span class="o">-</span><span class="mf">0.624089</span>
+<span class="mi">9976</span> <span class="o">-</span><span class="mf">0.967506</span>  <span class="mf">0.670755</span>  <span class="mf">2.122024</span>  <span class="mf">0.280750</span>
+<span class="mi">9977</span> <span class="o">-</span><span class="mf">0.919644</span>  <span class="mf">1.380600</span> <span class="o">-</span><span class="mf">0.547376</span> <span class="o">-</span><span class="mf">0.475826</span>
+<span class="mi">9978</span>  <span class="mf">1.706442</span>  <span class="mf">1.236540</span> <span class="o">-</span><span class="mf">1.286835</span> <span class="o">-</span><span class="mf">0.374051</span>
+<span class="mi">9979</span>  <span class="mf">0.338149</span> <span class="o">-</span><span class="mf">0.415665</span>  <span class="mf">0.200910</span>  <span class="mf">1.906486</span>
+<span class="mi">9980</span> <span class="o">-</span><span class="mf">0.696541</span>  <span class="mf">0.725571</span>  <span class="mf">0.974992</span>  <span class="mf">1.804216</span>
+<span class="mi">9981</span> <span class="o">-</span><span class="mf">1.400005</span> <span class="o">-</span><span class="mf">0.888944</span>  <span class="mf">0.921454</span>  <span class="mf">1.564475</span>
+<span class="mi">9982</span> <span class="o">-</span><span class="mf">0.455065</span> <span class="o">-</span><span class="mf">1.656174</span>  <span class="mf">1.397340</span>  <span class="mf">1.814911</span>
+<span class="mi">9983</span> <span class="o">-</span><span class="mf">0.938067</span>  <span class="mf">0.021626</span>  <span class="mf">0.643831</span> <span class="o">-</span><span class="mf">0.565873</span>
+<span class="mi">9984</span>  <span class="mf">0.765747</span> <span class="o">-</span><span class="mf">0.202373</span> <span class="o">-</span><span class="mf">0.674182</span>  <span class="mf">0.744532</span>
+<span class="mi">9985</span> <span class="o">-</span><span class="mf">0.088007</span> <span class="o">-</span><span class="mf">1.124469</span> <span class="o">-</span><span class="mf">2.031907</span>  <span class="mf">0.128496</span>
+<span class="mi">9986</span> <span class="o">-</span><span class="mf">0.714295</span>  <span class="mf">0.032928</span>  <span class="mf">0.178468</span> <span class="o">-</span><span class="mf">0.085715</span>
+<span class="mi">9987</span>  <span class="mf">1.025195</span> <span class="o">-</span><span class="mf">0.188422</span> <span class="o">-</span><span class="mf">2.095404</span> <span class="o">-</span><span class="mf">0.619646</span>
+<span class="mi">9988</span>  <span class="mf">0.132227</span> <span class="o">-</span><span class="mf">1.261682</span>  <span class="mf">0.244649</span> <span class="o">-</span><span class="mf">0.666303</span>
+<span class="mi">9989</span>  <span class="mf">0.786193</span>  <span class="mf">1.509406</span> <span class="o">-</span><span class="mf">0.202992</span> <span class="o">-</span><span class="mf">1.225874</span>
+<span class="mi">9990</span>  <span class="mf">0.473791</span> <span class="o">-</span><span class="mf">1.143862</span> <span class="o">-</span><span class="mf">0.316002</span> <span class="o">-</span><span class="mf">0.895491</span>
+<span class="mi">9991</span>  <span class="mf">0.400169</span>  <span class="mf">0.677086</span>  <span class="mf">0.924509</span>  <span class="mf">0.359508</span>
+<span class="mi">9992</span> <span class="o">-</span><span class="mf">1.997034</span>  <span class="mf">1.188000</span>  <span class="mf">0.529767</span>  <span class="mf">3.023600</span>
+<span class="mi">9993</span>  <span class="mf">0.611606</span>  <span class="mf">0.870376</span>  <span class="mf">0.111409</span>  <span class="mf">0.791074</span>
+<span class="mi">9994</span> <span class="o">-</span><span class="mf">0.139214</span>  <span class="mf">1.621675</span> <span class="o">-</span><span class="mf">1.175538</span> <span class="o">-</span><span class="mf">1.434139</span>
+<span class="mi">9995</span> <span class="o">-</span><span class="mf">1.114247</span> <span class="o">-</span><span class="mf">0.242445</span>  <span class="mf">0.863734</span> <span class="o">-</span><span class="mf">0.562891</span>
+<span class="mi">9996</span>  <span class="mf">0.236475</span>  <span class="mf">1.685572</span>  <span class="mf">0.372954</span> <span class="o">-</span><span class="mf">0.154444</span>
+<span class="mi">9997</span>  <span class="mf">0.382693</span>  <span class="mf">0.246771</span>  <span class="mf">0.452163</span> <span class="o">-</span><span class="mf">0.418974</span>
+<span class="mi">9998</span> <span class="o">-</span><span class="mf">1.135619</span> <span class="o">-</span><span class="mf">2.219971</span>  <span class="mf">0.365980</span>  <span class="mf">0.334584</span>
+<span class="mi">9999</span>  <span class="mf">0.200453</span>  <span class="mf">0.638034</span> <span class="o">-</span><span class="mf">0.827149</span> <span class="o">-</span><span class="mf">0.516329</span>
+
+<span class="p">[</span><span class="mi">10000</span> <span class="n">rows</span> <span class="n">x</span> <span class="mi">4</span> <span class="n">columns</span><span class="p">]</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">6</span><span class="p">]:</span> <span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span> 
+          <span class="n">a</span>         <span class="n">b</span>         <span class="n">c</span>         <span class="n">d</span>
+<span class="mi">0</span> <span class="o">-</span><span class="mf">1.924205</span> <span class="o">-</span><span class="mf">0.278529</span> <span class="o">-</span><span class="mf">0.261998</span> <span class="o">-</span><span class="mf">0.005286</span>
+<span class="mi">1</span>  <span class="mf">0.392045</span>  <span class="mf">1.609994</span>  <span class="mf">1.733763</span> <span class="o">-</span><span class="mf">1.539745</span>
+<span class="mi">2</span> <span class="o">-</span><span class="mf">0.085711</span>  <span class="mf">0.756263</span> <span class="o">-</span><span class="mf">0.084361</span> <span class="o">-</span><span class="mf">0.424867</span>
+<span class="mi">3</span> <span class="o">-</span><span class="mf">2.082346</span> <span class="o">-</span><span class="mf">0.593061</span>  <span class="mf">0.758439</span> <span class="o">-</span><span class="mf">0.522798</span>
+<span class="mi">4</span>  <span class="mf">1.064134</span>  <span class="mf">0.307272</span> <span class="o">-</span><span class="mf">1.829989</span> <span class="o">-</span><span class="mf">0.373749</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">7</span><span class="p">]:</span> <span class="o">%%</span><span class="n">timeit</span>
+   <span class="o">...</span><span class="p">:</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+   <span class="o">...</span><span class="p">:</span>     <span class="n">df</span><span class="o">.</span><span class="n">ix</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="s">&#39;a&#39;</span><span class="p">],</span> <span class="n">idx</span>
+   <span class="o">...</span><span class="p">:</span> 
+<span class="mi">1</span> <span class="n">loops</span><span class="p">,</span> <span class="n">best</span> <span class="n">of</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">849</span> <span class="n">ms</span> <span class="n">per</span> <span class="n">loop</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">8</span><span class="p">]:</span> <span class="o">%%</span><span class="n">timeit</span>
+<span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+    <span class="n">row</span><span class="p">[</span><span class="s">&#39;a&#39;</span><span class="p">],</span> <span class="n">index</span>
+   <span class="o">...</span><span class="p">:</span> 
+<span class="mi">1</span> <span class="n">loops</span><span class="p">,</span> <span class="n">best</span> <span class="n">of</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">224</span> <span class="n">ms</span> <span class="n">per</span> <span class="n">loop</span>
+</pre></div>
+
+
+<p>We can see that the "Pythonic" way of doing this is about 4 times quicker and looks more clear. Thus, the recommended way is to use</p>
+<div class="highlight"><pre>for index, row in df.iterrows():
+    row[&#39;a&#39;], index
+</pre></div>
+
+
+<p>It should be noted that this is similar in syntax to the <code>enumerate</code> syntax we are used to seeing in iteration over Python lists.</p>
+        </section>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'nipunbatra';
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript><footer class="footer">
+    &copy; Nipun Batra &ndash;
+        Proudly published with <a href="http://blog.getpelican.com/">Pelican</a>
+</footer>    </div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50180272-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    <!-- End Document
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

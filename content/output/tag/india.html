@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>A Pelican Blog - india</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="A Pelican Blog Atom Feed" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">A Pelican Blog </a></h1>
+                <nav><ul>
+                    <li><a href="/pages/about.html">About</a></li>
+                    <li><a href="/pages/education.html">Education</a></li>
+                    <li><a href="/pages/projects.html">Projects</a></li>
+                    <li><a href="/pages/publications.html">Publications</a></li>
+                    <li><a href="/pages/subscribe.html">Subscribe</a></li>
+                    <li><a href="/pages/tutorials.html">Tutorials</a></li>
+                    <li><a href="/category/blog.html">Blog</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+
+            <aside id="featured" class="body">
+                <article>
+                    <h1 class="entry-title"><a href="/iawe-data-collected-from-android-phones.html">iAWE data collected from Android phones</a></h1>
+<footer class="post-info">
+        <abbr class="published" title="2014-02-26T17:02:00+00:00">
+                Published: Wed 26 February 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/nipunbatra.html">nipunbatra</a>
+        </address>
+<p>In <a href="/category/blog.html">Blog</a>. </p>
+<p>tags: <a href="/tag/buildings.html">buildings</a> <a href="/tag/dataset.html">dataset</a> <a href="/tag/energy.html">energy</a> <a href="/tag/iawe.html">iawe</a> <a href="/tag/india.html">india</a> <a href="/tag/nilmtk.html">nilmtk</a> <a href="/tag/python.html">Python</a> </p>
+</footer><!-- /.post-info --><p>In the <a href="http://nipunbatra.wordpress.com/2014/02/26/preparing-bluetooth-data-collected-from-funf-for-analysis/">previous post</a>, I had briefly discussed about the Android data
+collected via FunF in the iAWE data set. In this post, I mention what
+all data sources these Android data sets exposed. 
+After the initial steps outlined before, I work in an IPython shell and
+make different queries. 
+[gist:id=9226726]
+Now, we analyze each of the probes and create their respective CSVs.
+Acceleromter  and location information(LocationProbe and
+SimpleLocationProbe) are not of use since the phones were kept static.
+Proxomity sensor did not capture any useful information.</p>
+<p><strong>Cell Tower </strong> 
+The cell tower probe provides the cell tower id (cid), location area
+code and "psc" </p>
+<p>[gist:id=ecd180672e187953ddd7]</p>
+<p><strong>WiFi</strong></p>
+<p>[gist:id=9227568]</p>
+<p><strong>Audio</strong> </p>
+<p>[gist:id=9227599]</p>
+<p><strong>Battery</strong></p>
+<p>These features not only tell about the percent charge and some estimate
+of the temperature, they also tell the status of charging. This can
+provide information about power outages (when phone is discharging). </p>
+<p>[gist:id=9227804]</p>
+<p>Apart from these, two Android phones which were used also had Light
+sensor, whose details are as follows. The light sensor gives the light
+intensity in lumens. </p>
+<p><strong>Light</strong> </p>
+<p>[gist:id=9227888]</p>
+<p>All the code can be found in the following repo:
+https://github.com/nipunreddevil/iawe_funf
+I shall soon be adding this data set to iAWE data set contained here:
+http://iawe.github.io</p>                </article>
+            </aside><!-- /#featured -->
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>

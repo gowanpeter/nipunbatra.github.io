@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>Dynamic Time Warping using rpy and Python | Nipun Batra | </title>
+    <meta name="description" content="Nipun Batra, ">
+    <meta name="author" content="Nipun Batra">
+
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Feeds
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="alternate" href="http://nipunbatra.github.io/feeds/all.atom.xml" type="application/atom+xml" title="Nipun Batra Atom Feed" />
+
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata">
+
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/custom.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/pygments.css">
+
+    <!-- Scripts
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fitvids/1.1.0/jquery.fitvids.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".container").fitVids();
+        });
+    </script>
+
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="http://nipunbatra.github.io/theme/assets/favicon.png">
+
+
+<!-- Using MathJax, with the delimiters $ -->
+<!-- Conflict with pygments for the .mo and .mi -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  "HTML-CSS": {
+  styles: {
+  ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
+  },
+  tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']],processEscapes: true}
+  });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+</head>
+<body>
+
+    <!-- Primary Page Layout
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <div class="container">
+        <section class="header">
+            <img src="http://nipunbatra.github.io/theme/assets/stewie.jpg" class="logo">
+        </section>
+    </div>
+    <div class="container">
+        <nav class="navbar">
+            <div class="container">
+                <ul class="navbar-list">
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io//archives.html" class="navbar-link">Blog archives</a></li>
+                    <li class="navbar-icon">
+                        <a href="http://twitter.com/nipun_batra">
+                            <i class="fa fa-twitter fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://github.com/nipunreddevil">
+                            <i class="fa fa-github fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://www.linkedin.com/profile/view?id=43966733">
+                            <i class="fa fa-linkedin fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <section class="post">
+            <header class="post-header">
+                <h3>Dynamic Time Warping using rpy and Python</h3>
+                <p class="post-meta">
+                    Sun 09 June 2013 &middot; tagged 
+                        <a class="post-category" href="http://nipunbatra.github.io/tag/python.html">Python</a>
+                        <a class="post-category" href="http://nipunbatra.github.io/tag/r.html">R</a>
+                </p>
+            </header>
+        </section>
+        <section class="post-content">
+            <p>Dynamic Time Warping is a technique used for measuring similarity
+between sequences. Since i deal mostly with time series data which is
+essentially sequential, i had been told to give DTW a try. There are
+numerous implementations of DTW, but i found the implementation in R to
+be most complete. Since it has been a long time since i last used R
+seriously and since i do most of my work in Python, i chose to use rpy2,
+which is a bridge between R and Python. R has a lot of open source well
+implemented code and rpy2 allows to leverage that while maintaining the
+comfort of Python.<br />
+In this post i download financial stock data from Yahoo finance and
+leverage Pandas' libraries for the same. I also present results
+comparing the implementation in R and in Python (mlpy).</p>
+<p>Loading the data</p>
+<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">pandas.io.data</span> <span class="kn">import</span> <span class="n">DataReader</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">3</span><span class="p">]:</span> <span class="n">goog</span> <span class="o">=</span> <span class="n">DataReader</span><span class="p">(</span><span class="s">&quot;GOOG&quot;</span><span class="p">,</span>  <span class="s">&quot;yahoo&quot;</span><span class="p">,</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">2012</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]:</span> <span class="n">goog</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span>
+
+<span class="n">DatetimeIndex</span><span class="p">:</span> <span class="mi">1857</span> <span class="n">entries</span><span class="p">,</span> <span class="mi">2004</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">19</span> <span class="mo">00</span><span class="p">:</span><span class="mo">00</span><span class="p">:</span><span class="mo">00</span> <span class="n">to</span> <span class="mi">2011</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">30</span> <span class="mo">00</span><span class="p">:</span><span class="mo">00</span><span class="p">:</span><span class="mo">00</span>
+<span class="n">Data</span> <span class="n">columns</span> <span class="p">(</span><span class="n">total</span> <span class="mi">6</span> <span class="n">columns</span><span class="p">):</span>
+<span class="n">Open</span>         <span class="mi">1857</span>  <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>
+<span class="n">High</span>         <span class="mi">1857</span>  <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>
+<span class="n">Low</span>          <span class="mi">1857</span>  <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>
+<span class="n">Close</span>        <span class="mi">1857</span>  <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>
+<span class="n">Volume</span>       <span class="mi">1857</span>  <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>
+<span class="n">Adj</span> <span class="n">Close</span>    <span class="mi">1857</span>  <span class="n">non</span><span class="o">-</span><span class="n">null</span> <span class="n">values</span>
+<span class="n">dtypes</span><span class="p">:</span> <span class="n">float64</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="n">int64</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Separating out data for the years 2008 and 2009 in different dataframes.</p>
+<div class="highlight"><pre>In [8]: goog_2008=goog[goog.index.year==2008]
+In [9]: goog_2009=goog[goog.index.year==2009]
+</pre></div>
+
+
+<p>Plotting the "Volume" field of the two dataframes</p>
+<div class="highlight"><pre>n [79]: goog_2008.Volume.plot(title=&quot;2008 Volume&quot;)
+Out[79]: 
+In [80]: goog_2009.Volume.plot(title=&quot;2009 Volume&quot;)
+Out[80]:
+</pre></div>
+
+
+<p>Here is how the data looks like<br />
+<img alt="2008_title" src="http://nipunbatra.files.wordpress.com/2013/06/2008_title.png?w=300" /> 
+<img alt="2009_title" src="http://nipunbatra.files.wordpress.com/2013/06/2009_title.png?w=300" /></p>
+<p>Importing stuff to make R work from within Python</p>
+<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">10</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">rpy2.robjects.numpy2ri</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">11</span><span class="p">]:</span> <span class="n">rpy2</span><span class="o">.</span><span class="n">robjects</span><span class="o">.</span><span class="n">numpy2ri</span><span class="o">.</span><span class="n">activate</span><span class="p">()</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">12</span><span class="p">]:</span> <span class="kn">from</span> <span class="nn">rpy2.robjects.packages</span> <span class="kn">import</span> <span class="n">importr</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">13</span><span class="p">]:</span> <span class="n">R</span> <span class="o">=</span> <span class="n">rpy2</span><span class="o">.</span><span class="n">robjects</span><span class="o">.</span><span class="n">r</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">14</span><span class="p">]:</span> <span class="n">DTW</span> <span class="o">=</span> <span class="n">importr</span><span class="p">(</span><span class="s">&#39;dtw&#39;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>Computing the alignment of the two sequences</p>
+<div class="highlight"><pre>In [17]: alignment = R.dtw(goog_2008.Volume.values, goog_2009.Volume.values, keep=True)
+</pre></div>
+
+
+<p>Plotting the `twoway` and `threeway` type plot for the alignment
+obtained.</p>
+<div class="highlight"><pre>In [20]: R.plot(alignment,type=&quot;twoway&quot;);
+In [21]: R.plot(alignment,type=&quot;threeway&quot;);
+</pre></div>
+
+
+<p><img alt="2way" src="http://nipunbatra.files.wordpress.com/2013/06/2way.png?w=285" /></p>
+<p><img alt="3way" src="http://nipunbatra.files.wordpress.com/2013/06/3way.png?w=287" /></p>
+<p>Finding the distance between the two time series</p>
+<div class="highlight"><pre>In [21]: dist = alignment.rx(&#39;distance&#39;)[0][0]
+In [22]: dist
+Out[22]: 417765600.0
+</pre></div>
+
+
+<p>Now, we try and do the same analysis using MlPy's DTW implementation.</p>
+<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">25</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">mlpy</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">26</span><span class="p">]:</span> <span class="kn">import</span> <span class="nn">matplotlib.cm</span> <span class="kn">as</span> <span class="nn">cm</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">27</span><span class="p">]:</span> <span class="n">dist</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="n">mlpy</span><span class="o">.</span><span class="n">dtw_std</span><span class="p">(</span><span class="n">goog_2008</span><span class="o">.</span><span class="n">Volume</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">goog_2009</span><span class="o">.</span><span class="n">Volume</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">dist_only</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">28</span><span class="p">]:</span> <span class="n">dist</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">28</span><span class="p">]:</span> <span class="mf">377532600.0</span>
+</pre></div>
+
+
+<p>For some reason the distance obtained using the two implementation is
+not the same. Next, we aim to draw the warped path.</p>
+<div class="highlight"><pre>In [29]: fig = plt.figure(1)
+In [30]: ax = fig.add_subplot(111
+In [31]: plot1 = plt.imshow(cost.T, origin=&#39;lower&#39;, cmap=cm.gray, interpolation=&#39;nearest&#39;)
+In [32]: plot2 = plt.plot(path[0], path[1], &#39;w&#39;)
+In [33]: xlim = ax.set_xlim((-0.5, cost.shape[0]-0.5))
+In [34]: ylim = ax.set_ylim((-0.5, cost.shape[1]-0.5))
+In [35]: plt.draw()
+</pre></div>
+
+
+<p><img alt="dtw_mlpy" src="http://nipunbatra.files.wordpress.com/2013/06/dtw_mlpy.png?w=300" /></p>
+<p>Both the alignment diagrams look very similar, which is as expected.<br />
+This is probably all that can be easily done using mlpy, since the
+documentation is only a single page. Whereas R's DTW package is a lot
+more feature and documentation rich.<br />
+For example, we first plot the cost density plot. Again this can be
+plotted using Matplotlib, but having the convenience of a method to do
+it for you looks better!</p>
+<div class="highlight"><pre>In [37]: R.plot(alignment,type=&quot;density&quot;);
+</pre></div>
+
+
+<p><img alt="cost_density" src="http://nipunbatra.files.wordpress.com/2013/06/cost_density.png?w=287" /></p>
+<p>Also, now we can use "DTW" as similarity metric for computing distance
+matrices. We can further use this distance matrix to perform clustering.
+HClust inherently supports distance matrices.</p>
+<div class="highlight"><pre>In [39]: distMatrix =R.dist(goog_2009.values, method=&quot;DTW&quot;)
+In [40]: distMatrix
+Out[40]:
+
+[2557065.470000, 5629523.270000, 1768054.390000, ..., 81622.300000, 410006.360000, 491625.100000]
+</pre></div>
+
+
+<p>Performing hclust</p>
+<div class="highlight"><pre>In [42]: hc =R.hclust(distMatrix, method=&quot;average&quot;)
+In [43]: R.plot(hc)
+Out[43]: rpy2.rinterface.NULL
+</pre></div>
+
+
+<p>The Dendogram produced was way too shabby to be included in this post,
+so ommitted it.<br />
+Takeaway:</p>
+<ul>
+<li>R's DTW package has a lot more features and is well documented</li>
+<li>It has inbuilt plotting features which make the plots intuitive</li>
+<li>R can allow you to use DTW as a distance metric, which means it can
+    be used in clustering approaches. This is on current action list</li>
+<li>For  initial analysis, mlpy might also be very good</li>
+<li>rpy2 is easy to use and really extends data mining in Python</li>
+</ul>
+<p>What would be good to have</p>
+<ul>
+<li>If Pandas would allow these operations natively on DataFrame
+    objects. So we could easily play with more than 1 dimension. R code
+    is GPL and has a significant chunk written in C. Not sure if that
+    can be directly used in Python</li>
+<li>Ability to use different distance metrics in different clustering
+    implementations</li>
+<li>More open source code from research community. Some publications do
+    talk about DTW and finance and clustering, but absence of code ,
+    makes it hard to reproduce the results</li>
+<li>More Pandas documentation on fiddling with rpy2</li>
+</ul>
+<p>References</p>
+<ol>
+<li>http://rdatamining.wordpress.com/2011/08/23/time-series-analysis-and-mining-with-r/</li>
+<li>http://stackoverflow.com/questions/5695388/dynamic-time-warping-in-python</li>
+<li>http://data-matters.blogspot.in/2008/07/simple-implementation-of-dtwdynamic.html</li>
+<li>http://mlpy.sourceforge.net/docs/3.4/dtw.html</li>
+<li>https://en.wikipedia.org/wiki/Dynamic_time_warping</li>
+<li>https://github.com/pydata/pandas/issues/3810</li>
+<li>http://www.jstatsoft.org/v31/i07/paper</li>
+<li>http://stat.ethz.ch/R-manual/R-patched/library/stats/html/hclust.html</li>
+<li>http://pandas.pydata.org/pandas-docs/dev/io.html</li>
+</ol>
+<p>Caveat: I am pretty new to DTW and my analysis might be highly flawed.
+Also the dataset used is only for demo purposes and may not be a good
+one to illustrate the concept. A better dataset may be ECG data or some
+of the applications mentioned in [7]</p>
+        </section>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'nipunbatra';
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript><footer class="footer">
+    &copy; Nipun Batra &ndash;
+        Proudly published with <a href="http://blog.getpelican.com/">Pelican</a>
+</footer>    </div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50180272-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    <!-- End Document
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

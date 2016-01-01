@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>When memory matters: float64 vs float32 for storing data | Nipun Batra | </title>
+    <meta name="description" content="Nipun Batra, ">
+    <meta name="author" content="Nipun Batra">
+
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Feeds
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="alternate" href="http://nipunbatra.github.io/feeds/all.atom.xml" type="application/atom+xml" title="Nipun Batra Atom Feed" />
+
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400|Inconsolata">
+
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/custom.css">
+    <link rel="stylesheet" href="http://nipunbatra.github.io/theme/css/pygments.css">
+
+    <!-- Scripts
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fitvids/1.1.0/jquery.fitvids.js"></script>
+    <script>
+        $(document).ready(function(){
+            $(".container").fitVids();
+        });
+    </script>
+
+    <!-- Favicon
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="icon" type="image/png" href="http://nipunbatra.github.io/theme/assets/favicon.png">
+
+
+<!-- Using MathJax, with the delimiters $ -->
+<!-- Conflict with pygments for the .mo and .mi -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+  "HTML-CSS": {
+  styles: {
+  ".MathJax .mo, .MathJax .mi": {color: "black ! important"}}
+  },
+  tex2jax: {inlineMath: [['$','$'], ['\\\\(','\\\\)']],processEscapes: true}
+  });
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+
+</head>
+<body>
+
+    <!-- Primary Page Layout
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    
+    <div class="container">
+        <section class="header">
+            <img src="http://nipunbatra.github.io/lk.jpg" class="logo">
+        </section>
+    </div>
+
+    <div class="container">
+        <nav class="navbar">
+            <div class="container">
+                <ul class="navbar-list">
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/" class="navbar-link">Blog home</a></li>
+                    <li class="navbar-item"><a href="https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                <!--
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/http://nipunbatra.github.io/" class="navbar-link">Blog home</a></li>
+                    <li class="navbar-item"><a href="http://nipunbatra.github.io/https://www.iiitd.edu.in/~nipunb/" class="navbar-link">Home page</a></li>
+                -->
+                    <li class="navbar-icon">
+                        <a href="http://twitter.com/nipun_batra">
+                            <i class="fa fa-twitter fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://github.com/nipunreddevil">
+                            <i class="fa fa-github fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                    <li class="navbar-icon">
+                        <a href="http://www.linkedin.com/profile/view?id=43966733">
+                            <i class="fa fa-linkedin fa-fw fa-2x"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <section class="post">
+            <header class="post-header">
+                <h3>When memory matters: float64 vs float32 for storing data</h3>
+                <p class="post-meta">
+                    Mon 16 December 2013 &middot; tagged 
+                        <a class="post-category" href="http://nipunbatra.github.io/tag/machine-learning.html">Machine Learning</a>
+                        <a class="post-category" href="http://nipunbatra.github.io/tag/python.html">Python</a>
+                </p>
+            </header>
+        </section>
+        <section class="post-content">
+            <p>Dealing with large dataset can be a bit of bother. Hardware has grown,
+but so have the datasets. Recently, while loading some Electricity
+datasets into memory with Pandas and processing on them, I was running
+out of memory.</p>
+<p><a href="http://jack-kelly.com/">Jack</a> suggested that I use float32 instead of the default float64
+provided by Pandas. Following is a comparison of the in-memory
+comparisons between the two datatypes for representing the same data.</p>
+<p>Firstly, as suggested by Jeff on <a href="http://stackoverflow.com/questions/18089667/pandas-how-to-estimate-how-much-memory-a-dataframe-will-need">Stack overflow</a>, here is small
+function to find the size requirements (in bytes) of a DataFrame</p>
+<div class="highlight"><pre>In [2]: def sizedf(df):  
+...: return df.values.nbytes + df.index.nbytes + df.columns.nbytes
+</pre></div>
+
+
+<p>Let us create a large dataframe.</p>
+<div class="highlight"><pre>In [3]: a =pd.DataFrame(random.randn(100000,10))
+
+In [4]: a  
+Out[4]:  
+&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt; 
+Int64Index: 100000 entries, 0 to 99999  
+Data columns (total 10 columns):  
+0 100000 non-null values  
+1 100000 non-null values  
+2 100000 non-null values  
+3 100000 non-null values  
+4 100000 non-null values  
+5 100000 non-null values  
+6 100000 non-null values  
+7 100000 non-null values  
+8 100000 non-null values  
+9 100000 non-null values  
+dtypes: float64(10)
+</pre></div>
+
+
+<p>We can see that the data type of the dataframe is float64. Let us now
+create a dataframe b, casted as float32.</p>
+<div class="highlight"><pre>In [5]: b = a.astype(float32)
+
+In [6]: b  
+Out[6]:  
+\&lt;class &#39;pandas.core.frame.DataFrame&#39;\&gt;  
+Int64Index: 100000 entries, 0 to 99999  
+Data columns (total 10 columns):  
+0 100000 non-null values  
+1 100000 non-null values  
+2 100000 non-null values  
+3 100000 non-null values  
+4 100000 non-null values  
+5 100000 non-null values  
+6 100000 non-null values  
+7 100000 non-null values  
+8 100000 non-null values  
+9 100000 non-null values  
+dtypes: float32(10)
+</pre></div>
+
+
+<p>Now, let us compare the in-memory sizes of the two dataframes.</p>
+<div class="highlight"><pre>In [7]: size_df(a)  
+Out[7]: 8800080
+
+In [8]: size_df(b)  
+Out[8]: 4800080
+</pre></div>
+
+
+<p>The dataframe with datatype as float32 does a lot better. What about
+memory usage on disk?<br />
+Let us export the data to HDF5 store and see.</p>
+<div class="highlight"><pre>In [9]: a.to_hdf(&#39;df_a.h5&#39;, &#39;df&#39;)
+
+In [10]: b.to_hdf(&#39;df_b.h5&#39;, &#39;df&#39;)
+
+In [11]: ! ls -lah df_a.h5  
+-rw-rw-r-- 1 nipun nipun 8.4M Dec 16 15:22 df_a.h5
+
+In [12]: ! ls -lah df_b.h5  
+-rw-rw-r-- 1 nipun nipun 4.6M Dec 16 15:42 df_b.h5
+</pre></div>
+
+
+<p>Clearly, we save a lot of on disk and raw memory when using float32 as
+opposed to float64(which is the default). Whenever, we don't need such
+high precision, float32 might just save you a lot of memory issues!</p>
+        </section>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'nipunbatra';
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript><footer class="footer">
+    &copy; Nipun Batra &ndash;
+        Proudly published with <a href="http://blog.getpelican.com/">Pelican</a>
+</footer>    </div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-50180272-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+    <!-- End Document
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

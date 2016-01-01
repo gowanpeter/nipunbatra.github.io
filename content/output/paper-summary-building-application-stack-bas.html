@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+        <title>Paper summary: Building Application Stack (BAS)</title>
+        <link rel="stylesheet" href="/theme/css/main.css" />
+        <link href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="A Pelican Blog Atom Feed" />
+
+        <!--[if IE]>
+            <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+</head>
+
+<body id="index" class="home">
+        <header id="banner" class="body">
+                <h1><a href="/">A Pelican Blog </a></h1>
+                <nav><ul>
+                    <li><a href="/pages/about.html">About</a></li>
+                    <li><a href="/pages/education.html">Education</a></li>
+                    <li><a href="/pages/projects.html">Projects</a></li>
+                    <li><a href="/pages/publications.html">Publications</a></li>
+                    <li><a href="/pages/subscribe.html">Subscribe</a></li>
+                    <li><a href="/pages/tutorials.html">Tutorials</a></li>
+                    <li class="active"><a href="/category/blog.html">Blog</a></li>
+                </ul></nav>
+        </header><!-- /#banner -->
+<section id="content" class="body">
+  <article>
+    <header>
+      <h1 class="entry-title">
+        <a href="/paper-summary-building-application-stack-bas.html" rel="bookmark"
+           title="Permalink to Paper summary: Building Application Stack (BAS)">Paper summary: Building Application Stack (BAS)</a></h1>
+    </header>
+
+    <div class="entry-content">
+<footer class="post-info">
+        <abbr class="published" title="2014-02-19T17:47:00+00:00">
+                Published: Wed 19 February 2014
+        </abbr>
+
+        <address class="vcard author">
+                By                         <a class="url fn" href="/author/nipunbatra.html">nipunbatra</a>
+        </address>
+<p>In <a href="/category/blog.html">Blog</a>. </p>
+<p>tags: <a href="/tag/buildings.html">buildings</a> <a href="/tag/energy.html">energy</a> </p>
+</footer><!-- /.post-info -->      <p>Buildings house a number of sensors  and actuator ranging across various
+applications including, but not limited to, utility metering (water,
+gas, electricity), HVAC control, lighting, security. Each of these
+sub-systems usually expose their data over different protocols making it
+difficult to design generic applications on top. This gets particularly
+hard when moving across different buildings. Maybe, time to do software
+engineering for buildings?</p>
+<p>In this post I summarize the paper <a href="http://www.cs.berkeley.edu/~krioukov/BAS.pdf">Building Application Stack (BAS)</a>
+which won the best paper award at Buildsys 2012. The paper motivates the
+need of an API for building applications owing to lack of "portability"
+in building applications. While many Building automation protocols such
+as BACnet, LONtalk partially address this via their schemes, the lack of
+portability remains a concern. Another target of the paper is to be able
+to answer and address queries such as the following: What is the
+<strong>light</strong> level of on all floors <strong>above</strong> the <strong>10th floor?</strong>For
+answering such queries sensors and its abstractions are necessary, but
+not complete. The various relationships among different sensors,
+actuator, physical spaces, etc. should be taken into account.</p>
+<p>The approach followed in the paper is based on well known software
+engineering principles. The layered architecture is summarized at
+follows:</p>
+<ol>
+<li>Close to the hardware is the interconnection interface which exposes
+    the hardware points via their protocols such as BACnet. These points
+    have non-trivial names such as “SDH.AH1A.SF VFD:INPUT" which is a
+    speed input to variable frequency drive.</li>
+<li>To introduce portability, the next layer consists of drivers which
+    expose necessary interfaces. For instance, a fan driver would expose
+    get_speed() and set_speed(x). Drivers can be constructed in
+    hierarchical fashion. HVAC chiller driver may contain drivers for
+    fan etc.</li>
+<li>Functional and spatial relationships are needed to answer questions
+    like which circuit powers lighting, which AHU serves a particular
+    room. For modeling functional relationships, BAS uses directed
+    graphs. For modeling spatial relationships BAS incorporates spatial
+    tags.</li>
+<li>The top most layer is the query layer and allows accessing driver
+    objects based on different attributes. Those who know about jQuery
+    might see some parallels with the driver access. BAS query layer is
+    language agnostic.</li>
+</ol>
+<p>The authors use BAS and compare its tradeoff with conventional
+customized building applications across two buildings and two
+application scenarios. The intended purposes are evident by the minimal
+changes required while porting across buildings which use different
+automation protocols. In conclusion, the paper brings software
+engineering to the buildings domain and the rich query interface allows
+diverse set of applications to be built easily on top of BAS.</p>
+    </div><!-- /.entry-content -->
+
+  </article>
+</section>
+        <section id="extras" class="body">
+                <div class="social">
+                        <h2>social</h2>
+                        <ul>
+                            <li><a href="/feeds/all.atom.xml" type="application/atom+xml" rel="alternate">atom feed</a></li>
+
+                        </ul>
+                </div><!-- /.social -->
+        </section><!-- /#extras -->
+
+        <footer id="contentinfo" class="body">
+                <address id="about" class="vcard body">
+                Proudly powered by <a href="http://getpelican.com/">Pelican</a>, which takes great advantage of <a href="http://python.org">Python</a>.
+                </address><!-- /#about -->
+
+                <p>The theme is by <a href="http://coding.smashingmagazine.com/2009/08/04/designing-a-html-5-layout-from-scratch/">Smashing Magazine</a>, thanks!</p>
+        </footer><!-- /#contentinfo -->
+
+</body>
+</html>
