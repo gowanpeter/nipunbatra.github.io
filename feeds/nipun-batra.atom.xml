@@ -5,15 +5,6 @@
 &lt;/div&gt;
 &lt;div class="inner_cell"&gt;
 &lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
-&lt;h2 id="Pythor--Python-meets-R"&gt;Pythor- Python meets R&lt;a class="anchor-link" href="#Pythor--Python-meets-R"&gt;&amp;#182;&lt;/a&gt;&lt;/h2&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;/div&gt;
-&lt;div class="cell border-box-sizing text_cell rendered"&gt;
-&lt;div class="prompt input_prompt"&gt;
-&lt;/div&gt;
-&lt;div class="inner_cell"&gt;
-&lt;div class="text_cell_render border-box-sizing rendered_html"&gt;
 &lt;p&gt;I typically use Python for my data analysis. However, there are many packages which exist only in R. RPy2 allows interaction between R and Python. The following post is an attempt to show how we can leverage the awesomeness of R's packages in Python. Python meets R-Pythor. The following is the Github link to the project: &lt;a href="https://github.com/nipunbatra/pythor"&gt;https://github.com/nipunbatra/pythor&lt;/a&gt;&lt;/p&gt;
 
 &lt;/div&gt;

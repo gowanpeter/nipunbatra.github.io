@@ -5,4 +5,4 @@ Category: Blog
 Tags: R, Python
 Slug: pythor
 
-{% notebook pythor.ipynb %}
+{% notebook pythor-blog.ipynb %}
