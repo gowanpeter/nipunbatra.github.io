@@ -5,28 +5,28 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://nipunbatra.github.io/</loc>
-<lastmod>2015-12-28T20:25:18-00:00</lastmod>
+<lastmod>2016-01-07T16:22:39-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://nipunbatra.github.io/archives.html</loc>
-<lastmod>2015-12-28T20:25:18-00:00</lastmod>
+<lastmod>2016-01-07T16:22:39-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://nipunbatra.github.io/tags.html</loc>
-<lastmod>2015-12-28T20:25:18-00:00</lastmod>
+<lastmod>2016-01-07T16:22:39-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://nipunbatra.github.io/categories.html</loc>
-<lastmod>2015-12-28T20:25:18-00:00</lastmod>
+<lastmod>2016-01-07T16:22:39-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -69,6 +69,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>http://nipunbatra.github.io/pages/tutorials.html</loc>
 <lastmod>2013-03-24T18:41:00+05:30</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://nipunbatra.github.io/2016/01/pythor/</loc>
+<lastmod>2016-01-07T15:05:00+05:30</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -698,7 +705,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://nipunbatra.github.io/category/blog.html</loc>
-<lastmod>2015-07-04T15:12:00+05:53</lastmod>
+<lastmod>2016-01-07T15:05:00+05:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -824,7 +831,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://nipunbatra.github.io/tag/python.html</loc>
-<lastmod>2014-12-01T16:21:00+05:53</lastmod>
+<lastmod>2016-01-07T15:05:00+05:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -887,7 +894,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://nipunbatra.github.io/tag/r.html</loc>
-<lastmod>2014-03-06T18:11:00+05:53</lastmod>
+<lastmod>2016-01-07T15:05:00+05:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -908,7 +915,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://nipunbatra.github.io/author/nipun-batra.html</loc>
-<lastmod>2015-07-04T15:12:00+05:53</lastmod>
+<lastmod>2016-01-07T15:05:00+05:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
