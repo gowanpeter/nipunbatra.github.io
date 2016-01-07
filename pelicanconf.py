@@ -30,7 +30,7 @@ MENUITEMS = (
 
 # Social widget
 SOCIAL = (('twitter', 'http://twitter.com/nipun_batra'),
-          ('github', 'http://github.com/nipunreddevil'),
+          ('github', 'http://github.com/nipunbatra'),
           ('linkedin', 'http://www.linkedin.com/profile/view?id=43966733'),
           )
 
