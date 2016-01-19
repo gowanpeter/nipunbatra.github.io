@@ -5,7 +5,7 @@
     <!-- Basic Page Needs
     –––––––––––––––––––––––––––––––––––––––––––––––––– -->
     <meta charset="utf-8">
-    <title>FFT for dummies | Nipun Batra | </title>
+    <title>Fourier transform for dummies | Nipun Batra | </title>
     <meta name="description" content="Nipun Batra, ">
     <meta name="author" content="Nipun Batra">
 
@@ -102,10 +102,10 @@
     <div class="container">
         <section class="post">
             <header class="post-header">
-                <h3>FFT for dummies</h3>
+                <h3>Fourier transform for dummies</h3>
                 <p class="post-meta">
                     Thu 14 January 2016 &middot; tagged 
-                        <a class="post-category" href="http://nipunbatra.github.io/tag/fft.html">fft</a>
+                        <a class="post-category" href="http://nipunbatra.github.io/tag/ft.html">ft</a>
                         <a class="post-category" href="http://nipunbatra.github.io/tag/python.html">Python</a>
                 </p>
             </header>
@@ -158,7 +158,7 @@
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
@@ -170,6 +170,22 @@
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Vendor:  Continuum Analytics, Inc.
+Package: mkl
+Message: trial mode expires in 29 days
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -186,7 +202,7 @@
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="k">def</span> <span class="nf">create_sine</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">frequency_of_sine</span><span class="p">):</span>
@@ -212,7 +228,7 @@
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
@@ -640,7 +656,7 @@ KIqiKEHz/wPuvqg+mnOq4AAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">t</span> <span class="o">=</span> <span class="mi">10</span>
@@ -672,7 +688,7 @@ KIqiKEHz/wPuvqg+mnOq4AAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>  <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="n">num_components</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
@@ -1835,7 +1851,7 @@ $$x = -0.5\times x_0 + 0.1\times x_1 + 0.2\times x_2 -0.6\times x_3 $$
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5</span><span class="o">*</span><span class="n">components</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mf">0.1</span><span class="o">*</span><span class="n">components</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mf">0.2</span><span class="o">*</span><span class="n">components</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">-</span><span class="mf">0.6</span><span class="o">*</span><span class="n">components</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
@@ -1858,7 +1874,7 @@ $$x = -0.5\times x_0 + 0.1\times x_1 + 0.2\times x_2 -0.6\times x_3 $$
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -2299,7 +2315,7 @@ A2BF+ABYET4AVgLLALAyCcFdqAAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[41]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">signal_1</span> <span class="o">=</span> <span class="n">create_sine</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span><span class="mf">0.1</span><span class="p">)</span>
@@ -2696,7 +2712,7 @@ JPgfzHQJneNu4R8AAAAASUVORK5CYII=
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[51]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">signal_1</span> <span class="o">=</span> <span class="n">create_sine</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span><span class="mf">0.1</span><span class="p">)</span>
@@ -3070,7 +3086,7 @@ mZlZI7hgmZlZI7hgmZlZI7hgmZlZI7hgmZlZI/wBsKMnzYNgSncAAAAASUVORK5CYII=
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[52]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="k">def</span> <span class="nf">create_cosine_k_N</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
@@ -3096,7 +3112,7 @@ mZlZI7hgmZlZI7hgmZlZI7hgmZlZI7hgmZlZI/wBsKMnzYNgSncAAAAASUVORK5CYII=
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[53]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">cos_5</span> <span class="o">=</span> <span class="n">create_cosine_k_N</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="n">N</span><span class="p">)</span>
@@ -3857,7 +3873,7 @@ FSBAgAABqgKBwAoQIECAAFWBQGAFCBAgQICqQCCwAgQIECBAVSAQWAECBAgQoCrw/wGWPRIxJvp8
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[54]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">sin_5</span> <span class="o">=</span> <span class="n">create_sine_k_N</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="n">N</span><span class="p">)</span>
@@ -4608,7 +4624,7 @@ Yes, we want to detect the presence of a particular frequency and not really wor
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[55]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
@@ -5838,7 +5854,7 @@ WYm3NoefAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[56]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">4</span><span class="p">))</span>
@@ -6641,7 +6657,7 @@ REXDBQkRERERERXN/wN3uAMYDFN+nwAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[57]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">fft_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -6664,7 +6680,7 @@ REXDBQkRERERERXN/wN3uAMYDFN+nwAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[58]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="nb">len</span><span class="p">(</span><span class="n">fft_x</span><span class="p">)</span>
@@ -6678,7 +6694,7 @@ REXDBQkRERERERXN/wN3uAMYDFN+nwAAAABJRU5ErkJggg==
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[58]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[16]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -6693,7 +6709,7 @@ REXDBQkRERERERXN/wN3uAMYDFN+nwAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[59]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">fft_x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -6707,7 +6723,7 @@ REXDBQkRERERERXN/wN3uAMYDFN+nwAAAABJRU5ErkJggg==
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[59]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[17]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -6733,7 +6749,7 @@ REXDBQkRERERERXN/wN3uAMYDFN+nwAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[63]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">fft_x</span><span class="p">))</span>
@@ -6881,22 +6897,19 @@ ucN/LjgyRDIAAAAASUVORK5CYII=
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="n">Now</span><span class="p">,</span> <span class="n">barring</span> <span class="n">the</span> <span class="n">zeroth</span> <span class="n">point</span><span class="p">,</span> <span class="n">the</span> <span class="n">remaining</span> <span class="n">signal</span> <span class="n">seems</span> <span class="n">to</span> <span class="n">be</span> <span class="n">reflected</span> <span class="n">about</span> <span class="n">the</span> <span class="n">middle</span> <span class="n">value</span> <span class="n">of</span> <span class="n">K</span><span class="o">.</span> <span class="n">This</span> <span class="ow">is</span> 
-</pre></div>
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now, barring the zeroth point, the remaining signal seems to be reflected about the middle value of K. This is what we'd expect as per the Nyquist sampling criteria, sampling at fs, we can't see a signal of frequency more than fs/2. So, all that information is redundant. We'll thus plot only till fs/2 now.</p>
 
 </div>
 </div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">fft_x</span><span class="p">)[:</span><span class="mi">500</span><span class="p">])</span>
@@ -7041,7 +7054,7 @@ wSZJaorBJklqisEmSWqKwSZJasr/ByfcRDIIjWGhAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">fft_x</span><span class="p">)[:</span><span class="mi">500</span><span class="p">])</span>
@@ -7213,7 +7226,7 @@ YII=
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span><span class="o">/</span><span class="mf">10.</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">fft_x</span><span class="p">)[:</span><span class="mi">500</span><span class="p">])</span>
@@ -7385,6 +7398,159 @@ YWZmZn3PYWZmZn3PYWZmZn3PYWZmZn3v/wPC0w1bamLlkAAAAABJRU5ErkJggg==
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Energy-preservation-under-the-transform">Energy preservation under the transform<a class="anchor-link" href="#Energy-preservation-under-the-transform">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The energy of the signal in the time domain is given by: $E_t = \sum(x^2)$, and in the frequency domain is given by $E_f = \sum(X^2)\times1/N$</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">Et</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">x</span><span class="p">)</span>
+<span class="k">print</span> <span class="n">Et</span>
+
+<span class="n">Ef</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">fft_x</span><span class="p">)</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">fft_x</span><span class="p">))</span><span class="o">/</span><span class="n">N</span>
+<span class="k">print</span> <span class="n">Ef</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>455.0
+455.0
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So, we can see that the energy is preserved under the transform. A very quick check now. How about the energy of the individual time components and their frequency transform equivalents?</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Energy of DC component</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">Et_DC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="o">*</span><span class="n">components</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*-</span><span class="mf">0.5</span><span class="o">*</span><span class="n">components</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">ft_DC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="o">*</span><span class="n">components</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">Ef_DC</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">ft_DC</span><span class="p">)</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">ft_DC</span><span class="p">))</span><span class="o">/</span><span class="n">N</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">Et_DC</span><span class="p">,</span> <span class="n">Ef_DC</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>(250.0, 250.0)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Energy of 10 Hz component</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span class="n">Et_10hz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mf">0.1</span><span class="o">*</span><span class="n">components</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mf">0.1</span><span class="o">*</span><span class="n">components</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">ft_10hz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="mf">0.1</span><span class="o">*</span><span class="n">components</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">Ef_10hz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">ft_10hz</span><span class="p">)</span><span class="o">*</span><span class="nb">abs</span><span class="p">(</span><span class="n">ft_10hz</span><span class="p">))</span><span class="o">/</span><span class="n">N</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">Et_10hz</span><span class="p">,</span> <span class="n">Ef_10hz</span><span class="p">)</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>(5.0000000000000018, 5.0)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>So, there you go. We can see that under the transform the energy remains the same. This also tells us how to interpret the DFT coefficients. These coefficients are an indicator of energy contribution in the aggregate signal.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h3 id="FT-of-a-square-wave!">FT of a square wave!<a class="anchor-link" href="#FT-of-a-square-wave!">&#182;</a></h3>
 </div>
 </div>
@@ -7401,7 +7567,7 @@ YWZmZn3PYWZmZn3PYWZmZn3PYWZmZn3v/wPC0w1bamLlkAAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">sqr_wave</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">250</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">250</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">250</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">250</span><span class="p">)])</span>
@@ -7414,7 +7580,7 @@ YWZmZn3PYWZmZn3PYWZmZn3PYWZmZn3v/wPC0w1bamLlkAAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sqr_wave</span><span class="p">)</span>
@@ -7566,7 +7732,7 @@ kiQ1goElSWoEA0uS1Aj/H6OSbYxcFdTCAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">dft_sqr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fft</span><span class="o">.</span><span class="n">fft</span><span class="p">(</span><span class="n">sqr_wave</span><span class="p">)</span>
@@ -7579,7 +7745,7 @@ kiQ1goElSWoEA0uS1Aj/H6OSbYxcFdTCAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span><span class="o">/</span><span class="mf">10.</span><span class="p">,</span><span class="nb">abs</span><span class="p">(</span><span class="n">dft_sqr</span><span class="p">)[:</span><span class="mi">500</span><span class="p">])</span>
@@ -7801,7 +7967,7 @@ CmYiItL2/g8F4IBLAkD9dwAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="o">!</span>wget http://www.thesoundarchive.com/starwars/swvader01.wav
@@ -7817,16 +7983,16 @@ CmYiItL2/g8F4IBLAkD9dwAAAABJRU5ErkJggg==
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>--2016-01-14 19:41:30--  http://www.thesoundarchive.com/starwars/swvader01.wav
+<pre>--2016-01-19 14:46:33--  http://www.thesoundarchive.com/starwars/swvader01.wav
 Resolving www.thesoundarchive.com (www.thesoundarchive.com)... 64.85.5.170
 Connecting to www.thesoundarchive.com (www.thesoundarchive.com)|64.85.5.170|:80... connected.
 HTTP request sent, awaiting response... 200 OK
 Length: 46146 (45K) [audio/wav]
-Saving to: ‘swvader01.wav.1’
+Saving to: ‘swvader01.wav.2’
 
-swvader01.wav.1     100%[=====================&gt;]  45.06K  34.6KB/s   in 1.3s   
+swvader01.wav.2     100%[=====================&gt;]  45.06K  37.2KB/s   in 1.2s   
 
-2016-01-14 19:41:32 (34.6 KB/s) - ‘swvader01.wav.1’ saved [46146/46146]
+2016-01-19 14:46:36 (37.2 KB/s) - ‘swvader01.wav.2’ saved [46146/46146]
 
 </pre>
 </div>
@@ -7838,7 +8004,7 @@ swvader01.wav.1     100%[=====================&gt;]  45.06K  34.6KB/s   in 1.3s
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Audio</span>
@@ -7851,7 +8017,7 @@ swvader01.wav.1     100%[=====================&gt;]  45.06K  34.6KB/s   in 1.3s
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">Audio</span><span class="p">(</span><span class="s">&quot;swvader01.wav&quot;</span><span class="p">)</span>
@@ -7865,7 +8031,7 @@ swvader01.wav.1     100%[=====================&gt;]  45.06K  34.6KB/s   in 1.3s
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[26]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[38]:</div>
 
 <div class="output_html rendered_html output_subarea output_execute_result">
 
@@ -7884,7 +8050,7 @@ swvader01.wav.1     100%[=====================&gt;]  45.06K  34.6KB/s   in 1.3s
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="kn">from</span> <span class="nn">scipy.io.wavfile</span> <span class="kn">import</span> <span class="n">read</span><span class="p">,</span><span class="n">write</span>
@@ -7897,7 +8063,7 @@ swvader01.wav.1     100%[=====================&gt;]  45.06K  34.6KB/s   in 1.3s
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">fs</span><span class="p">,</span><span class="n">data</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="s">&#39;swvader01.wav&#39;</span><span class="p">)</span>
@@ -7910,7 +8076,7 @@ swvader01.wav.1     100%[=====================&gt;]  45.06K  34.6KB/s   in 1.3s
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[41]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">fs</span>
@@ -7924,7 +8090,7 @@ swvader01.wav.1     100%[=====================&gt;]  45.06K  34.6KB/s   in 1.3s
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[29]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[41]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -7939,7 +8105,7 @@ swvader01.wav.1     100%[=====================&gt;]  45.06K  34.6KB/s   in 1.3s
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In&nbsp;[42]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
@@ -7953,11 +8119,11 @@ swvader01.wav.1     100%[=====================&gt;]  45.06K  34.6KB/s   in 1.3s
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[30]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[42]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>[&lt;matplotlib.lines.Line2D at 0x113129c90&gt;]</pre>
+<pre>[&lt;matplotlib.lines.Line2D at 0x10cf90a90&gt;]</pre>
 </div>
 
 </div>
@@ -8159,7 +8325,7 @@ JSsRESm9/w/gJdGLboJF+gAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In&nbsp;[43]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
@@ -8176,7 +8342,7 @@ JSsRESm9/w/gJdGLboJF+gAAAABJRU5ErkJggg==
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[32]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[43]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -8201,7 +8367,7 @@ JSsRESm9/w/gJdGLboJF+gAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="prompt input_prompt">In&nbsp;[44]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
@@ -8218,11 +8384,11 @@ JSsRESm9/w/gJdGLboJF+gAAAABJRU5ErkJggg==
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[33]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[44]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&lt;matplotlib.text.Text at 0x113005cd0&gt;</pre>
+<pre>&lt;matplotlib.text.Text at 0x10cf9e290&gt;</pre>
 </div>
 
 </div>
@@ -8385,7 +8551,7 @@ AABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="prompt input_prompt">In&nbsp;[45]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
@@ -8603,7 +8769,7 @@ VjgubmZmVjgubmZmVjgubmZmVjgubmZmVjj/H0wRiUUKenzgAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="prompt input_prompt">In&nbsp;[46]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span class="kn">from</span> <span class="nn">stft_implementation</span> <span class="kn">import</span> <span class="o">*</span>
@@ -8616,10 +8782,10 @@ VjgubmZmVjgubmZmVjgubmZmVjgubmZmVjj/H0wRiUUKenzgAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="prompt input_prompt">In&nbsp;[47]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span class="n">plotstft</span><span class="p">(</span><span class="s">&quot;swvader01.wav&quot;</span><span class="p">)</span>
+<div class=" highlight hl-ipython2"><pre><span class="n">plotstft</span><span class="p">(</span><span class="s">&quot;swvader01.wav&quot;</span><span class="p">);</span>
 </pre></div>
 
 </div>
@@ -8629,14 +8795,6 @@ VjgubmZmVjgubmZmVjgubmZmVjgubmZmVjj/H0wRiUUKenzgAAAAAElFTkSuQmCC
 <div class="output_wrapper">
 <div class="output">
 
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>/Users/nipunbatra/anaconda/lib/python2.7/site-packages/matplotlib/collections.py:590: FutureWarning: elementwise comparison failed; returning scalar instead, but in the future will perform elementwise comparison
-  if self._edgecolors == str(&apos;face&apos;):
-</pre>
-</div>
-</div>
 
 <div class="output_area"><div class="prompt"></div>
 
@@ -11141,7 +11299,7 @@ kiTpctLZTJIkSZIkSZIkSbqcdDaTJEmSJEmSJEmSLiedzSRJkiRJkiRJkqTLSWczSZIkSZIkSZIk
 
 
 <div class="output_text output_subarea ">
-<pre>&lt;matplotlib.figure.Figure at 0x112848850&gt;</pre>
+<pre>&lt;matplotlib.figure.Figure at 0x10b2ba590&gt;</pre>
 </div>
 
 </div>
@@ -11155,7 +11313,7 @@ kiTpctLZTJIkSZIkSZIkSbqcdDaTJEmSJEmSJEmSLiedzSRJkiRJkiRJkqTLSWczSZIkSZIkSZIk
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>There you go! Now, does FFT sound all that difficult?</p>
+<p>There you go! Now, does FT sound all that difficult?</p>
 <p>I have used a number of wonderful references for developing my understanding. I'll try and list a few here:</p>
 <ol>
 <li><a href="https://jakevdp.github.io/blog/2013/08/28/understanding-the-fft/">Jake's blog post on understanding the FFT algorithm</a></li>

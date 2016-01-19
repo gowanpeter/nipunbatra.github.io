@@ -5,28 +5,28 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://nipunbatra.github.io/</loc>
-<lastmod>2016-01-19T11:52:01-00:00</lastmod>
+<lastmod>2016-01-19T14:57:21-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://nipunbatra.github.io/archives.html</loc>
-<lastmod>2016-01-19T11:52:01-00:00</lastmod>
+<lastmod>2016-01-19T14:57:21-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://nipunbatra.github.io/tags.html</loc>
-<lastmod>2016-01-19T11:52:01-00:00</lastmod>
+<lastmod>2016-01-19T14:57:21-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://nipunbatra.github.io/categories.html</loc>
-<lastmod>2016-01-19T11:52:01-00:00</lastmod>
+<lastmod>2016-01-19T14:57:21-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -746,13 +746,6 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://nipunbatra.github.io/tag/fft.html</loc>
-<lastmod>2016-01-14T15:05:00+05:53</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
 <loc>http://nipunbatra.github.io/tag/india.html</loc>
 <lastmod>2014-02-26T17:02:00+05:53</lastmod>
 <changefreq>daily</changefreq>
@@ -846,6 +839,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>http://nipunbatra.github.io/tag/shell.html</loc>
 <lastmod>2013-06-15T16:24:00+05:53</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://nipunbatra.github.io/tag/ft.html</loc>
+<lastmod>2016-01-14T15:05:00+05:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
