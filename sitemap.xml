@@ -5,28 +5,28 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://nipunbatra.github.io/</loc>
-<lastmod>2016-01-14T19:50:31-00:00</lastmod>
+<lastmod>2016-01-19T11:52:01-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://nipunbatra.github.io/archives.html</loc>
-<lastmod>2016-01-14T19:50:31-00:00</lastmod>
+<lastmod>2016-01-19T11:52:01-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://nipunbatra.github.io/tags.html</loc>
-<lastmod>2016-01-14T19:50:31-00:00</lastmod>
+<lastmod>2016-01-19T11:52:01-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://nipunbatra.github.io/categories.html</loc>
-<lastmod>2016-01-14T19:50:31-00:00</lastmod>
+<lastmod>2016-01-19T11:52:01-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -69,6 +69,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>http://nipunbatra.github.io/pages/tutorials.html</loc>
 <lastmod>2013-03-24T18:41:00+05:30</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://nipunbatra.github.io/2016/01/nilmtk-matlab/</loc>
+<lastmod>2016-01-19T10:05:00+05:30</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -712,7 +719,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://nipunbatra.github.io/category/blog.html</loc>
-<lastmod>2016-01-14T15:05:00+05:53</lastmod>
+<lastmod>2016-01-19T10:05:00+05:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -775,7 +782,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://nipunbatra.github.io/tag/nilmtk.html</loc>
-<lastmod>2015-07-04T15:12:00+05:53</lastmod>
+<lastmod>2016-01-19T10:05:00+05:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -929,7 +936,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://nipunbatra.github.io/author/nipun-batra.html</loc>
-<lastmod>2016-01-14T15:05:00+05:53</lastmod>
+<lastmod>2016-01-19T10:05:00+05:53</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
